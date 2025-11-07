@@ -1,5 +1,5 @@
 import Navbar from "../../components/header/Navbar";
-import Footer from "../../components/footer/footer";
+import Footer from "../../components/footer/Footer";
 
 const Landing = () => {
   return (
