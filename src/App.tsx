@@ -1,6 +1,14 @@
-import { BrowserRouter, Route, Routes } from "react-router";
-import LandingPage from "./pages/LandingPage/LandingPage";
-import AppLayout from "./layout/userlayout/AppLayout";
+import { createBrowserRouter, RouterProvider } from "react-router";
+
+// local imports
+import Landing from "./pages/marketing/Landing";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Landing />,
+  },
+]);
 
 const App = () => {
   return (
