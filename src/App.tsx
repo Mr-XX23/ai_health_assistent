@@ -1,14 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 
 // local imports
-import AppLayout from "./layout/userlayout/AppLayout";
+import SoluitonsPage from "./pages/Solutions/SoluitonsPage";
+import LandingPage from "./pages/LandingPage/LandingPage";
 
 const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<AppLayout />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/solutions" element={<SoluitonsPage />} />
         </Routes>
       </BrowserRouter>
     </div>

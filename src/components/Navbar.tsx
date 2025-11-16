@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <>
       <header className="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800">
@@ -28,18 +30,18 @@ const Navbar = () => {
             <div className="hidden md:flex flex-1 justify-center items-center gap-9">
               <a
                 className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                href="#"
+                onClick={() => navigate("/")}
               >
                 Home
               </a>
               <a
                 className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                href="#"
+                onClick={() => navigate("/solutions")}
               >
                 Solutions
               </a>
               <a
-                className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
+                className="text-sm font-medium hover: text-primary dark:hover:text-secondary"
                 href="#"
               >
                 AI Symptoms Analyser
