@@ -41,7 +41,7 @@ const Navbar = () => {
                 Solutions
               </a>
               <a
-                className="text-sm font-medium hover: text-primary dark:hover:text-secondary"
+                className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
                 href="#"
               >
                 AI Symptoms Analyser
