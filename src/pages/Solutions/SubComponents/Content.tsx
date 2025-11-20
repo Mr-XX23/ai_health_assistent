@@ -1,4 +1,3 @@
-import React from "react";
 
 const Content = () => {
   return (
@@ -22,11 +21,11 @@ const Content = () => {
                     hourglass_empty
                   </span>
                 </div>
-                <h3 className="text-xl font-bold text-text-primary-light">
+                <h3 className="text-xl font-bold text-text-light">
                   The Challenge: Overcoming Diagnostic Delays
                 </h3>
               </div>
-              <p className="text-text-secondary-light">
+              <p className="text-text-light">
                 A busy hospital department faced significant delays in analyzing
                 patient data, impacting wait times and care delivery.
               </p>
@@ -40,11 +39,11 @@ const Content = () => {
                     precision_manufacturing
                   </span>
                 </div>
-                <h3 className="text-xl font-bold text-text-primary-light">
+                <h3 className="text-xl font-bold text-text-light">
                   The MediSecure Solution: AI-Powered Analysis
                 </h3>
               </div>
-              <p className="text-text-secondary-light">
+              <p className="text-text-light">
                 Our AI assistant was integrated to rapidly process and highlight
                 key insights from patient data, streamlining the diagnostic
                 process.
@@ -56,15 +55,15 @@ const Content = () => {
               <span className="material-symbols-outlined">trending_up</span>
             </div>
             <div className="flex-grow">
-              <h3 className="text-xl font-bold text-text-primary-light">
+              <h3 className="text-xl font-bold text-text-light">
                 The Outcome: Measurable Improvements
               </h3>
-              <p className="mt-2 text-text-secondary-light">
+              <p className="mt-2 text-text-light">
                 With MediSecure, the department achieved a 40% reduction in
                 diagnostic turnaround time and a 15% increase in accuracy,
                 leading to better patient care and resource allocation.
               </p>
-              <button className="mt-4 flex items-center gap-2 text-primary font-bold text-sm hover:underline">
+              <button className="mt-4 flex items-center gap-2 text-primary font-bold text-sm cursor-pointer">
                 <span>Learn More</span>
                 <span className="material-symbols-outlined text-base">
                   arrow_forward

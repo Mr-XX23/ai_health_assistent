@@ -17,9 +17,9 @@ const FAQ = () => {
                 <h3 className="font-bold">
                   How does MediSecure ensure data security and HIPAA compliance?
                 </h3>
-                <span className="relative size-5 shrink-0">
+                <span className="relative size-5 shrink-0 transition-transform duration-500 group-open:rotate-180">
                   <span className="material-symbols-outlined absolute inset-0 opacity-100 group-open:opacity-0 transition-opacity">
-                    add
+                    arrow_downward
                   </span>
                   <span className="material-symbols-outlined absolute inset-0 opacity-0 group-open:opacity-100 transition-opacity">
                     remove
@@ -38,9 +38,9 @@ const FAQ = () => {
                 <h3 className="font-bold">
                   Can MediSecure integrate with our existing EHR system?
                 </h3>
-                <span className="relative size-5 shrink-0">
+                <span className="relative size-5 shrink-0 transition-transform duration-500 group-open:rotate-180">
                   <span className="material-symbols-outlined absolute inset-0 opacity-100 group-open:opacity-0 transition-opacity">
-                    add
+                    arrow_downward
                   </span>
                   <span className="material-symbols-outlined absolute inset-0 opacity-0 group-open:opacity-100 transition-opacity">
                     remove
@@ -58,9 +58,9 @@ const FAQ = () => {
                 <h3 className="font-bold">
                   What kind of support and training do you offer?
                 </h3>
-                <span className="relative size-5 shrink-0">
+                <span className="relative size-5 shrink-0 transition-transform duration-500 group-open:rotate-180">
                   <span className="material-symbols-outlined absolute inset-0 opacity-100 group-open:opacity-0 transition-opacity">
-                    add
+                    arrow_downward
                   </span>
                   <span className="material-symbols-outlined absolute inset-0 opacity-0 group-open:opacity-100 transition-opacity">
                     remove

@@ -16,16 +16,16 @@ const SubContent = () => {
               data-alt="Photo of a smiling female doctor in a white coat."
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-zP1AeKsSRGMWneccxbYhohbErv6z0q1TtUxl1GAvg_bgLBgIFvNaM_4At-ZRdkq5pGup--oVB2Fj6sDkBjvFZMl0f_8rbZBHRLxV_oTwXEd62NWXMW2uWIn2kIcqKlMMG8ZTCZGCnUXhUEePboY-6w3u7kwyJPiRJfEBkvuKIlz7ZphObtJlRFCdSWu9NmzDcCupiiWUYFTMUaJzdvBshKEMPL_V6DobPvEQVfmWLu87ahaZXRrZYMGC2J4r5beyk-Qo-pnTQ3C_"
             />
-            <blockquote className="text-xl italic text-text-primary-light">
+            <blockquote className="text-xl italic text-text-light">
               "MediSecure has become an indispensable part of our workflow. The
               AI assistant saves us hours daily, allowing us to focus more on
               patient interaction and critical decision-making."
             </blockquote>
             <footer className="mt-6">
-              <p className="font-bold text-text-primary-light">
+              <p className="font-bold text-text-light">
                 Dr. Eleanor Vance
               </p>
-              <p className="text-sm text-text-secondary-light">
+              <p className="text-sm text-text-light">
                 Head of Cardiology, General Hospital
               </p>
             </footer>
@@ -37,11 +37,11 @@ const SubContent = () => {
             ></button>
             <button
               aria-label="Testimonial 2"
-              className="w-3 h-3 rounded-full bg-border-light hover:bg-primary/50"
+              className="w-3 h-3 rounded-full bg-border-light bg-primary/50"
             ></button>
             <button
               aria-label="Testimonial 3"
-              className="w-3 h-3 rounded-full bg-border-light hover:bg-primary/50"
+              className="w-3 h-3 rounded-full bg-border-light bg-primary/50"
             ></button>
           </div>
         </div>

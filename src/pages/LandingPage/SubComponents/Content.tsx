@@ -19,7 +19,7 @@ const Content = () => {
               records for a more efficient and effective virtual consultation.
             </p>
             <div className="flex min-w-[84px] max-w-[480px] w-fit">
-              <button className="flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-secondary text-white text-base font-bold tracking-[0.015em] hover:bg-opacity-90 transition-colors">
+              <button className="flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold tracking-[0.015em] hover:bg-opacity-90 transition-colors">
                 <span className="truncate">Learn About Telemedicine</span>
               </button>
             </div>
@@ -148,7 +148,7 @@ const Content = () => {
               schedules.
             </p>
             <div className="flex min-w-[84px] max-w-[480px] w-fit">
-              <button className="flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-secondary text-white text-base font-bold tracking-[0.015em] hover:bg-opacity-90 transition-colors">
+              <button className="flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold tracking-[0.015em] hover:bg-opacity-90 transition-colors">
                 <span className="truncate">Discover Management Tools</span>
               </button>
             </div>
@@ -258,7 +258,7 @@ const Content = () => {
               the patient journey.
             </p>
             <div className="flex min-w-[84px] max-w-[480px] w-fit">
-              <button className="flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-secondary text-white text-base font-bold tracking-[0.015em] hover:bg-opacity-90 transition-colors">
+              <button className="flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold tracking-[0.015em] hover:bg-opacity-90 transition-colors">
                 <span className="truncate">Learn About Integration</span>
               </button>
             </div>
@@ -280,30 +280,30 @@ const Content = () => {
           <div className="mt-8 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
             <div className="text-center p-4">
               <p className="text-lg font-bold">AI Diagnostics</p>
-              <span className="material-symbols-outlined text-4xl text-primary my-2">
+              <span className="material-symbols-outlined text-4xl text-light my-2">
                 arrow_downward
               </span>
             </div>
             <div className="text-center p-4">
               <p className="text-lg font-bold">Telemedicine Notes</p>
-              <span className="material-symbols-outlined text-4xl text-primary my-2">
+              <span className="material-symbols-outlined text-4xl text-light my-2">
                 arrow_downward
               </span>
             </div>
             <div className="flex items-center justify-center p-6 bg-primary/10 dark:bg-primary/20 rounded-full my-4 md:my-0">
-              <span className="material-symbols-outlined text-5xl text-primary">
+              <span className="material-symbols-outlined text-5xl text-light">
                 database
               </span>
             </div>
             <div className="text-center p-4">
               <p className="text-lg font-bold">Medication Logs</p>
-              <span className="material-symbols-outlined text-4xl text-primary my-2">
+              <span className="material-symbols-outlined text-4xl text-light my-2">
                 arrow_upward
               </span>
             </div>
             <div className="text-center p-4">
               <p className="text-lg font-bold">Patient Data</p>
-              <span className="material-symbols-outlined text-4xl text-primary my-2">
+              <span className="material-symbols-outlined text-4xl text-light my-2">
                 arrow_upward
               </span>
             </div>

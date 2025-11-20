@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router";
 
 const Navbar = () => {
@@ -23,53 +22,53 @@ const Navbar = () => {
                   ></path>
                 </svg>
               </div>
-              <h2 className="text-xl font-bold tracking-[-0.015em]">
+              <h2 className="text-xl font-bold tracking-[-0.015em] cursor-pointer" onClick={() => navigate("/")}>
                 MediSecure
               </h2>
             </div>
             <div className="hidden md:flex flex-1 justify-center items-center gap-9">
-              <a
+              <button
                 className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
                 onClick={() => navigate("/")}
               >
                 Home
-              </a>
-              <a
+              </button>
+              <button
                 className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
                 onClick={() => navigate("/solutions")}
               >
                 Solutions
-              </a>
-              <a
+              </button>
+              <button
                 className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                href="#"
+                onClick={() => navigate("/analysis")}
               >
                 AI Symptoms Analyser
-              </a>
-              <a
+              </button>
+              <button
                 className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                href="#"
+                onClick={() => navigate("/features")}
               >
                 Features
-              </a>
-              <a
+              </button>
+              <button
                 className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                href="#"
+                onClick={() => navigate("/security")}
               >
                 Security
-              </a>
-              <a
+              </button>
+              <button
                 className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                href="#"
+                onClick={() => navigate("/pricing")}
               >
                 Pricing
-              </a>
-              <a
+              </button>
+              <button
                 className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                href="#"
+                onClick={() => navigate("/contact")}
               >
                 Contact Us
-              </a>
+              </button>
             </div>
             <div className="hidden md:flex gap-2">
               <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors">

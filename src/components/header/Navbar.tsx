@@ -20,7 +20,7 @@ const Navbar = () => {
             </div>
             <h2 className="text-xl font-bold tracking-[-0.015em]">MediSecure</h2>
           </div>
-          <div className="hidden md:flex flex-1 justify-center items-center gap-9">
+          <div className="hidden md:flex flex-1 justify-center items-center gap-9 ">
             <a
               className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
               href="#"
