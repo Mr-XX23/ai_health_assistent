@@ -11,7 +11,7 @@ const SubHero = () => {
             data-alt="Abstract image representing AI neural networks in a medical context."
           ></div>
           <div className="flex flex-col gap-6">
-            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-primary">
+            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-light">
               Precision Diagnostics, Powered by AI
             </h2>
             <p className="text-subtext-light dark:text-subtext-dark text-lg">
@@ -67,7 +67,7 @@ const SubHero = () => {
             </h3>
             <div className="mt-6 space-y-6">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 size-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+                <div className="shrink-0 size-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
                   1
                 </div>
                 <div>
@@ -79,7 +79,7 @@ const SubHero = () => {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 size-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+                <div className="shrink-0 size-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
                   2
                 </div>
                 <div>
@@ -92,7 +92,7 @@ const SubHero = () => {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 size-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+                <div className="shrink-0 size-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
                   3
                 </div>
                 <div>
@@ -152,7 +152,7 @@ const SubHero = () => {
         <div className="mt-16 bg-slate-100 dark:bg-slate-800 p-8 rounded-xl">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div
-              className="w-full md:w-1/3 bg-center bg-no-repeat aspect-square md:aspect-[3/4] bg-cover rounded-lg bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuDSUuou9htaM9r4D9iOOxbuqLKzfrFn_aviGutGQKMdQYDKGudfjJszTb0XZFMogZnHzNLBGfyKhPrj6sAN07Q-vMTZd0lhhTVDufeGsKDdrTt62fZp9XvwMLmeiLA8ddy78D62cIYP0qMOvgCDt9XAwJLzW1031t1wWigFUh01jjzLMLlxYnfG2QojklxdYwifahtAG6po79G6FSnTXIY3FIPBazB72EKLLQOdQ5sHYZrsnpQHmoa5gnNgP0OC6NK4hSxHGsRxdxqs)]"
+              className="w-full md:w-1/3 bg-center bg-no-repeat aspect-square md:aspect-3/4 bg-cover rounded-lg bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuDSUuou9htaM9r4D9iOOxbuqLKzfrFn_aviGutGQKMdQYDKGudfjJszTb0XZFMogZnHzNLBGfyKhPrj6sAN07Q-vMTZd0lhhTVDufeGsKDdrTt62fZp9XvwMLmeiLA8ddy78D62cIYP0qMOvgCDt9XAwJLzW1031t1wWigFUh01jjzLMLlxYnfG2QojklxdYwifahtAG6po79G6FSnTXIY3FIPBazB72EKLLQOdQ5sHYZrsnpQHmoa5gnNgP0OC6NK4hSxHGsRxdxqs)]"
               data-alt="Professional headshot of Dr. Evelyn Reed."
             ></div>
             <div className="flex flex-col gap-2 flex-1">

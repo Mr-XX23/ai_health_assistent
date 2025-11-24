@@ -1,13 +1,12 @@
-import React from "react";
 
 const EndingContent = () => {
   return (
     <div>
-      <section className="mt-20 sm:mt-28 bg-background-light rounded-xl p-10 lg:p-16 text-center max-w-5xl mx-auto border border-border-light">
-        <h2 className="text-3xl font-bold leading-tight tracking-tight text-text-light">
+      <section className="mt-20 sm:mt-28 rounded-xl p-10 lg:p-16 text-center max-w-5xl mx-auto dark:bg-[#314158] background--light shadow-lg">
+        <h2 className="text-3xl font-bold leading-tight tracking-tight text-light">
           Ready to Revolutionize Your Practice?
         </h2>
-        <p className="mt-4 max-w-2xl mx-auto text-lg text-text-light">
+        <p className="mt-4 max-w-2xl mx-auto text-lg text-gray">
           Discover how MediSecure can be tailored to meet your specific clinical
           needs. Schedule a personalized demo with our team today.
         </p>

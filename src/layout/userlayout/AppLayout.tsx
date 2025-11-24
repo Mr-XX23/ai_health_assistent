@@ -1,6 +1,5 @@
-import LandingPage from "../../pages/LandingPage/LandingPage";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import Navbar from "../../components/header/Navbar";
+import Footer from "../../components/footer/Footer";
 
 interface AppLayoutChildren {
   children: React.ReactNode;
@@ -11,7 +10,6 @@ const AppLayout = ({ children }: AppLayoutChildren) => {
       <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
         <Navbar />
         {children}
-
         <Footer />
       </div>
     </div>

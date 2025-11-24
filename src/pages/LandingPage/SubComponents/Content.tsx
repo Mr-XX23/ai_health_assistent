@@ -1,4 +1,4 @@
-import FAQ from "../../FAQ/FAQ";
+
 
 const Content = () => {
   return (
@@ -9,7 +9,7 @@ const Content = () => {
       >
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="flex flex-col gap-6 md:order-2">
-            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-primary">
+            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-light">
               Connect with Care, Intelligently
             </h2>
             <p className="text-subtext-light dark:text-subtext-dark text-lg">
@@ -107,7 +107,7 @@ const Content = () => {
         <div className="mt-16 bg-slate-100 dark:bg-slate-800 p-8 rounded-xl">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div
-              className="w-full md:w-1/3 bg-center bg-no-repeat aspect-square md:aspect-[3/4] bg-cover rounded-lg bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuDCrTZ32VsZpo3ewSjs5v8mwZzVa6vZAGkYJ4mkDdGlnHRJJhR7prW3Bp09bfXunaModjZ78R3JhirG9G-310gamP6hiyOsIfHOQPzwROb_G94-ZeAPB3LqD1S6-v_EDsE77HqyLfLyf45hCy8wPzwdg0Mkq-gow60ONo6PvY3yLKa61fuBu-wopq-5f6ptAx_4xxNlZ3jON-aplfr_Oxz8Xa4Pz6IN87fTruTT_kamYVEOQPwfbWkNwqOu9SqoVNiyrBI0EkFXKU0A)]"
+              className="w-full md:w-1/3 bg-center bg-no-repeat aspect-square md:aspect-3/4 bg-cover rounded-lg bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuDCrTZ32VsZpo3ewSjs5v8mwZzVa6vZAGkYJ4mkDdGlnHRJJhR7prW3Bp09bfXunaModjZ78R3JhirG9G-310gamP6hiyOsIfHOQPzwROb_G94-ZeAPB3LqD1S6-v_EDsE77HqyLfLyf45hCy8wPzwdg0Mkq-gow60ONo6PvY3yLKa61fuBu-wopq-5f6ptAx_4xxNlZ3jON-aplfr_Oxz8Xa4Pz6IN87fTruTT_kamYVEOQPwfbWkNwqOu9SqoVNiyrBI0EkFXKU0A)]"
               data-alt="A patient smiling while using a laptop for a video call."
             ></div>
             <div className="flex flex-col gap-2 flex-1">
@@ -137,7 +137,7 @@ const Content = () => {
             data-alt="A close-up of different types of medication pills organized neatly."
           ></div>
           <div className="flex flex-col gap-6">
-            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-primary">
+            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-light">
               Simplify and Secure Medication Adherence
             </h2>
             <p className="text-subtext-light dark:text-subtext-dark text-lg">
@@ -247,7 +247,7 @@ const Content = () => {
       >
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="flex flex-col gap-6 md:order-2">
-            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-primary">
+            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-light">
               Seamless Data, Unified Care
             </h2>
             <p className="text-subtext-light dark:text-subtext-dark text-lg">

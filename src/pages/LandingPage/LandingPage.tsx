@@ -7,7 +7,7 @@ import SubHero from "./SubComponents/SubHero";
 const LandingPage = () => {
   return (
     <AppLayout>
-      <div className="flex-grow">
+      <div className="grow">
         <Hero />
         <div className="space-y-24 md:space-y-32 py-24 md:py-32">
           <SubHero />

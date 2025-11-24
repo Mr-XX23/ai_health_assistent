@@ -1,4 +1,4 @@
-import React from "react";
+
 import Hero from "./SubComponents/Hero";
 import Content from "./SubComponents/Content";
 import SubContent from "./SubComponents/SubContent";
