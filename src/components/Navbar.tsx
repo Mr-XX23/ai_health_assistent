@@ -42,7 +42,7 @@ const Navbar = () => {
               </a>
               <a
                 className="text-sm font-medium hover: text-primary dark:hover:text-secondary"
-                href="#"
+                onClick={() => navigate("/ai_analysis ")}
               >
                 AI Symptoms Analyser
               </a>

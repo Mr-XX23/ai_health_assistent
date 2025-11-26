@@ -13,7 +13,7 @@ const Content = () => {
             with MediSecure.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto dark:text-black">
           <div className="flex flex-col rounded-xl border border-border-light bg-white shadow-sm overflow-hidden">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-4">

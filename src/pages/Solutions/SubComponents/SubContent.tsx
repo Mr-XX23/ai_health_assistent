@@ -9,7 +9,7 @@ const SubContent = () => {
             Trusted by Healthcare Professionals
           </h2>
         </div>
-        <div className="p-8 rounded-xl bg-background-light border border-border-light">
+        <div className="p-8 rounded-xl bg-background-light border border-border-light dark:text-black">
           <div className="flex flex-col items-center text-center">
             <img
               className="w-20 h-20 rounded-full object-cover mb-4"

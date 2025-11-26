@@ -10,13 +10,17 @@ const SoluitonsPage = () => {
   return (
     <>
       <AppLayout>
-        <div className="flex-grow bg-content-light">
-          <div className="container mx-auto px-4 py-16 sm:py-24">
-            <Hero />
-            <Content />
-            <SubContent />
-            <Benefits />
-            <EndingContent />
+        <div className="font-display bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark">
+          <div className="relative flex min-h-screen w-full flex-col">
+            <div className="flex-grow bg-content-light ">
+              <div className="container mx-auto px-4 py-16 sm:py-24">
+                <Hero />
+                <Content />
+                <SubContent />
+                <Benefits />
+                <EndingContent />
+              </div>
+            </div>
           </div>
         </div>
       </AppLayout>

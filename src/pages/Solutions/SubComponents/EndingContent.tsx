@@ -3,7 +3,7 @@ import React from "react";
 const EndingContent = () => {
   return (
     <div>
-      <section className="mt-20 sm:mt-28 bg-background-light rounded-xl p-10 lg:p-16 text-center max-w-5xl mx-auto border border-border-light">
+      <section className="mt-20 sm:mt-28 bg-background-light rounded-xl p-10 lg:p-16 text-center max-w-5xl mx-auto border border-border-light dark:text-black">
         <h2 className="text-3xl font-bold leading-tight tracking-tight text-text-primary-light">
           Ready to Revolutionize Your Practice?
         </h2>
