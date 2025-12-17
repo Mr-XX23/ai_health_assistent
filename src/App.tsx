@@ -19,12 +19,14 @@ const App = () => {
           <Route path="/analysis" element={<System_Analysis />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/security" element={<SecurityPage />} />
-          <Route path="/pricing" element={<Pricingpage/>} />
-          <Route path="/contact" element={<ConctactUs/>} />
+          <Route path="/pricing" element={<Pricingpage />} />
+          <Route path="/contact" element={<ConctactUs />} />
+          git
         </Routes>
       </BrowserRouter>
     </div>
   );
 };
+``;
 
 export default App;
