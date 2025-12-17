@@ -8,6 +8,8 @@ import FeaturesPage from "./pages/Features/FeaturesPage";
 import SecurityPage from "./pages/Security/SecurityPage";
 import Pricingpage from "./pages/Pricing/Pricingpage";
 import ConctactUs from "./pages/Contact/ConctactUs";
+import LoginPage from "./pages/LoginAndRegistration/Login/LoginPage";
+import ForgetPassword from "./pages/LoginAndRegistration/ForgetPassword/ForgetPassword";
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
           <Route path="/security" element={<SecurityPage />} />
           <Route path="/pricing" element={<Pricingpage/>} />
           <Route path="/contact" element={<ConctactUs/>} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forget-password" element={<ForgetPassword />} />
         </Routes>
       </BrowserRouter>
     </div>
