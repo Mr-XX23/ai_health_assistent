@@ -22,7 +22,10 @@ const Navbar = () => {
                   ></path>
                 </svg>
               </div>
-              <h2 className="text-xl font-bold tracking-[-0.015em] cursor-pointer" onClick={() => navigate("/")}>
+              <h2
+                className="text-xl font-bold tracking-[-0.015em] cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 MediSecure
               </h2>
             </div>
@@ -74,7 +77,10 @@ const Navbar = () => {
               <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors">
                 <span className="truncate">Request a Demo</span>
               </button>
-              <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-slate-200 dark:bg-slate-700 text-sm font-bold leading-normal tracking-[0.015em] hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+              <button
+                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-slate-200 dark:bg-slate-700 text-sm font-bold leading-normal tracking-[0.015em] hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                onClick={() => navigate("/login")}
+              >
                 <span className="truncate">Login</span>
               </button>
             </div>

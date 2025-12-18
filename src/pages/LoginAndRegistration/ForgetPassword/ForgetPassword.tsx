@@ -64,7 +64,10 @@ const ForgetPassword = () => {
                             />
                           </div>
                         </label>
-                        <div className="flex flex-col gap-3 pt-2">
+                        <div
+                          className="flex flex-col gap-3 pt-2"
+                          onClick={() => navigate("/set-password")}
+                        >
                           <button className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-sm transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 dark:focus:ring-offset-background-dark">
                             Send Reset Link
                           </button>

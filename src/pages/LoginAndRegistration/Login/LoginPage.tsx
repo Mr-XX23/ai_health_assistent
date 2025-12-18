@@ -49,7 +49,12 @@ const LoginPage = () => {
                                 {/* <input className="invisible w-0" name="auth-form" type="radio" value="Login"/> */}
                               </label>
                               <label className="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-light has-[:checked]:shadow-md has-[:checked]:text-[#101c22] dark:has-[:checked]:bg-slate-700 dark:has-[:checked]:text-slate-50 text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all">
-                                <span className="truncate">Sign Up</span>
+                                <span
+                                  className="truncate"
+                                  onClick={() => navigate("/signup")}
+                                >
+                                  Sign Up
+                                </span>
                                 <input
                                   className="invisible w-0"
                                   name="auth-form"
@@ -105,7 +110,7 @@ const LoginPage = () => {
                               </div>
                             </label>
                             {/* <!-- Forgot Password Link --> */}
-                            <span onClick={() => navigate("/forgetpassword")}>
+                            <span onClick={() => navigate("/forgot-password")}>
                               <p className="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal pb-3 pt-1 px-1 text-right underline cursor-pointer hover:text-primary transition-colors">
                                 Forgot Password?
                               </p>
