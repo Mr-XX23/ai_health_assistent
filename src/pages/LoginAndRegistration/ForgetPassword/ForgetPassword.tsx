@@ -1,5 +1,3 @@
-import React from "react";
-import App from "../../../App";
 import AppLayout from "../../../layout/userlayout/AppLayout";
 import { useNavigate } from "react-router";
 

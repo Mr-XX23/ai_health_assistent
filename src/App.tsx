@@ -21,14 +21,15 @@ const App = () => {
           <Route path="/analysis" element={<System_Analysis />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/security" element={<SecurityPage />} />
-          <Route path="/pricing" element={<Pricingpage/>} />
-          <Route path="/contact" element={<ConctactUs/>} />
+          <Route path="/pricing" element={<Pricingpage />} />
+          <Route path="/contact" element={<ConctactUs />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/forget-password" element={<ForgetPassword />} />
+          <Route path="/forgot-password" element={<ForgetPassword />} />
         </Routes>
       </BrowserRouter>
     </div>
   );
 };
+``;
 
 export default App;

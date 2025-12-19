@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import AppLayout from "../../../layout/userlayout/AppLayout";
 import { useNavigate } from "react-router";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <>
       <AppLayout>
@@ -76,7 +78,8 @@ const LoginPage = () => {
                                   className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
                                   placeholder="Enter your email"
                                   type="email"
-                                  value=""
+                                  // value=""
+                                  onChange={(e) => setEmail(e.target.value)}
                                 />
                               </div>
                             </label>
@@ -95,7 +98,8 @@ const LoginPage = () => {
                                   className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal"
                                   placeholder="Enter your password"
                                   type="password"
-                                  value=""
+                                  // value=""
+                                  onChange={(e) => e.target.value}
                                 />
                                 <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center pr-[15px] rounded-r-lg border-l-0 cursor-pointer">
                                   <span className="material-symbols-outlined text-[20px]">
@@ -105,7 +109,7 @@ const LoginPage = () => {
                               </div>
                             </label>
                             {/* <!-- Forgot Password Link --> */}
-                            <span onClick={() => navigate("/forgetpassword")}>
+                            <span onClick={() => navigate("/forgot-password")}>
                               <p className="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal pb-3 pt-1 px-1 text-right underline cursor-pointer hover:text-primary transition-colors">
                                 Forgot Password?
                               </p>
