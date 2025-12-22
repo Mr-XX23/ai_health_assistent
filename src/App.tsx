@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Router, Routes } from "react-router";
 
 // local imports
 import SoluitonsPage from "./pages/Solutions/SoluitonsPage";
@@ -10,6 +10,10 @@ import Pricingpage from "./pages/Pricing/Pricingpage";
 import ConctactUs from "./pages/Contact/ConctactUs";
 import LoginPage from "./pages/LoginAndRegistration/Login/LoginPage";
 import ForgetPassword from "./pages/LoginAndRegistration/ForgetPassword/ForgetPassword";
+import SignUp from "./pages/LoginAndRegistration/SignUpPages/SignUp";
+import Verification from "./pages/LoginAndRegistration/SignUpPages/Verification";
+import SetNewPassword from "./pages/LoginAndRegistration/ForgetPassword/SetNewPassword";
+import PasswordUpdated from "./pages/LoginAndRegistration/ForgetPassword/PasswordUpdated";
 
 const App = () => {
   return (
@@ -24,7 +28,13 @@ const App = () => {
           <Route path="/pricing" element={<Pricingpage />} />
           <Route path="/contact" element={<ConctactUs />} />
           <Route path="/login" element={<LoginPage />} />
+
           <Route path="/forgot-password" element={<ForgetPassword />} />
+          <Route path="/set-password" element={<SetNewPassword />} />
+          <Route path="/update-password" element={<PasswordUpdated />} />
+
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/verification" element={<Verification />} />
         </Routes>
       </BrowserRouter>
     </div>
