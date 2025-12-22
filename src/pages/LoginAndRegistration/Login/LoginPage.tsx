@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import AppLayout from "../../../layout/userlayout/AppLayout";
 import { useNavigate } from "react-router";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <>
       <AppLayout>
@@ -82,6 +84,7 @@ const LoginPage = () => {
                                   placeholder="Enter your email"
                                   type="email"
                                   // value=""
+                                  onChange={(e) => setEmail(e.target.value)}
                                 />
                               </div>
                             </label>
@@ -101,6 +104,7 @@ const LoginPage = () => {
                                   placeholder="Enter your password"
                                   type="password"
                                   // value=""
+                                  onChange={(e) => e.target.value}
                                 />
                               </div>
                             </label>

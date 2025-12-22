@@ -23,14 +23,14 @@ const ConctactUs = () => {
                 <form action="#" className="mt-6 space-y-6" method="POST">
                   <div>
                     <label
-                      className="p-2 block text-sm font-medium text-light"
+                      className="block text-sm font-medium text-light"
                       htmlFor="name"
                     >
                       Full Name
                     </label>
-                    <div className="mt-1 ">
+                    <div className="mt-1">
                       <input
-                        className="p-2 block w-full rounded-lg border-slate-300 shadow-sm  focus:border-primary focus:ring-primary sm:text-sm"
+                        className=" p-2 block w-full rounded-lg border-slate-300 shadow-sm  focus:border-primary focus:ring-primary sm:text-sm"
                         id="name"
                         name="name"
                         placeholder="John Doe"
@@ -41,14 +41,14 @@ const ConctactUs = () => {
                   </div>
                   <div>
                     <label
-                      className="p-2 block text-sm font-medium text-light"
+                      className="block text-sm font-medium text-light"
                       htmlFor="email"
                     >
                       Email Address
                     </label>
-                    <div className="mt-1">
+                    <div className="mt-1 ">
                       <input
-                        className="p-2 block w-full rounded-lg border-slate-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                        className="p-2 block w-full rounded-lg border-slate-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-2"
                         id="email"
                         name="email"
                         placeholder="you@example.com"
@@ -59,7 +59,7 @@ const ConctactUs = () => {
                   </div>
                   <div>
                     <label
-                      className="p-2 block text-sm font-medium text-light"
+                      className="block text-sm font-medium text-light"
                       htmlFor="subject"
                     >
                       Subject
@@ -77,7 +77,7 @@ const ConctactUs = () => {
                   </div>
                   <div>
                     <label
-                      className="p-2 block text-sm font-medium text-light"
+                      className="block text-sm font-medium text-light"
                       htmlFor="message"
                     >
                       Message
@@ -95,7 +95,7 @@ const ConctactUs = () => {
                   </div>
                   <div>
                     <button
-                      className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
+                      className="p-2 w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
                       type="submit"
                     >
                       Send Message
