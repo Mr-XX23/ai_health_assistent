@@ -167,7 +167,7 @@ const SetNewPassword = () => {
                   Need help?{" "}
                   <a
                     className="font-medium text-primary hover:underline"
-                    href="#"
+                    onClick={() => navigate("/contact")}
                   >
                     Contact Support
                   </a>

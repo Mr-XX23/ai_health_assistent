@@ -23,7 +23,7 @@ const ConctactUs = () => {
                 <form action="#" className="mt-6 space-y-6" method="POST">
                   <div>
                     <label
-                      className="block text-sm font-medium text-light"
+                      className="p-2 block text-sm font-medium text-light"
                       htmlFor="name"
                     >
                       Full Name
@@ -84,7 +84,7 @@ const ConctactUs = () => {
                     </label>
                     <div className="mt-1">
                       <textarea
-                        className="block w-full rounded-lg border-slate-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                        className="p-2 block w-full rounded-lg border-slate-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                         id="message"
                         name="message"
                         placeholder="Your message here..."

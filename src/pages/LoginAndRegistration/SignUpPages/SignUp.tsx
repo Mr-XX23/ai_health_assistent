@@ -55,16 +55,16 @@ const SignUp = () => {
                             Full Name
                           </p>
                           <div className="flex w-full flex-1 items-stretch rounded-lg">
-                            <div className="text-slate-400 flex border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 items-center justify-center pl-[15px] rounded-l-lg border-r-0">
+                            <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
                               <span className="material-symbols-outlined text-[20px]">
                                 person
                               </span>
                             </div>
                             <input
-                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
-                              placeholder="Enter your full name"
+                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
+                              placeholder="Enter your username"
                               type="text"
-                              value=""
+                              // value=""
                             />
                           </div>
                         </label>
@@ -73,16 +73,16 @@ const SignUp = () => {
                             Email Address
                           </p>
                           <div className="flex w-full flex-1 items-stretch rounded-lg">
-                            <div className="text-slate-400 flex border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 items-center justify-center pl-[15px] rounded-l-lg border-r-0">
+                            <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
                               <span className="material-symbols-outlined text-[20px]">
                                 mail
                               </span>
                             </div>
                             <input
-                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
+                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
                               placeholder="Enter your email"
                               type="email"
-                              value=""
+                              // value=""
                             />
                           </div>
                         </label>
@@ -91,22 +91,17 @@ const SignUp = () => {
                             Password
                           </p>
                           <div className="flex w-full flex-1 items-stretch rounded-lg">
-                            <div className="text-slate-400 flex border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 items-center justify-center pl-[15px] rounded-l-lg border-r-0">
-                              <span className="material-symbols-outlined  text-[20px]">
+                            <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
+                              <span className="material-symbols-outlined text-[20px]">
                                 lock
                               </span>
                             </div>
                             <input
-                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal"
+                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
                               placeholder="Enter your password"
                               type="password"
-                              value=""
+                              // value=""
                             />
-                            <div className="text-slate-400 flex border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 items-center justify-center pr-[15px] rounded-r-lg border-l-0 cursor-pointer">
-                              <span className="material-symbols-outlined text-[20px]">
-                                visibility_off
-                              </span>
-                            </div>
                           </div>
                           <div className="mt-2 space-y-2 px-1">
                             <div className="flex items-center gap-2">
@@ -155,7 +150,7 @@ const SignUp = () => {
                             </span>
                           </div>
                           <div className="flex w-full flex-1 items-stretch rounded-lg">
-                            <div className="text-slate-400 flex border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 items-center justify-center pl-[15px] rounded-l-lg border-r-0">
+                            <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
                               <span className="material-symbols-outlined text-[20px]">
                                 phone
                               </span>

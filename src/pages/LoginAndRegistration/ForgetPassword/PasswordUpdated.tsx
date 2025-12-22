@@ -51,7 +51,10 @@ const PasswordUpdated = () => {
                         securely.
                       </p>
                       <div className="flex px-4 py-5 justify-center">
-                        <button className="flex w-full max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark transition-colors">
+                        <button
+                          className="flex w-full max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark transition-colors"
+                          onClick={() => navigate("/login")}
+                        >
                           <span
                             className="truncate"
                             onClick={() => navigate("/login")}
