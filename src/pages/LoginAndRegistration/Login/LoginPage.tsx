@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import AppLayout from "../../../layout/userlayout/AppLayout";
+import AppLayout from "../../../layout/AppLayout/AppLayout";
 import { useNavigate } from "react-router";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
   return (
     <>
       <AppLayout>
@@ -88,7 +89,9 @@ const LoginPage = () => {
                                 />
                               </div>
                             </label>
+
                             {/* <!-- Password Field --> */}
+
                             <label className="flex flex-col min-w-40 flex-1">
                               <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
                                 Password
@@ -100,12 +103,18 @@ const LoginPage = () => {
                                   </span>
                                 </div>
                                 <input
-                                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
+                                  type={showPass ? "text" : "password"}
                                   placeholder="Enter your password"
-                                  type="password"
-                                  // value=""
-                                  onChange={(e) => e.target.value}
+                                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-none text-base font-normal leading-normal  "
                                 />
+                                <div
+                                  onClick={() => setShowPass(!showPass)}
+                                  className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center p-1.5 rounded-r-lg border-l-0 cursor-pointer"
+                                >
+                                  <span className="material-symbols-outlined text-[20px]">
+                                    {showPass ? "visibility" : "visibility_off"}
+                                  </span>
+                                </div>
                               </div>
                             </label>
 

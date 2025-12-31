@@ -1,4 +1,4 @@
-import AppLayout from "../../layout/userlayout/AppLayout";
+import AppLayout from "../../layout/AppLayout/AppLayout";
 import FAQ from "../FAQ/FAQ";
 import Content from "./SubComponents/Content";
 import Hero from "./SubComponents/Hero";
