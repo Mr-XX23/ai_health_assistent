@@ -14,6 +14,8 @@ import SignUp from "./pages/LoginAndRegistration/SignUpPages/SignUp";
 import Verification from "./pages/LoginAndRegistration/SignUpPages/Verification";
 import SetNewPassword from "./pages/LoginAndRegistration/ForgetPassword/SetNewPassword";
 import PasswordUpdated from "./pages/LoginAndRegistration/ForgetPassword/PasswordUpdated";
+import AdminDashboard from "./AdminComponents/pages/AdminDashboard";
+import AdminPatientProfile from "./AdminComponents/pages/AdminPatientProfile/AdminPatientProfile";
 
 const App = () => {
   return (
@@ -35,6 +37,12 @@ const App = () => {
 
           <Route path="/signup" element={<SignUp />} />
           <Route path="/verification" element={<Verification />} />
+
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route
+            path="/admin-patient-profile"
+            element={<AdminPatientProfile />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

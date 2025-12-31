@@ -1,6 +1,6 @@
 import React from "react";
 import App from "../../../App";
-import AppLayout from "../../../layout/userlayout/AppLayout";
+import AppLayout from "../../../layout/AppLayout/AppLayout";
 import { useNavigate } from "react-router";
 
 const SignUp = () => {

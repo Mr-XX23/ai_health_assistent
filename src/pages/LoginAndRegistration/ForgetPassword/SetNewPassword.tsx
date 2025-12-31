@@ -1,5 +1,5 @@
 import React from "react";
-import AppLayout from "../../../layout/userlayout/AppLayout";
+import AppLayout from "../../../layout/AppLayout/AppLayout";
 import { useNavigate } from "react-router";
 
 const SetNewPassword = () => {
