@@ -1,5 +1,6 @@
 import React from "react";
 import AdminLayout from "../../../layout/AdminLayout/AdminLayout";
+import { useNavigate } from "react-router";
 
 const AdminPatientProfile = () => {
   return (
@@ -24,10 +25,7 @@ const AdminPatientProfile = () => {
                 </div>
               </div>
               <nav className="flex flex-col gap-2 mt-4">
-                <a
-                  className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT bg-primary/10 text-primary dark:bg-primary/20"
-                  href="#"
-                >
+                <a className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT bg-primary/10 text-primary dark:bg-primary/20">
                   <span className="material-symbols-outlined fill">person</span>
                   <p className="text-sm font-medium leading-normal">Overview</p>
                 </a>

@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 const Siderbar = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="flex h-screen w-64 flex-col justify-between border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-4 sticky top-0">
@@ -15,15 +17,15 @@ const Siderbar = () => {
           </div>
           <div className="flex flex-col gap-2">
             <a
-              className="flex items-center gap-3 rounded-lg bg-primary/20 px-3 py-2 text-primary"
-              href="#"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-primary/10"
+              onClick={() => navigate("/admin")}
             >
               <span className="material-symbols-outlined">dashboard</span>
               <p className="text-sm font-medium">Dashboard</p>
             </a>
             <a
               className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-primary/10"
-              href="#"
+              onClick={() => navigate("/admin-patient-profile")}
             >
               <span className="material-symbols-outlined">group</span>
               <p className="text-sm font-medium">Patients</p>
