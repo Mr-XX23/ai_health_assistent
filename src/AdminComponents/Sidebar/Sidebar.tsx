@@ -25,7 +25,7 @@ const Siderbar = () => {
             </a>
             <a
               className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-primary/10"
-              onClick={() => navigate("/admin-patient-profile")}
+              onClick={() => navigate("/admin-patient-page")}
             >
               <span className="material-symbols-outlined">group</span>
               <p className="text-sm font-medium">Patients</p>

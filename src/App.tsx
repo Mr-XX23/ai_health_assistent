@@ -14,8 +14,10 @@ import SignUp from "./pages/LoginAndRegistration/SignUpPages/SignUp";
 import Verification from "./pages/LoginAndRegistration/SignUpPages/Verification";
 import SetNewPassword from "./pages/LoginAndRegistration/ForgetPassword/SetNewPassword";
 import PasswordUpdated from "./pages/LoginAndRegistration/ForgetPassword/PasswordUpdated";
-import AdminDashboard from "./AdminComponents/pages/AdminDashboard";
+import AdminDashboard from "./AdminComponents/pages/AdminDashboard/AdminDashboard";
 import AdminPatientProfile from "./AdminComponents/pages/AdminPatientProfile/AdminPatientProfile";
+import PatientPage from "./AdminComponents/pages/PatientPage/PatientPage";
+import DocterDashboard from "./DocterComponents/pages/DocterDashboard/DocterDashboard";
 
 const App = () => {
   return (
@@ -43,6 +45,9 @@ const App = () => {
             path="/admin-patient-profile"
             element={<AdminPatientProfile />}
           />
+          <Route path="/admin-patient-page" element={<PatientPage />} />
+
+          <Route path="/docter-dashboard" element={<DocterDashboard />} />
         </Routes>
       </BrowserRouter>
     </div>
