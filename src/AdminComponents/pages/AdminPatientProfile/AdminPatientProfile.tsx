@@ -3,6 +3,10 @@ import AdminLayout from "../../../layout/AdminLayout/AdminLayout";
 import { useNavigate } from "react-router";
 
 const AdminPatientProfile = () => {
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    navigate(-1);
+  };
   return (
     <AdminLayout>
       <div className="bg-background-light dark:bg-background-dark font-display text-charcoal dark:text-gray-200">
@@ -69,12 +73,29 @@ const AdminPatientProfile = () => {
                   className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
                   href="#"
                 >
-                  <span className="material-symbols-outlined">
+                  <span className=" material-symbols-outlined">
                     directions_run
                   </span>
                   <p className="text-sm font-medium leading-normal">
                     Lifestyle
                   </p>
+                </a>
+                <a
+                  className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
+                  onClick={handleGoBack}
+                >
+                  <span className=" material-symbols-outlined">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 -960 960 960"
+                      width="24px"
+                      fill="#e3e3e3"
+                    >
+                      <path d="M360-240 120-480l240-240 56 56-144 144h488v-160h80v240H272l144 144-56 56Z" />
+                    </svg>
+                  </span>
+                  <p className="text-sm font-medium leading-normal">Return</p>
                 </a>
               </nav>
             </div>
