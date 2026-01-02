@@ -15,8 +15,8 @@ const SignUp = () => {
                 <div className="flex flex-1 flex-col lg:flex-row">
                   <div className="relative hidden w-full flex-col items-center justify-center gap-6 bg-primary/20 p-8 lg:flex lg:w-1/2 dark:bg-background-dark">
                     <div
-                      className="absolute inset-0 z-0 bg-cover bg-center opacity-10 dark:opacity-20"
-                      data-alt="Abstract image of healthcare technology with a stethoscope on a laptop. bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuDootRbF6XIUCgRdN48Ul1TTegsLXDbbAffF1Oqt-1GBGoSmbz49sABZJSHK-R3gjf6_70ctUPNsTgYJ-Z_8XgDayzPpKoBHlHyMTpvhnRYCux1RjmNMQNtXlI3aDMPTpJs5KcaHbX-0CmstLK__RrsJYB6jJ0SUNyfSZCKidCTjigkzFh--9bcugor7T5R03wJOcPAS6jlBgKj7ir3tltKZHIvwvRLsdUjbIix5dxbvXx0xkCAwgmVyWueBLSrrlunZVIXOE2joCEv)]"
+                      className="absolute inset-0 z-0 bg-cover bg-center opacity-10 dark:opacity-20 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuDootRbF6XIUCgRdN48Ul1TTegsLXDbbAffF1Oqt-1GBGoSmbz49sABZJSHK-R3gjf6_70ctUPNsTgYJ-Z_8XgDayzPpKoBHlHyMTpvhnRYCux1RjmNMQNtXlI3aDMPTpJs5KcaHbX-0CmstLK__RrsJYB6jJ0SUNyfSZCKidCTjigkzFh--9bcugor7T5R03wJOcPAS6jlBgKj7ir3tltKZHIvwvRLsdUjbIix5dxbvXx0xkCAwgmVyWueBLSrrlunZVIXOE2joCEv)]"
+                      data-alt="Abstract image of healthcare technology with a stethoscope on a laptop."
                     ></div>
                     <div className="relative z-10 flex flex-col gap-8 max-w-md text-center text-[#101c22] dark:text-slate-100">
                       <div className="flex items-center justify-center gap-3">
@@ -38,6 +38,26 @@ const SignUp = () => {
                   </div>
                   <div className="flex w-full flex-1 flex-col items-center justify-center bg-background-light p-4 py-12 lg:w-1/2 dark:bg-background-dark">
                     <div className="w-full max-w-md space-y-6">
+                      <div className="flex px-4 py-3">
+                        <div className="flex h-12 flex-1 items-center justify-center rounded-xl bg-slate-200/80 p-1.5 dark:bg-slate-800">
+                          <label className="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-light has-[:checked]:shadow-md has-[:checked]:text-[#101c22] dark:has-[:checked]:bg-slate-700 dark:has-[:checked]:text-slate-50 text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all">
+                            <span className="truncate">Login</span>
+                            {/* <input className="invisible w-0" name="auth-form" type="radio" value="Login"/> */}
+                          </label>
+                          <div
+                            onClick={() => navigate("/signup")}
+                            className="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-light has-[:checked]:shadow-md has-[:checked]:text-[#101c22] dark:has-[:checked]:bg-slate-700 dark:has-[:checked]:text-slate-50 text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all"
+                          >
+                            <span className="truncate">Sign Up</span>
+                            <input
+                              className="invisible w-0"
+                              name="auth-form"
+                              type="radio"
+                              value="Sign Up"
+                            />
+                          </div>
+                        </div>
+                      </div>
                       <div className="text-center px-4">
                         <h1 className="text-3xl font-bold text-[#101c22] dark:text-white">
                           Create Your Account
@@ -157,7 +177,7 @@ const SignUp = () => {
                             </div>
                             <input
                               className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
-                              placeholder="+1 (555) 000-0000"
+                              placeholder="+977 987654321"
                               type="tel"
                               value=""
                             />

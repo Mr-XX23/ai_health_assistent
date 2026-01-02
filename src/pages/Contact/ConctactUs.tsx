@@ -33,7 +33,7 @@ const ConctactUs = () => {
                         className=" p-2 block w-full rounded-lg border-slate-300 shadow-sm  focus:border-primary focus:ring-primary sm:text-sm"
                         id="name"
                         name="name"
-                        placeholder="John Doe"
+                        placeholder="Rohan Balami"
                         required
                         type="text"
                       />
@@ -120,7 +120,7 @@ const ConctactUs = () => {
                       </span>
                       <div>
                         <h4 className="font-medium">Phone</h4>
-                        <p className="text-gray-400">(123) 456-7890</p>
+                        <p className="text-gray-400">01-5522295</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
@@ -139,9 +139,9 @@ const ConctactUs = () => {
                       <div>
                         <h4 className="font-medium">Office Address</h4>
                         <p className="text-gray-400">
-                          123 Health Tech Avenue, Suite 100
+                          Patan Hospital
                           <br />
-                          San Francisco, CA 94103
+                          Lagankhel Satdobato Rd, Lalitpur 44700
                         </p>
                       </div>
                     </div>
@@ -155,7 +155,7 @@ const ConctactUs = () => {
                       height="100%"
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.255971485741!2d-122.41941548468165!3d37.78825197975878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085808c1f4f5f5f%3A0x4c28f7e2f5f5f5f5!2sSan%20Francisco%20City%20Hall!5e0!3m2!1sen!2sus!4v1684343944321!5m2!1sen!2sus"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.5852162712417!2d85.3205683!3d27.668301999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19d1be9baf71%3A0x48893d580864792f!2sPatan%20Hospital!5e0!3m2!1sen!2snp!4v1767380598014!5m2!1sen!2snp"
                       style={{ border: 0 }}
                       width="100%"
                     ></iframe>

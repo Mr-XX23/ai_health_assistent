@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router";
+
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <footer className="bg-gray-800 dark:bg-black text-gray-300">
@@ -34,7 +37,7 @@ const Footer = () => {
                 <li>
                   <a
                     className="text-sm text-gray-400 hover:text-white"
-                    href="#diagnostics"
+                    onClick={() => navigate("/solutions")}
                   >
                     AI Diagnostics
                   </a>
@@ -58,7 +61,7 @@ const Footer = () => {
                 <li>
                   <a
                     className="text-sm text-gray-400 hover:text-white"
-                    href="#ehr"
+                    href="#"
                   >
                     EHR Integration
                   </a>
