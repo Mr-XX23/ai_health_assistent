@@ -3,6 +3,7 @@ import AppLayout from "../../../layout/AppLayout/AppLayout";
 import { useNavigate } from "react-router";
 import Password from "../../../components/inputField/Password";
 import Email from "../../../components/inputField/Email";
+import Slider from "../components/Slider";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -47,26 +48,7 @@ const LoginPage = () => {
                       <div className="flex w-full flex-1 flex-col items-center justify-center bg-background-light p-4 py-12 lg:w-1/2 dark:bg-background-dark">
                         <div className="w-full max-w-md space-y-6">
                           {/* <!-- Segmented Buttons / Tabs --> */}
-                          <div className="flex px-4 py-3">
-                            <div className="flex h-12 flex-1 items-center justify-center rounded-xl bg-slate-200/80 p-1.5 dark:bg-slate-800">
-                              <label className="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-light has-[:checked]:shadow-md has-[:checked]:text-[#101c22] dark:has-[:checked]:bg-slate-700 dark:has-[:checked]:text-slate-50 text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all">
-                                <span className="truncate">Login</span>
-                                {/* <input className="invisible w-0" name="auth-form" type="radio" value="Login"/> */}
-                              </label>
-                              <label
-                                className="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-light has-[:checked]:shadow-md has-[:checked]:text-[#101c22] dark:has-[:checked]:bg-slate-700 dark:has-[:checked]:text-slate-50 text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all"
-                                onClick={() => navigate("/signup")}
-                              >
-                                <span className="truncate">Sign Up</span>
-                                <input
-                                  className="invisible w-0"
-                                  name="auth-form"
-                                  type="radio"
-                                  value="Sign Up"
-                                />
-                              </label>
-                            </div>
-                          </div>
+                          <Slider />
                           {/* <!-- Form Content --> */}
                           <div className="flex flex-col gap-4 px-4">
                             {/* <!-- Email Address Field --> */}

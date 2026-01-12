@@ -6,7 +6,7 @@ const Email = () => {
     <div>
       <label className="flex flex-col min-w-40 flex-1">
         <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
-          Email Address hehe
+          Email Address
         </p>
         <div className="flex w-full flex-1 items-stretch rounded-lg">
           <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
