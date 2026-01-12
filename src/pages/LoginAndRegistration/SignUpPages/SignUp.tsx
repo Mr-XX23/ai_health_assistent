@@ -2,6 +2,8 @@ import React from "react";
 import App from "../../../App";
 import AppLayout from "../../../layout/AppLayout/AppLayout";
 import { useNavigate } from "react-router";
+import Password from "../../../components/inputField/Password";
+import Email from "../../../components/inputField/Email";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -41,8 +43,12 @@ const SignUp = () => {
                       <div className="flex px-4 py-3">
                         <div className="flex h-12 flex-1 items-center justify-center rounded-xl bg-slate-200/80 p-1.5 dark:bg-slate-800">
                           <label className="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-light has-[:checked]:shadow-md has-[:checked]:text-[#101c22] dark:has-[:checked]:bg-slate-700 dark:has-[:checked]:text-slate-50 text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all">
-                            <span className="truncate">Login</span>
-                            {/* <input className="invisible w-0" name="auth-form" type="radio" value="Login"/> */}
+                            <span
+                              className="truncate"
+                              onClick={() => navigate("/login")}
+                            >
+                              Login
+                            </span>
                           </label>
                           <div
                             onClick={() => navigate("/signup")}
@@ -88,41 +94,9 @@ const SignUp = () => {
                             />
                           </div>
                         </label>
-                        <label className="flex flex-col min-w-40 flex-1">
-                          <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
-                            Email Address
-                          </p>
-                          <div className="flex w-full flex-1 items-stretch rounded-lg">
-                            <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
-                              <span className="material-symbols-outlined text-[20px]">
-                                mail
-                              </span>
-                            </div>
-                            <input
-                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
-                              placeholder="Enter your email"
-                              type="email"
-                              // value=""
-                            />
-                          </div>
-                        </label>
+                        <Email />
                         <div className="flex flex-col min-w-40 flex-1">
-                          <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
-                            Password
-                          </p>
-                          <div className="flex w-full flex-1 items-stretch rounded-lg">
-                            <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
-                              <span className="material-symbols-outlined text-[20px]">
-                                lock
-                              </span>
-                            </div>
-                            <input
-                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
-                              placeholder="Enter your password"
-                              type="password"
-                              // value=""
-                            />
-                          </div>
+                          <Password />
                           <div className="mt-2 space-y-2 px-1">
                             <div className="flex items-center gap-2">
                               <div className="flex-1 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
