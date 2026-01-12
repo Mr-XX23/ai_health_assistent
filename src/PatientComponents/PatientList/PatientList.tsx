@@ -62,7 +62,10 @@ const PatientList = () => {
                   </span>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-                  <a className="text-primary hover:underline" href="#">
+                  <a
+                    className="hover:underline"
+                    onClick={() => navigate("/admin-patient-profile")}
+                  >
                     View Details
                   </a>
                 </td>
@@ -92,7 +95,7 @@ const PatientList = () => {
                   className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium"
                   onClick={() => navigate("/admin-patient-profile")}
                 >
-                  <a className="text-primary hover:underline">View Details</a>
+                  <a className="hover:underline">View Details</a>
                 </td>
               </tr>
               <tr>
@@ -117,7 +120,10 @@ const PatientList = () => {
                   </span>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-                  <a className="text-primary hover:underline" href="#">
+                  <a
+                    className="hover:underline"
+                    onClick={() => navigate("/admin-patient-profile")}
+                  >
                     View Details
                   </a>
                 </td>
@@ -144,7 +150,11 @@ const PatientList = () => {
                   </span>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-                  <a className="text-primary hover:underline" href="#">
+                  <a
+                    className="
+                     hover:underline"
+                    onClick={() => navigate("/admin-patient-profile")}
+                  >
                     View Details
                   </a>
                 </td>

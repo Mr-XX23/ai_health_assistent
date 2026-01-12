@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import AppLayout from "../../../layout/AppLayout/AppLayout";
 import { useNavigate } from "react-router";
+import Password from "../../../components/inputField/Password";
+import Email from "../../../components/inputField/Email";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -51,13 +53,11 @@ const LoginPage = () => {
                                 <span className="truncate">Login</span>
                                 {/* <input className="invisible w-0" name="auth-form" type="radio" value="Login"/> */}
                               </label>
-                              <label className="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-light has-[:checked]:shadow-md has-[:checked]:text-[#101c22] dark:has-[:checked]:bg-slate-700 dark:has-[:checked]:text-slate-50 text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all">
-                                <span
-                                  className="truncate"
-                                  onClick={() => navigate("/signup")}
-                                >
-                                  Sign Up
-                                </span>
+                              <label
+                                className="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-light has-[:checked]:shadow-md has-[:checked]:text-[#101c22] dark:has-[:checked]:bg-slate-700 dark:has-[:checked]:text-slate-50 text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all"
+                                onClick={() => navigate("/signup")}
+                              >
+                                <span className="truncate">Sign Up</span>
                                 <input
                                   className="invisible w-0"
                                   name="auth-form"
@@ -70,53 +70,11 @@ const LoginPage = () => {
                           {/* <!-- Form Content --> */}
                           <div className="flex flex-col gap-4 px-4">
                             {/* <!-- Email Address Field --> */}
-                            <label className="flex flex-col min-w-40 flex-1">
-                              <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
-                                Email Address
-                              </p>
-                              <div className="flex w-full flex-1 items-stretch rounded-lg">
-                                <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
-                                  <span className="material-symbols-outlined text-[20px]">
-                                    mail
-                                  </span>
-                                </div>
-                                <input
-                                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
-                                  placeholder="Enter your email"
-                                  type="email"
-                                  // value=""
-                                  onChange={(e) => setEmail(e.target.value)}
-                                />
-                              </div>
-                            </label>
+                            <Email />
 
                             {/* <!-- Password Field --> */}
 
-                            <label className="flex flex-col min-w-40 flex-1">
-                              <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
-                                Password
-                              </p>
-                              <div className="flex w-full flex-1 items-stretch rounded-lg">
-                                <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
-                                  <span className="material-symbols-outlined text-[20px]">
-                                    lock
-                                  </span>
-                                </div>
-                                <input
-                                  type={showPass ? "text" : "password"}
-                                  placeholder="Enter your password"
-                                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-none text-base font-normal leading-normal  "
-                                />
-                                <div
-                                  onClick={() => setShowPass(!showPass)}
-                                  className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center p-1.5 rounded-r-lg border-l-0 cursor-pointer"
-                                >
-                                  <span className="material-symbols-outlined text-[20px]">
-                                    {showPass ? "visibility" : "visibility_off"}
-                                  </span>
-                                </div>
-                              </div>
-                            </label>
+                            <Password />
 
                             {/* <!-- Forgot Password Link --> */}
                             <span onClick={() => navigate("/forgot-password")}>

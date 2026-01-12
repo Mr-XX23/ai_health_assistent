@@ -87,6 +87,13 @@ const AdminDashboard = () => {
                 <h2 className="text-[22px] font-bold leading-tight tracking-[-0.015em]">
                   Recent Active Patient
                 </h2>
+
+                <a
+                  className="text-sm font-medium text-primary hover:underline"
+                  onClick={() => navigate("/admin-patient-page")}
+                >
+                  View All Patients
+                </a>
               </div>
               <PatientList />
             </div>
