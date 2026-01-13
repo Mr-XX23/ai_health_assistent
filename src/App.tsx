@@ -18,6 +18,9 @@ import AdminDashboard from "./AdminComponents/pages/AdminDashboard/AdminDashboar
 import AdminPatientProfile from "./AdminComponents/pages/AdminPatientProfile/AdminPatientProfile";
 import PatientPage from "./AdminComponents/pages/PatientPage/PatientPage";
 import DocterDashboard from "./DocterComponents/pages/DocterDashboard/DocterDashboard";
+import DocterSidePatient from "./DocterComponents/pages/DocterSidePatient/DocterSidePatient";
+import DocterSideAppointment from "./DocterComponents/pages/DocterSideAppointment/DocterSideAppointment";
+import DocterMessage from "./DocterComponents/pages/DocterSideMessage/DocterMessage";
 
 const App = () => {
   return (
@@ -48,6 +51,12 @@ const App = () => {
           <Route path="/admin-patient-page" element={<PatientPage />} />
 
           <Route path="/docter-dashboard" element={<DocterDashboard />} />
+          <Route path="/docter-patient" element={<DocterSidePatient />} />
+          <Route
+            path="/docter-appointment"
+            element={<DocterSideAppointment />}
+          />
+          <Route path="/docter-message" element={<DocterMessage />} />
         </Routes>
       </BrowserRouter>
     </div>
