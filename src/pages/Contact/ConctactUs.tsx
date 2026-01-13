@@ -89,7 +89,7 @@ const ConctactUs = () => {
                         name="message"
                         placeholder="Your message here..."
                         required
-                        rows={4}
+                        rows={6}
                       />
                     </div>
                   </div>
