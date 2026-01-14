@@ -4,38 +4,72 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Appointment from "../../components/Appointments/Appointment";
 import VideoCall from "../../components/VideoCall";
 import DocterLayout from "../../../layout/DocterLayout/DocterLayout";
+import PatientList from "../../../PatientComponents/PatientList/PatientList";
+import { useNavigate } from "react-router";
 
 const DocterDashboard = () => {
+  const navigate = useNavigate();
   return (
     <DocterLayout>
       {/* <!-- Main Content --> */}
-      <main className="flex-1 grid grid-cols-12 overflow-hidden">
-        {/* <!-- Appointments Panel --> */}
-        <div className="col-span-4 h-screen overflow-y-auto border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 flex flex-col">
-          <div className="p-4 border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900/50 z-10">
-            <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
-              Appointments
-            </h2>
-            <label className="flex flex-col min-w-40 h-11 w-full">
-              <div className="flex w-full flex-1 items-stretch rounded-lg h-full">
-                <div className="text-[#4c809a] dark:text-slate-400 flex bg-[#e7eff3] dark:bg-slate-800 items-center justify-center pl-3 rounded-l-lg">
-                  <span className="material-symbols-outlined !text-2xl">
-                    search
-                  </span>
-                </div>
-                <input
-                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-[#0d171b] dark:text-slate-200 focus:outline-0 focus:ring-0 border-none bg-[#e7eff3] dark:bg-slate-800 h-full placeholder:text-[#4c809a] dark:placeholder:text-slate-500 px-2 text-sm font-normal leading-normal"
-                  placeholder="Search patient or date..."
-                  value=""
-                />
-              </div>
-            </label>
+      <main className="flex flex-1 flex-col">
+        <div className="flex-1 p-8">
+          {/* <!-- PageHeading --> */}
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <p className="text-4xl font-black leading-tight tracking-[-0.033em]">
+                Dashboard
+              </p>
+              <p className="text-base font-normal text-text-secondary-light dark:text-text-secondary-dark">
+                Welcome back, Dr. Reed! Here's a summary of today's activities.
+              </p>
+            </div>
+            <button className="flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-primary/90">
+              <span className="material-symbols-outlined">add</span>
+              <span>Add New Patient</span>
+            </button>
           </div>
-          <Calender />
-          <Appointment />
+          {/* <!-- Stats --> */}
+          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex flex-col gap-2 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6">
+              <p className="text-base font-medium">Active Patients</p>
+              <p className="tracking-light text-3xl font-bold">2,453</p>
+              <p className="text-sm font-medium text-success">
+                +1.2% this month
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6">
+              <p className="text-base font-medium">Upcoming Consultations</p>
+              <p className="tracking-light text-3xl font-bold">18</p>
+              <p className="text-sm font-medium text-warning">3 urgent</p>
+            </div>
+            <div className="flex flex-col gap-2 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6">
+              <p className="text-base font-medium">System Status</p>
+              <p className="tracking-light text-3xl font-bold text-success">
+                Operational
+              </p>
+              <p className="text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark">
+                All systems normal
+              </p>
+            </div>
+          </div>
+          {/* <!-- Patient Data Table Section --> */}
+          <div className="mt-10">
+            <div className="flex items-center justify-between">
+              <h2 className="text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                Recent Active Patient
+              </h2>
+
+              <a
+                className="text-sm font-medium hover:underline"
+                onClick={() => navigate("/docter-patient")}
+              >
+                View All Patients
+              </a>
+            </div>
+            <PatientList />
+          </div>
         </div>
-        {/* <!-- Video/Details Panel --> */}
-        <VideoCall />
       </main>
     </DocterLayout>
   );
