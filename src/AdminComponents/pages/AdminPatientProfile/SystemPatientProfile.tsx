@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import AdminLayout from "../../../layout/AdminLayout/AdminLayout";
 import { useNavigate } from "react-router";
-import PatientSidebar from "../../../PatientComponents/sidebar/PatientSidebar";
-import BloodPressure from "../../../PatientComponents/statistics/BloodPressure";
+import PatientSidebar from "../../../PatientComponents/components/sidebar/PatientSidebar";
+import BloodPressure from "../../../PatientComponents/components/statistics/BloodPressure";
 
-const AdminPatientProfile = () => {
+const SystemPatientProfile = () => {
   const navigate = useNavigate();
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  const [activeRange, setActiveRange] = useState<"6m" | "1y" | "all">("6m");
+
+  const baseBtn =
+    "text-xs font-semibold px-3 py-1 rounded-DEFAULT border transition-colors";
+
+  const inactiveBtn =
+    "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200";
+
+  const activeBtn = "bg-primary text-white border-primary";
+
   return (
     <div className="bg-background-light dark:bg-background-dark font-display text-charcoal dark:text-gray-200">
       <div className="relative flex min-h-screen w-full">
@@ -80,13 +91,30 @@ const AdminPatientProfile = () => {
                   Health Metrics
                 </h2>
                 <div className="flex items-center gap-2">
-                  <button className="text-xs font-semibold px-3 py-1 rounded-DEFAULT bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600">
+                  <button
+                    onClick={() => setActiveRange("6m")}
+                    className={`${baseBtn} ${
+                      activeRange === "6m" ? activeBtn : inactiveBtn
+                    }`}
+                  >
                     6 Months
                   </button>
-                  <button className="text-xs font-semibold px-3 py-1 rounded-DEFAULT bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600">
+
+                  <button
+                    onClick={() => setActiveRange("1y")}
+                    className={`${baseBtn} ${
+                      activeRange === "1y" ? activeBtn : inactiveBtn
+                    }`}
+                  >
                     1 Year
                   </button>
-                  <button className="text-xs font-semibold px-3 py-1 rounded-DEFAULT bg-primary text-white border border-primary">
+
+                  <button
+                    onClick={() => setActiveRange("all")}
+                    className={`${baseBtn} ${
+                      activeRange === "all" ? activeBtn : inactiveBtn
+                    }`}
+                  >
                     All Time
                   </button>
                 </div>
@@ -128,4 +156,4 @@ const AdminPatientProfile = () => {
   );
 };
 
-export default AdminPatientProfile;
+export default SystemPatientProfile;

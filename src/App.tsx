@@ -15,12 +15,12 @@ import Verification from "./pages/LoginAndRegistration/SignUpPages/Verification"
 import SetNewPassword from "./pages/LoginAndRegistration/ForgetPassword/SetNewPassword";
 import PasswordUpdated from "./pages/LoginAndRegistration/ForgetPassword/PasswordUpdated";
 import AdminDashboard from "./AdminComponents/pages/AdminDashboard/AdminDashboard";
-import AdminPatientProfile from "./AdminComponents/pages/AdminPatientProfile/AdminPatientProfile";
 import PatientPage from "./AdminComponents/pages/PatientPage/PatientPage";
 import DocterDashboard from "./DocterComponents/pages/DocterDashboard/DocterDashboard";
 import DocterSidePatient from "./DocterComponents/pages/DocterSidePatient/DocterSidePatient";
 import DocterSideAppointment from "./DocterComponents/pages/DocterSideAppointment/DocterSideAppointment";
 import DocterMessage from "./DocterComponents/pages/DocterSideMessage/DocterMessage";
+import SystemPatientProfile from "./AdminComponents/pages/AdminPatientProfile/SystemPatientProfile";
 
 const App = () => {
   return (
@@ -46,7 +46,7 @@ const App = () => {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route
             path="/admin-patient-profile"
-            element={<AdminPatientProfile />}
+            element={<SystemPatientProfile />}
           />
           <Route path="/admin-patient-page" element={<PatientPage />} />
 
