@@ -9,6 +9,7 @@ const AdminPatientProfile = () => {
   const handleGoBack = () => {
     navigate(-1);
   };
+  const buttonState = ({ isActive }: { isActive: boolean }) => ``;
   return (
     <div className="bg-background-light dark:bg-background-dark font-display text-charcoal dark:text-gray-200">
       <div className="relative flex min-h-screen w-full">
@@ -79,17 +80,7 @@ const AdminPatientProfile = () => {
                 <h2 className="text-charcoal dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">
                   Health Metrics
                 </h2>
-                <div className="flex items-center gap-2">
-                  <button className="text-xs font-semibold px-3 py-1 rounded-DEFAULT bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600">
-                    6 Months
-                  </button>
-                  <button className="text-xs font-semibold px-3 py-1 rounded-DEFAULT bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600">
-                    1 Year
-                  </button>
-                  <button className="text-xs font-semibold px-3 py-1 rounded-DEFAULT bg-primary text-white border border-primary">
-                    All Time
-                  </button>
-                </div>
+                <div className="flex items-center gap-2"></div>
               </div>
               <div className="px-6 py-4">
                 <div className="flex border-b border-gray-200 dark:border-gray-700">

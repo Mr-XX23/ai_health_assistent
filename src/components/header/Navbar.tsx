@@ -1,7 +1,30 @@
-import { useNavigate } from "react-router";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 
 const Navbar = () => {
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const location = useLocation();
+
+  location.pathname === "/";
+
+  const navItems = [
+    { label: "Home", path: "/" },
+    { label: "Solution", path: "/solutions" },
+    { label: "AI Symptoms Analyser", path: "/analysis" },
+    { label: "Features", path: "/features" },
+    { label: "Security", path: "/security" },
+    { label: "Pricing", path: "/pricing" },
+    { label: "Contact Us", path: "/contact" },
+  ];
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    setIsOpen(false);
+  };
+
   return (
     <>
       <header className="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800">
@@ -29,68 +52,97 @@ const Navbar = () => {
                 MediSecure
               </h2>
             </div>
-            <div className="hidden md:flex flex-1 justify-center items-center gap-9">
-              <button
-                className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                onClick={() => navigate("/")}
-              >
-                Home
-              </button>
-              <button
-                className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                onClick={() => navigate("/solutions")}
-              >
-                Solutions
-              </button>
-              <button
-                className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                onClick={() => navigate("/analysis")}
-              >
-                AI Symptoms Analyser
-              </button>
-              <button
-                className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                onClick={() => navigate("/features")}
-              >
-                Features
-              </button>
-              <button
-                className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                onClick={() => navigate("/security")}
-              >
-                Security
-              </button>
-              <button
-                className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                onClick={() => navigate("/pricing")}
-              >
-                Pricing
-              </button>
-              <button
-                className="text-sm font-medium hover:text-primary dark:hover:text-secondary"
-                onClick={() => navigate("/contact")}
-              >
-                Contact Us
-              </button>
-            </div>
+
+            <nav className="hidden md:flex flex-1 justify-center gap-9">
+              {navItems.map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => handleNavigate(item.path)}
+                  className={`
+                    text-sm font-mediumn relative
+                    transition-colors duration-200 
+                    ${
+                      location.pathname === item.path
+                        ? "text-black dark:text-white "
+                        : "text-secondary hover:text-primary dark:hover:text-primary dark:hover:text-secondary"
+                    }
+                    `}
+                >
+                  {item.label}
+                  <span
+                    className={`
+                          absolute -bottom-1 left-0 h-[2px] w-full bg-primary transition-transform duration-300
+      ${
+        location.pathname === item.path
+          ? "scale-x-100"
+          : "scale-x-0 group-hover:scale-x-100"
+      }
+                    `}
+                  />
+                </button>
+              ))}
+            </nav>
+
             <div className="hidden md:flex gap-2">
-              <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors">
-                <span className="truncate">Request a Demo</span>
+              <button className="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-opacity-90">
+                Request a Demo
               </button>
               <button
-                onClick={() => navigate("/login")}
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-slate-200 dark:bg-slate-700 text-sm font-bold leading-normal tracking-[0.015em] hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                onClick={() => handleNavigate("/login")}
+                className="h-10 px-4 rounded-lg bg-slate-200 dark:bg-slate-700 text-sm font-bold hover:bg-slate-300 dark:hover:bg-slate-600"
               >
-                <span className="truncate">Login</span>
+                Login
               </button>
             </div>
-            <div className="md:hidden">
-              <button className="p-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-700">
-                <span className="material-symbols-outlined">menu</span>
-              </button>
-            </div>
+
+            {/* for mobile */}
+
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden p-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-700"
+              aria-label="Toggle menu"
+            >
+              <span className="material-symbols-outlined">
+                {isOpen ? "close" : "menu"}
+              </span>
+            </button>
           </div>
         </div>
+
+        {isOpen && (
+          <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark">
+            <div className="px-4 py-4 space-y-4">
+              {navItems.map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => handleNavigate(item.path)}
+                  className={`
+                    block w-full text-left text-sm font-medium
+                    ${
+                      location.pathname === item.path
+                        ? "text-primary font-semibold"
+                        : "hover:text-primary"
+                    }
+                    `}
+                >
+                  {item.label}
+                </button>
+              ))}
+
+              <div className="pt-4 flex flex-col gap-2">
+                <button className="h-10 rounded-lg bg-primary text-white text-sm font-bold">
+                  Request a Demo
+                </button>
+                <button
+                  onClick={() => handleNavigate("/login")}
+                  className="h-10 rounded-lg bg-slate-200 dark:bg-slate-700 text-sm font-bold"
+                >
+                  Login
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
     </>
   );
