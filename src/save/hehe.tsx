@@ -8,6 +8,8 @@ const Navbar = () => {
 
   const location = useLocation();
 
+  location.pathname === "/";
+
   const navItems = [
     { label: "Home", path: "/" },
     { label: "Solution", path: "/solutions" },

@@ -21,11 +21,13 @@ import DocterDashboard from "./DocterComponents/pages/DocterDashboard/DocterDash
 import DocterSidePatient from "./DocterComponents/pages/DocterSidePatient/DocterSidePatient";
 import DocterSideAppointment from "./DocterComponents/pages/DocterSideAppointment/DocterSideAppointment";
 import DocterMessage from "./DocterComponents/pages/DocterSideMessage/DocterMessage";
+import ScrollToTop from "./functions/ScrollToTop/ScrollToTop";
 
 const App = () => {
   return (
     <div>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/solutions" element={<SoluitonsPage />} />

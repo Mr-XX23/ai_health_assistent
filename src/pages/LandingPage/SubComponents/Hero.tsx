@@ -14,8 +14,8 @@ const Hero = () => {
             transform your practice and deliver a new standard of care.
           </p>
           <div className="mt-10 flex justify-center">
-            <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-accent text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors">
-              <span className="truncate">Request a Demo</span>
+            <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-accent text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-60 transition-colors">
+              <span className="request-button">Request a Demo</span>
             </button>
           </div>
         </div>
