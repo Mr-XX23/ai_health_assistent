@@ -1,6 +1,6 @@
-import { BrowserRouter, Route, Router, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 
-// local imports
+// local import
 import SoluitonsPage from "./pages/Solutions/SoluitonsPage";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import System_Analysis from "./pages/System_Analysis/System_Analysis";
@@ -15,14 +15,14 @@ import Verification from "./pages/LoginAndRegistration/SignUpPages/Verification"
 import SetNewPassword from "./pages/LoginAndRegistration/ForgetPassword/SetNewPassword";
 import PasswordUpdated from "./pages/LoginAndRegistration/ForgetPassword/PasswordUpdated";
 import AdminDashboard from "./AdminComponents/pages/AdminDashboard/AdminDashboard";
-import AdminPatientProfile from "./AdminComponents/pages/AdminPatientProfile/AdminPatientProfile";
 import PatientPage from "./AdminComponents/pages/PatientPage/PatientPage";
 import DocterDashboard from "./DocterComponents/pages/DocterDashboard/DocterDashboard";
 import DocterSidePatient from "./DocterComponents/pages/DocterSidePatient/DocterSidePatient";
 import DocterSideAppointment from "./DocterComponents/pages/DocterSideAppointment/DocterSideAppointment";
 import DocterMessage from "./DocterComponents/pages/DocterSideMessage/DocterMessage";
-import ScrollToTop from "./functions/ScrollToTop/ScrollToTop";
 
+import ScrollToTop from "./functions/ScrollToTop/ScrollToTop";
+import SystemPatientProfile from "./AdminComponents/pages/AdminPatientProfile/SystemPatientProfile";
 const App = () => {
   return (
     <div>
@@ -48,7 +48,7 @@ const App = () => {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route
             path="/admin-patient-profile"
-            element={<AdminPatientProfile />}
+            element={<SystemPatientProfile />}
           />
           <Route path="/admin-patient-page" element={<PatientPage />} />
 
