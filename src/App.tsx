@@ -1,6 +1,6 @@
-import { BrowserRouter, Route, Router, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 
-// local imports
+// local import
 import SoluitonsPage from "./pages/Solutions/SoluitonsPage";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import System_Analysis from "./pages/System_Analysis/System_Analysis";
@@ -20,12 +20,14 @@ import DocterDashboard from "./DocterComponents/pages/DocterDashboard/DocterDash
 import DocterSidePatient from "./DocterComponents/pages/DocterSidePatient/DocterSidePatient";
 import DocterSideAppointment from "./DocterComponents/pages/DocterSideAppointment/DocterSideAppointment";
 import DocterMessage from "./DocterComponents/pages/DocterSideMessage/DocterMessage";
-import SystemPatientProfile from "./AdminComponents/pages/AdminPatientProfile/SystemPatientProfile";
 
+import ScrollToTop from "./functions/ScrollToTop/ScrollToTop";
+import SystemPatientProfile from "./AdminComponents/pages/AdminPatientProfile/SystemPatientProfile";
 const App = () => {
   return (
     <div>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/solutions" element={<SoluitonsPage />} />
@@ -34,8 +36,8 @@ const App = () => {
           <Route path="/security" element={<SecurityPage />} />
           <Route path="/pricing" element={<Pricingpage />} />
           <Route path="/contact" element={<ConctactUs />} />
-          <Route path="/login" element={<LoginPage />} />
 
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgetPassword />} />
           <Route path="/set-password" element={<SetNewPassword />} />
           <Route path="/update-password" element={<PasswordUpdated />} />

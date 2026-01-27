@@ -2,7 +2,7 @@ import React from "react";
 import DocterLayout from "../../../layout/DocterLayout/DocterLayout";
 import Calender from "../../../components/calender/Calender";
 import Appointment from "../../components/Appointments/Appointment";
-import VideoCall from "../../components/VideoCall";
+import VideoCall from "../../components/VideoCall/VideoCall";
 
 const DocterSideAppointment = () => {
   return (

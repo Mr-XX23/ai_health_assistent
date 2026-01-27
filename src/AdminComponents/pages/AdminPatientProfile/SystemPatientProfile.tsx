@@ -1,15 +1,8 @@
 import React, { useState } from "react";
-import AdminLayout from "../../../layout/AdminLayout/AdminLayout";
-import { useNavigate } from "react-router";
 import PatientSidebar from "../../../PatientComponents/components/sidebar/PatientSidebar";
 import BloodPressure from "../../../PatientComponents/components/statistics/BloodPressure";
 
 const SystemPatientProfile = () => {
-  const navigate = useNavigate();
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
   const [activeRange, setActiveRange] = useState<"6m" | "1y" | "all">("6m");
 
   const baseBtn =
@@ -22,7 +15,7 @@ const SystemPatientProfile = () => {
 
   return (
     <div className="bg-background-light dark:bg-background-dark font-display text-charcoal dark:text-gray-200">
-      <div className="relative flex min-h-screen w-full">
+      <div className="relative flex min-h-w-full">
         {/* <!-- SideNavBar --> */}
         <PatientSidebar />
         {/* <!-- Main Content --> */}
@@ -90,6 +83,8 @@ const SystemPatientProfile = () => {
                 <h2 className="text-charcoal dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">
                   Health Metrics
                 </h2>
+                <div className="flex items-center gap-2"></div>
+
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setActiveRange("6m")}

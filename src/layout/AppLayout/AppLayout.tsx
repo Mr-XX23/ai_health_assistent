@@ -6,9 +6,9 @@ interface AppLayoutChildren {
 }
 const AppLayout = ({ children }: AppLayoutChildren) => {
   return (
-    <div className="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
-      <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
-        <Navbar />
+    <div className="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark flex  w-full flex-col group/design-root">
+      <Navbar />
+      <div className="relative min-h-screen overflow-x-hidden">
         {children}
         <Footer />
       </div>

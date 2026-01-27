@@ -2,7 +2,7 @@ import React from "react";
 import Calender from "../../../components/calender/Calender";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Appointment from "../../components/Appointments/Appointment";
-import VideoCall from "../../components/VideoCall";
+import VideoCall from "../../components/VideoCall/VideoCall";
 import DocterLayout from "../../../layout/DocterLayout/DocterLayout";
 import PatientList from "../../../PatientComponents/PatientList/PatientList";
 import { useNavigate } from "react-router";

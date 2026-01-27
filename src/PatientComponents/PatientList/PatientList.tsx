@@ -44,7 +44,7 @@ const PatientList = () => {
                 <td className="whitespace-nowrap px-6 py-4 flex justify-center">
                   <div className="flex items-center gap-3">
                     <div
-                      className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuBp9gG0zEXwj8Jfq4FCNrX5AOXmacXNtWl1RxPtYTFzroEO5VvsBBoRQ-qSlmwEA-zIHrhvaL_rS1UaEQBxNLjoVklzWNvHGOxvDcvpaa8BBcvLKvLmh18_xslO_4kLWK3PbjrR2dPuPNT-CZTh9IuMJNqd_tI2VWm8PIkouJdWHvu8Ah3rc97U3E-5w6aWC7SVksHFElDJW9jtkXFD5r3Pa5OSha9ZI29pBpUKT39xQQoEmVOXenEU6skOXYx95ebmwPElhRb39IOj)]"
+                      className="bg-left bg-no-repeat aspect-square bg-cover rounded-full size-8 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuBp9gG0zEXwj8Jfq4FCNrX5AOXmacXNtWl1RxPtYTFzroEO5VvsBBoRQ-qSlmwEA-zIHrhvaL_rS1UaEQBxNLjoVklzWNvHGOxvDcvpaa8BBcvLKvLmh18_xslO_4kLWK3PbjrR2dPuPNT-CZTh9IuMJNqd_tI2VWm8PIkouJdWHvu8Ah3rc97U3E-5w6aWC7SVksHFElDJW9jtkXFD5r3Pa5OSha9ZI29pBpUKT39xQQoEmVOXenEU6skOXYx95ebmwPElhRb39IOj)]"
                       data-alt="Patient avatar"
                     ></div>
                     <span className="font-medium">Liam Johnson</span>
