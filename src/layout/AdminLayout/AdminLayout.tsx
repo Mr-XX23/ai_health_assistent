@@ -1,5 +1,5 @@
 import React from "react";
-import Siderbar from "../../AdminComponents/Sidebar/Sidebar";
+import Siderbar from "../../AdminComponents/components/Sidebar/Sidebar";
 
 interface LayoutChildren {
   children: React.ReactNode;

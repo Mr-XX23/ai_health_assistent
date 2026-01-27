@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PatientSidebar from "../../../PatientComponents/components/sidebar/PatientSidebar";
 import BloodPressure from "../../../PatientComponents/components/statistics/BloodPressure";
 

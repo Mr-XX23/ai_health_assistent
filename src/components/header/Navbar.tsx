@@ -51,7 +51,7 @@ const Navbar = () => {
               </h2>
             </div>
 
-            <nav className="hidden md:flex flex-1 justify-center gap-9">
+            <nav className="hidden xl:flex flex-1 justify-center gap-9">
               {navItems.map((item) => (
                 <button
                   key={item.label}
@@ -81,7 +81,7 @@ const Navbar = () => {
               ))}
             </nav>
 
-            <div className="hidden md:flex gap-2">
+            <div className="hidden xl:flex gap-2">
               <button className="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-opacity-90">
                 Request a Demo
               </button>
@@ -97,7 +97,7 @@ const Navbar = () => {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-700"
+              className="xl:hidden p-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-700"
               aria-label="Toggle menu"
             >
               <span className="material-symbols-outlined">
@@ -108,7 +108,7 @@ const Navbar = () => {
         </div>
 
         {isOpen && (
-          <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark">
+          <div className="xl:hidden border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark">
             <div className="px-4 py-4 space-y-4">
               {navItems.map((item) => (
                 <button

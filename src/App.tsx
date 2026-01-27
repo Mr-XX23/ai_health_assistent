@@ -20,7 +20,6 @@ import DocterDashboard from "./DocterComponents/pages/DocterDashboard/DocterDash
 import DocterSidePatient from "./DocterComponents/pages/DocterSidePatient/DocterSidePatient";
 import DocterSideAppointment from "./DocterComponents/pages/DocterSideAppointment/DocterSideAppointment";
 import DocterMessage from "./DocterComponents/pages/DocterSideMessage/DocterMessage";
-
 import ScrollToTop from "./functions/ScrollToTop/ScrollToTop";
 import SystemPatientProfile from "./AdminComponents/pages/AdminPatientProfile/SystemPatientProfile";
 const App = () => {
@@ -32,7 +31,6 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/solutions" element={<SoluitonsPage />} />
           <Route path="/analysis" element={<System_Analysis />} />
-          <Route path="/features" element={<FeaturesPage />} />
           <Route path="/security" element={<SecurityPage />} />
           <Route path="/pricing" element={<Pricingpage />} />
           <Route path="/contact" element={<ConctactUs />} />
