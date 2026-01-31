@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink, useNavigate } from "react-router";
 
 const Sidebar = () => {
@@ -7,7 +6,7 @@ const Sidebar = () => {
     ` flex items-center gap-3 px-3 py-2 rounded-lg transition-colours
   ${
     isActive
-      ? " bg-blue-100  dark:bg-blue-900/30 dark:text-bluee-100"
+      ? " bg-blue-100  dark:bg-blue-900/30 dark:text-blue-100"
       : "dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
   }`;
   return (
@@ -38,7 +37,7 @@ const Sidebar = () => {
               </NavLink>
 
               <NavLink to="/docter-appointment" className={navItemClass}>
-                <span className="material-symbols-outlined !text-xl">
+                <span className="material-symbols-outlined text-xl!">
                   calendar_month
                 </span>
                 <p className="text-sm font-medium leading-normal">
@@ -47,14 +46,14 @@ const Sidebar = () => {
               </NavLink>
 
               <NavLink to="/docter-patient" className={navItemClass}>
-                <span className="material-symbols-outlined !text-xl">
+                <span className="material-symbols-outlined text-xl!">
                   group
                 </span>
                 <p className="text-sm font-medium leading-normal">Patients</p>
               </NavLink>
 
               <NavLink to="/docter-message" className={navItemClass}>
-                <span className="material-symbols-outlined !text-xl">mail</span>
+                <span className="material-symbols-outlined text-xl!">mail</span>
                 <p className="text-sm font-medium leading-normal">Messages</p>
               </NavLink>
             </nav>
@@ -64,7 +63,7 @@ const Sidebar = () => {
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-[#0d171b] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
               href="#"
             >
-              <span className="material-symbols-outlined !text-xl">
+              <span className="material-symbols-outlined text-xl!">
                 settings
               </span>
               <p className="text-sm font-medium leading-normal">Settings</p>
@@ -73,7 +72,7 @@ const Sidebar = () => {
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-[#0d171b] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
               href="#"
             >
-              <span className="material-symbols-outlined !text-xl">
+              <span className="material-symbols-outlined text-xl!">
                 help_outline
               </span>
               <p className="text-sm font-medium leading-normal">Help</p>
