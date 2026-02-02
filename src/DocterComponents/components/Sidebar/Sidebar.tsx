@@ -2,6 +2,20 @@ import { NavLink, useNavigate } from "react-router";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+
+  const navItems = [
+    { name: "Dashboard", icon: "dashboard", path: "/docter-dashboard" },
+    {
+      name: "Appointments",
+      icon: "calendar_month",
+      path: "/docter-appointment",
+    },
+    { name: "Patient", icon: "group", path: "/docter-patient" },
+    { name: "Messages", icon: "mail", path: "/" },
+    { name: "Reports", icon: "bar_chart", path: "/" },
+    { name: "Consultation History", icon: "group", path: "/" },
+  ];
+
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
     ` flex items-center gap-3 px-3 py-2 rounded-lg transition-colours
   ${
