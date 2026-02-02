@@ -3,12 +3,13 @@ import { NavLink, useNavigate } from "react-router";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
     ` flex items-center gap-3 px-3 py-2 rounded-lg transition-colours
   ${
     isActive
-      ? " bg-blue-100  dark:bg-blue-900/30 dark:text-bluee-100"
-      : "dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
+      ? "text-black dark:text-white bg-blue-100  dark:bg-blue-900/30 "
+      : "text-secondary dark:text-secondary dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
   }`;
   return (
     <div>
