@@ -6,7 +6,6 @@ import Logo from "../Logo/Logo";
 const navItems = [
   { label: "Dashboard", path: "/admin", icon: "dashboard" },
   { label: "Patients", path: "/admin-patient-page", icon: "history" },
-  { label: "Consultation History", path: "/consultations", icon: "group" },
   { label: "Reports", path: "/reports", icon: "bar_chart" },
   { label: "Settings", path: "/settings", icon: "settings" },
 ];
@@ -40,7 +39,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden xl:flex h-screen w-64 flex-col justify-between border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-4 sticky top-0">
+      <aside className="hidden xl:flex h-screen w-64 min-w-[16rem] max-w-[16rem] flex-col justify-between border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-4 sticky top-0">
         <div className="flex flex-col gap-8">
           <Logo />
           <SidebarNav />

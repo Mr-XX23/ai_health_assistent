@@ -4,13 +4,26 @@ import { NavLink, useNavigate } from "react-router";
 const Sidebar = () => {
   const navigate = useNavigate();
 
+  const navItems = [
+    { name: "Dashboard", icon: "dashboard", path: "/docter-dashboard" },
+    {
+      name: "Appointments",
+      icon: "calendar_month",
+      path: "/docter-appointment",
+    },
+    { name: "Patient", icon: "group", path: "/docter-patient" },
+    { name: "Messages", icon: "mail", path: "/" },
+    { name: "Reports", icon: "bar_chart", path: "/" },
+    { name: "Consultation History", icon: "group", path: "/" },
+  ];
+
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
-    ` flex items-center gap-3 px-3 py-2 rounded-lg transition-colours
-  ${
-    isActive
-      ? "text-black dark:text-white bg-blue-100  dark:bg-blue-900/30 "
-      : "text-secondary dark:text-secondary dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
-  }`;
+    `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors
+     ${
+       isActive
+         ? "bg-blue-100 text-black dark:bg-blue-900/30 dark:text-white"
+         : "text-slate-600 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
+     }`;
   return (
     <div>
       <div className="flex h-full w-[260px] flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50">
@@ -31,33 +44,18 @@ const Sidebar = () => {
               </div>
             </div>
             <nav className="flex flex-col gap-2 mt-4">
-              <NavLink to="/docter-dashboard" className={navItemClass}>
-                <span className="material-symbols-outlined text-xl">
-                  dashboard
-                </span>
-                <p className="text-sm font-medium"> Dashboard</p>
-              </NavLink>
-
-              <NavLink to="/docter-appointment" className={navItemClass}>
-                <span className="material-symbols-outlined !text-xl">
-                  calendar_month
-                </span>
-                <p className="text-sm font-medium leading-normal">
-                  Appointments
-                </p>
-              </NavLink>
-
-              <NavLink to="/docter-patient" className={navItemClass}>
-                <span className="material-symbols-outlined !text-xl">
-                  group
-                </span>
-                <p className="text-sm font-medium leading-normal">Patients</p>
-              </NavLink>
-
-              <NavLink to="/docter-message" className={navItemClass}>
-                <span className="material-symbols-outlined !text-xl">mail</span>
-                <p className="text-sm font-medium leading-normal">Messages</p>
-              </NavLink>
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.name}
+                  to={item.path}
+                  className={navItemClass}
+                >
+                  <span className="material-symbols-outlined text-xl">
+                    {item.icon}
+                  </span>
+                  <p className="text-sm font-medium">{item.name}</p>
+                </NavLink>
+              ))}
             </nav>
           </div>
           <div className="flex flex-col gap-1">
