@@ -51,7 +51,7 @@ const Navbar = () => {
               </h2>
             </div>
 
-            <nav className="hidden xl:flex flex-1 justify-center gap-9 ">
+            <nav className="hidden xl:flex flex-1 justify-center gap-9">
               {navItems.map((item) => (
                 <button
                   key={item.label}
@@ -59,9 +59,10 @@ const Navbar = () => {
                   className={`
                     text-sm font-mediumn relative
                     transition-colors duration-200 
-                    ${location.pathname === item.path
-                      ? "text-black dark:text-white  "
-                      : "text-primary  dark:hover:text-white cursor-pointer "
+                    ${
+                      location.pathname === item.path
+                        ? "text-black dark:text-white  "
+                        : "text-primary  dark:hover:text-white cursor-pointer "
                     }
                     `}
                 >
@@ -69,17 +70,18 @@ const Navbar = () => {
                   <span
                     className={`
                           absolute -bottom-1 left-0 h-0.5w-full bg-primary transition-transform duration-300
-      ${location.pathname === item.path
-                        ? "scale-x-100"
-                        : "scale-x-0 group-hover:scale-x-100"
-                      }
+      ${
+        location.pathname === item.path
+          ? "scale-x-100"
+          : "scale-x-0 group-hover:scale-x-100"
+      }
                     `}
                   />
                 </button>
               ))}
             </nav>
 
-            <div className="hidden xl:flex gap-2 ">
+            <div className="hidden xl:flex gap-2">
               <button className="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-opacity-90">
                 Request a Demo
               </button>
@@ -114,9 +116,10 @@ const Navbar = () => {
                   onClick={() => handleNavigate(item.path)}
                   className={`
                     block w-full text-left text-sm font-medium
-                    ${location.pathname === item.path
-                      ? "text-primary font-semibold"
-                      : "hover:text-primary"
+                    ${
+                      location.pathname === item.path
+                        ? "text-primary font-semibold"
+                        : "hover:text-primary"
                     }
                     `}
                 >

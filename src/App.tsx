@@ -20,8 +20,14 @@ import DocterSidePatient from "./DocterComponents/pages/DocterSidePatient/Docter
 import DocterSideAppointment from "./DocterComponents/pages/DocterSideAppointment/DocterSideAppointment";
 import DocterMessage from "./DocterComponents/pages/DocterSideMessage/DocterMessage";
 import ScrollToTop from "./functions/ScrollToTop/ScrollToTop";
+<<<<<<< HEAD
+import DocterConsultation from "./DocterComponents/pages/DocterConsultation/DocterConsultation";
+import DocterReport from "./DocterComponents/pages/DocterReport/DocterReport";
+
+=======
 import SystemPatientProfile from "./AdminComponents/pages/AdminPatientProfile/SystemPatientProfile";
 import FeaturesPage from "./pages/Features/FeaturesPage";
+>>>>>>> 2314bf943c23f8f89aaf9b92c14cf14eefc3a26e
 const App = () => {
   return (
     <div>
@@ -58,6 +64,10 @@ const App = () => {
             element={<DocterSideAppointment />}
           />
           <Route path="/docter-message" element={<DocterMessage />} />
+
+          <Route path="/docter-consultation" element={<DocterConsultation />} />
+
+          <Route path="/docter-report" element={<DocterReport />} />
         </Routes>
       </BrowserRouter>
     </div>
