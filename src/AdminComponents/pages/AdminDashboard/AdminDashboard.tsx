@@ -6,6 +6,7 @@ import TopBar from "../../components/TopBar/TopBar";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+
   return (
     <div>
       <AdminLayout>
@@ -20,8 +21,7 @@ const AdminDashboard = () => {
                   Dashboard
                 </p>
                 <p className="text-base font-normal text-text-secondary-light dark:text-text-secondary-dark">
-                  Welcome back, Dr. Reed! Here's a summary of today's
-                  activities.
+                  Welcome back, Admin! Here's a summary of today's activities.
                 </p>
               </div>
               <button className="flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-primary/90">

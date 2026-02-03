@@ -25,11 +25,11 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800">
+      <header className="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4">
-              <div className="size-6 text-primary">
+          <div className="flex items-center justify-between h-16 ">
+            <div className="flex items-center gap-4 ">
+              <div className="size-6 text-primary ">
                 <svg
                   fill="none"
                   viewBox="0 0 48 48"
@@ -61,15 +61,15 @@ const Navbar = () => {
                     transition-colors duration-200 
                     ${
                       location.pathname === item.path
-                        ? "text-black dark:text-white "
-                        : "text-secondary hover:text-primary dark:hover:text-primary dark:hover:text-secondary"
+                        ? "text-black dark:text-white  "
+                        : "text-primary  dark:hover:text-white cursor-pointer "
                     }
                     `}
                 >
                   {item.label}
                   <span
                     className={`
-                          absolute -bottom-1 left-0 h-[2px] w-full bg-primary transition-transform duration-300
+                          absolute -bottom-1 left-0 h-0.5w-full bg-primary transition-transform duration-300
       ${
         location.pathname === item.path
           ? "scale-x-100"

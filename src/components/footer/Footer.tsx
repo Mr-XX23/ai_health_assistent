@@ -1,13 +1,33 @@
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const navigate = useNavigate();
+
+  const solutionsItems = [
+    { name: "AI Diagnostics", path: "/solutions" },
+    { name: "Telemedicine", path: "" },
+    { name: "Medication Management", path: "" },
+    { name: "EHR Integration", path: "" },
+  ];
+
+  const commpanyItems = [
+    { name: "About Us", path: "" },
+    { name: "Careers", path: "" },
+    { name: "Press", path: "" },
+    { name: "Contact", path: "" },
+  ];
+
+  const legalItems = [
+    { name: "Privacy Policy", path: "" },
+    { name: "Terms of Service", path: "" },
+  ];
+
   return (
     <div>
       <footer className="bg-gray-800 dark:bg-black text-gray-300">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
-            <div className="col-span-2 lg:col-span-1">
+          <div className="flex flex-wrap gap-y-10 gap-x-8">
+            <div className="w-full sm:w-1/2 lg:w-[22%]">
               <div className="flex items-center gap-2">
                 <div className="size-6 text-white">
                   <svg
@@ -29,105 +49,51 @@ const Footer = () => {
                 Innovating the future of healthcare with intelligent solutions.
               </p>
             </div>
-            <div>
+            <div className="w-1/2 sm:w-1/4 lg:w-[18%]">
               <h3 className="text-sm font-semibold text-white tracking-wider uppercase">
                 Solutions
               </h3>
-              <ul className="mt-4 space-y-2">
-                <li>
-                  <a
+              <ul className="mt-4 flex flex-col gap-2">
+                {solutionsItems.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
                     className="text-sm text-gray-400 hover:text-white"
-                    onClick={() => navigate("/solutions")}
                   >
-                    AI Diagnostics
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="text-sm text-gray-400 hover:text-white"
-                    href="#telemedicine"
-                  >
-                    Telemedicine
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="text-sm text-gray-400 hover:text-white"
-                    href="#medication"
-                  >
-                    Medication Management
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="text-sm text-gray-400 hover:text-white"
-                    href="#"
-                  >
-                    EHR Integration
-                  </a>
-                </li>
+                    {item.name}
+                  </NavLink>
+                ))}
               </ul>
             </div>
-            <div>
+            <div className="w-1/2 sm:w-1/4 lg:w-[18%]">
               <h3 className="text-sm font-semibold text-white tracking-wider uppercase">
                 Company
               </h3>
-              <ul className="mt-4 space-y-2">
-                <li>
-                  <a
+              <ul className="mt-4 flex flex-col gap-2">
+                {commpanyItems.map((item) => (
+                  <NavLink
+                    to={item.path}
                     className="text-sm text-gray-400 hover:text-white"
-                    href="#"
                   >
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="text-sm text-gray-400 hover:text-white"
-                    href="#"
-                  >
-                    Careers
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="text-sm text-gray-400 hover:text-white"
-                    href="#"
-                  >
-                    Press
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="text-sm text-gray-400 hover:text-white"
-                    href="#"
-                  >
-                    Contact
-                  </a>
-                </li>
+                    {item.name}
+                  </NavLink>
+                ))}
               </ul>
             </div>
-            <div>
+            <div className="w-1/2 sm:w-1/4 lg:w-[18%]">
               <h3 className="text-sm font-semibold text-white tracking-wider uppercase">
                 Legal
               </h3>
-              <ul className="mt-4 space-y-2">
-                <li>
-                  <a
+              <ul className="mt-4 flex flex-col gap-2">
+                {legalItems.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
                     className="text-sm text-gray-400 hover:text-white"
-                    href="#"
                   >
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="text-sm text-gray-400 hover:text-white"
-                    href="#"
-                  >
-                    Terms of Service
-                  </a>
-                </li>
+                    {item.name}
+                  </NavLink>
+                ))}
               </ul>
             </div>
           </div>
