@@ -3,6 +3,23 @@ import { NavLink, useNavigate } from "react-router";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+
+  const navItems = [
+    { lable: "Dashboard", path: "/docter-dashboard", icon: "dashboard" },
+    {
+      lable: "Appointments",
+      path: "/docter-appointment",
+      icon: "calendar_month",
+    },
+    { lable: "Patients", path: "/docter-patient", icon: "history" },
+    {
+      lable: "Consultation History",
+      path: "/docter-consultation",
+      icon: "group",
+    },
+    { lable: "Reports", path: "/docter-report", icon: "bar_chart" },
+  ];
+
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
     ` flex items-center gap-3 px-3 py-2 rounded-lg transition-colours
   ${
@@ -30,33 +47,14 @@ const Sidebar = () => {
               </div>
             </div>
             <nav className="flex flex-col gap-2 mt-4">
-              <NavLink to="/docter-dashboard" className={navItemClass}>
-                <span className="material-symbols-outlined text-xl">
-                  dashboard
-                </span>
-                <p className="text-sm font-medium"> Dashboard</p>
-              </NavLink>
-
-              <NavLink to="/docter-appointment" className={navItemClass}>
-                <span className="material-symbols-outlined !text-xl">
-                  calendar_month
-                </span>
-                <p className="text-sm font-medium leading-normal">
-                  Appointments
-                </p>
-              </NavLink>
-
-              <NavLink to="/docter-patient" className={navItemClass}>
-                <span className="material-symbols-outlined !text-xl">
-                  group
-                </span>
-                <p className="text-sm font-medium leading-normal">Patients</p>
-              </NavLink>
-
-              <NavLink to="/docter-message" className={navItemClass}>
-                <span className="material-symbols-outlined !text-xl">mail</span>
-                <p className="text-sm font-medium leading-normal">Messages</p>
-              </NavLink>
+              {navItems.map((item) => (
+                <NavLink to={item.path} className={navItemClass}>
+                  <span className="material-symbols-outlined text-xl">
+                    {item.icon}
+                  </span>
+                  <p className="text-sm font-medium"> {item.lable}</p>
+                </NavLink>
+              ))}
             </nav>
           </div>
           <div className="flex flex-col gap-1">

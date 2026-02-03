@@ -11,7 +11,7 @@ const Siderbar = () => {
   const navItems = [
     { lable: "Dashboard", path: "/admin", icon: "dashboard" },
     { lable: "Patients", path: "/admin-patient-page", icon: "history" },
-    { lable: "Consultation History", path: "", icon: "group" },
+    { lable: "Docters", path: "", icon: "group" },
     { lable: "Reports", path: "", icon: "bar_chart" },
     { lable: "Settings", path: "", icon: "settings" },
   ];
@@ -19,7 +19,7 @@ const Siderbar = () => {
   const profile = [
     {
       photo: "Profile picture of Dr. Evelyn Reed",
-      username: "Dr. Evelyn Reed",
+      username: "Saliv Maharjan",
       post: "Administrator",
     },
   ];
@@ -63,9 +63,9 @@ const Siderbar = () => {
         {profile.map((item) => (
           <div className="flex flex-col">
             <div className="mb-4 flex gap-3 p-3">
-              <div>
+              <div className="flex flex-row gap-3">
                 <div
-                  className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuDDi-WFrolJwGt76zO7hwmkC_m_2ynYZO9tAXF3b4CI27WNZ75mLfWkwBlPTwn39tri6IhNSHkUohZdKoyMXq-B7El_s_KSucyYeD74jb9ECLUipo6kUfUb6F-QJy4uS4O_-gXciqSMfAibajoyyr9TzP-9UWRajm6IndxwLlZcGDpcPWxRIreG9jF9SN4mvxiP8kGMME1--7OSu0GBGflw2GcSiM6RUKBaFAcoEyaykplOiW_T98N3BXF2g6bpRujKf0yRtkiKF4B5)]"
+                  className=" bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuDDi-WFrolJwGt76zO7hwmkC_m_2ynYZO9tAXF3b4CI27WNZ75mLfWkwBlPTwn39tri6IhNSHkUohZdKoyMXq-B7El_s_KSucyYeD74jb9ECLUipo6kUfUb6F-QJy4uS4O_-gXciqSMfAibajoyyr9TzP-9UWRajm6IndxwLlZcGDpcPWxRIreG9jF9SN4mvxiP8kGMME1--7OSu0GBGflw2GcSiM6RUKBaFAcoEyaykplOiW_T98N3BXF2g6bpRujKf0yRtkiKF4B5)]"
                   data-alt={item.photo}
                 ></div>
                 <div className="flex flex-col">
