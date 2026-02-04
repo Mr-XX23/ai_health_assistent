@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -51,35 +51,35 @@ const Navbar = () => {
               </h2>
             </div>
 
-            <nav className="hidden xl:flex flex-1 justify-center gap-9">
+            <div className="hidden xl:flex flex-1 justify-center gap-9">
               {navItems.map((item) => (
-                <button
+                <NavLink
                   key={item.label}
-                  onClick={() => handleNavigate(item.path)}
-                  className={`
-                    text-sm font-mediumn relative
+                  to={item.path}
+                  className={({ isActive }) => `
+                    text-sm font-mediumn relative group
                     transition-colors duration-200 
                     ${
-                      location.pathname === item.path
+                      isActive
                         ? "text-black dark:text-white  "
-                        : "text-primary  dark:hover:text-white cursor-pointer "
+                        : "text-primary dark:text-secondary dark:hover:text-white cursor-pointer "
                     }
                     `}
                 >
-                  {item.label}
-                  <span
-                    className={`
-                          absolute -bottom-1 left-0 h-0.5w-full bg-primary transition-transform duration-300
-      ${
-        location.pathname === item.path
-          ? "scale-x-100"
-          : "scale-x-0 group-hover:scale-x-100"
-      }
-                    `}
-                  />
-                </button>
+                  {({ isActive }) => (
+                    <>
+                      {item.label}
+                      <span
+                        className={`
+    absolute -bottom-1 left-0 h-0.5 w-full bg-primary transform transition-transform duration-300 origin-left
+    ${isActive ? "scale-x-100  " : "scale-x-0 group-hover:scale-x-100 "}
+  `}
+                      />
+                    </>
+                  )}
+                </NavLink>
               ))}
-            </nav>
+            </div>
 
             <div className="hidden xl:flex gap-2">
               <button className="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-opacity-90">
