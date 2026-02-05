@@ -46,7 +46,7 @@ const LoginPage = () => {
                       </div>
                       {/* <!-- Right Form Column --> */}
                       <div className="flex w-full flex-1 flex-col items-center justify-center bg-background-light p-4 py-12 lg:w-1/2 dark:bg-background-dark">
-                        <div className="w-full max-w-md space-y-6">
+                        <div className="w-full  lg:max-w-xl max-w-md space-y-6">
                           {/* <!-- Segmented Buttons / Tabs --> */}
                           <Slider />
                           {/* <!-- Form Content --> */}
