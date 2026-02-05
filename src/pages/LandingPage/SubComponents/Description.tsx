@@ -11,7 +11,7 @@ const Description = () => {
             data-alt="Abstract image representing AI neural networks in a medical context."
           ></div>
           <div className="flex flex-col gap-6">
-            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-primary">
+            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-primary dark:text-secondary">
               Precision Diagnostics, Powered by AI
             </h2>
             <p className="text-subtext-light dark:text-subtext-dark text-lg">

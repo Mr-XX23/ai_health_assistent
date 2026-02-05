@@ -71,7 +71,7 @@ const Navbar = () => {
                       {item.label}
                       <span
                         className={`
-    absolute -bottom-1 left-0 h-0.5 w-full bg-primary transform transition-transform duration-500 origin-left
+    absolute -bottom-1 left-0 h-0.5 w-full bg-primary dark:bg-secondary transform transition-transform duration-500 origin-left
     ${isActive ? "scale-x-100  " : "scale-x-0 group-hover:scale-x-100 "}
   `}
                       />

@@ -438,7 +438,7 @@ const SignUp = () => {
                             <span className="ml-2 text-sm text-slate-600 dark:text-slate-400">
                               I agree to the{" "}
                               <a
-                                className="font-medium text-primary hover:underline"
+                                className="font-medium text-primary dark:text-secondary hover:underline"
                                 href="#"
                               >
                                 Terms and Conditions
@@ -460,7 +460,7 @@ const SignUp = () => {
                             <span className="ml-2 text-sm text-slate-600 dark:text-slate-400">
                               I acknowledge receipt of the{" "}
                               <a
-                                className="font-medium text-primary hover:underline"
+                                className="font-medium text-primary dark:text-secondary hover:underline"
                                 href="#"
                               >
                                 HIPAA Privacy Notice
