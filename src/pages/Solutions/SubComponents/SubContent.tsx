@@ -1,4 +1,3 @@
-
 const SubContent = () => {
   return (
     <>
@@ -32,15 +31,15 @@ const SubContent = () => {
           <div className="flex justify-center gap-2 mt-8">
             <button
               aria-label="Testimonial 1"
-              className="w-3 h-3 rounded-full bg-primary"
+              className="w-3 h-3 rounded-full bg-primary dark:bg-secondary"
             ></button>
             <button
               aria-label="Testimonial 2"
-              className="w-3 h-3 rounded-full bg-border-light bg-primary/50"
+              className="w-3 h-3 rounded-full bg-border-light bg-primary/50 dark:bg-secondary/50"
             ></button>
             <button
               aria-label="Testimonial 3"
-              className="w-3 h-3 rounded-full bg-border-light bg-primary/50"
+              className="w-3 h-3 rounded-full bg-border-light bg-primary/50 dark:bg-secondary/50"
             ></button>
           </div>
         </div>

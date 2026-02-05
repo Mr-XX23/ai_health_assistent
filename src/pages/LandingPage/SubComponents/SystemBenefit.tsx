@@ -11,7 +11,7 @@ const SystemBenefits = () => {
             data-alt="A close-up of different types of medication pills organized neatly."
           ></div>
           <div className="flex flex-col gap-6">
-            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-primary">
+            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-primary dark:text-secondary">
               Simplify and Secure Medication Adherence
             </h2>
             <p className="text-subtext-light dark:text-subtext-dark text-lg">

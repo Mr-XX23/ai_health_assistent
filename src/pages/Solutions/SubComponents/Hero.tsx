@@ -12,7 +12,7 @@ const Hero = () => {
           faster, more accurate patient outcomes.
         </p>
         <div className="mt-10">
-          <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] mx-auto hover:opacity-90 transition-opacity">
+          <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-primary dark:bg-secondary text-white text-base font-bold leading-normal tracking-[0.015em] mx-auto hover:opacity-90 transition-opacity">
             <span className="truncate">See Our Solutions in Action</span>
           </button>
         </div>

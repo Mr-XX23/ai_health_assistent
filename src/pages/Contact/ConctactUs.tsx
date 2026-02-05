@@ -95,7 +95,7 @@ const ConctactUs = () => {
                   </div>
                   <div>
                     <button
-                      className="p-2 w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
+                      className="p-2 w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-primary hover:bg-primary/90 dark:bg-secondary dark:hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
                       type="submit"
                     >
                       Send Message
@@ -115,7 +115,7 @@ const ConctactUs = () => {
                   </p>
                   <div className="mt-4 space-y-4">
                     <div className="flex items-start gap-3">
-                      <span className="material-symbols-outlined text-primary mt-1">
+                      <span className="material-symbols-outlined text-primary dark:text-secondary mt-1">
                         call
                       </span>
                       <div>
@@ -124,7 +124,7 @@ const ConctactUs = () => {
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <span className="material-symbols-outlined text-primary mt-1">
+                      <span className="material-symbols-outlined text-primary dark:text-secondary mt-1">
                         mail
                       </span>
                       <div>
@@ -133,7 +133,7 @@ const ConctactUs = () => {
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <span className="material-symbols-outlined text-primary mt-1">
+                      <span className="material-symbols-outlined text-primary dark:text-secondary mt-1">
                         location_on
                       </span>
                       <div>

@@ -9,7 +9,7 @@ const SystemOffer = () => {
       >
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="flex flex-col gap-6 md:order-2">
-            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-primary">
+            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-primary dark:text-secondary">
               Connect with Care, Intelligently
             </h2>
             <p className="text-subtext-light dark:text-subtext-dark text-lg">
@@ -77,25 +77,25 @@ const SystemOffer = () => {
               </p>
               <ul className="mt-6 space-y-4">
                 <li className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">
+                  <span className="material-symbols-outlined text-primary dark:text-secondary">
                     encrypted
                   </span>
                   <span>End-to-End Encrypted Video &amp; Audio</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">
+                  <span className="material-symbols-outlined text-primary dark:text-secondary">
                     screen_share
                   </span>
                   <span>Secure Screen Sharing for Results</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">
+                  <span className="material-symbols-outlined text-primary dark:text-secondary">
                     chat
                   </span>
                   <span>In-call Private Text Chat</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">
+                  <span className="material-symbols-outlined text-primary dark:text-secondary">
                     transcribe
                   </span>
                   <span>AI-Powered Live Transcription</span>

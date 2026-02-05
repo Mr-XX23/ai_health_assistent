@@ -18,7 +18,7 @@ const FeaturesPage = () => {
           <div className="mt-20 sm:mt-24 space-y-20">
             <div>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10">
-                <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-primary">
+                <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-primary dark:text-secondary">
                   Patient-Centric Features
                 </h2>
                 <p className="text-gray-400 mt-2 md:mt-0 max-w-md">
@@ -28,7 +28,7 @@ const FeaturesPage = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div className=" border border-primary/30 rounded-xl p-6 flex flex-col group hover:shadow-xl hover:border-primary/50 transition-all duration-300">
-                  <div className="bg-primary/10 text-primary p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-5">
+                  <div className="bg-primary/10 text-primary dark:text-secondary p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-5">
                     <span className="material-symbols-outlined text-2xl">
                       person_search
                     </span>
@@ -41,7 +41,7 @@ const FeaturesPage = () => {
                     understand symptoms and guide them to appropriate care.
                   </p>
                   <a
-                    className="mt-6 font-semibold text-primary/80 hover:text-primary flex items-center gap-2 group"
+                    className="mt-6 font-semibold text-primary/80 dark:text-secondary/70 hover:text-primary dark:hover:text-secondary flex items-center gap-2 group"
                     href="#"
                   >
                     Learn More
@@ -51,7 +51,7 @@ const FeaturesPage = () => {
                   </a>
                 </div>
                 <div className="border border-primary/30 rounded-xl p-6 flex flex-col group hover:shadow-xl hover:border-primary/50 transition-all duration-300">
-                  <div className="bg-primary/10 text-primary p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-5">
+                  <div className="bg-primary/10 text-primary dark:text-secondary p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-5">
                     <span className="material-symbols-outlined text-2xl">
                       calendar_month
                     </span>
@@ -64,7 +64,7 @@ const FeaturesPage = () => {
                     manage appointments with ease, reducing no-shows.
                   </p>
                   <a
-                    className="mt-6 font-semibold text-primary/80 hover:text-primary flex items-center gap-2 group"
+                    className="mt-6 font-semibold text-primary/80 hover:text-primary dark:text-secondary/70 dark:hover:text-secondary flex items-center gap-2 group"
                     href="#"
                   >
                     Learn More
@@ -74,7 +74,7 @@ const FeaturesPage = () => {
                   </a>
                 </div>
                 <div className="border border-primary/30 rounded-xl p-6 flex flex-col group hover:shadow-xl hover:border-primary/50 transition-all duration-300">
-                  <div className="bg-primary/10 text-primary p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-5">
+                  <div className="bg-primary/10 text-primary dark:text-secondary p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-5">
                     <span className="material-symbols-outlined text-2xl">
                       medication
                     </span>
@@ -87,7 +87,7 @@ const FeaturesPage = () => {
                     patients manage their prescriptions effectively.
                   </p>
                   <a
-                    className="mt-6 font-semibold text-primary/80 hover:text-primary flex items-center gap-2 group"
+                    className="mt-6 font-semibold text-primary/80 hover:text-primary dark:text-secondary/70 dark:hover:text-secondary flex items-center gap-2 group"
                     href="#"
                   >
                     Learn More
