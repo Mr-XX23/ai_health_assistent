@@ -1,13 +1,109 @@
-import React from "react";
-import App from "../../../App";
+import { useState } from "react";
 import AppLayout from "../../../layout/AppLayout/AppLayout";
 import { useNavigate } from "react-router";
-import Password from "../../../components/inputField/Password";
-import Email from "../../../components/inputField/Email";
-import Phone from "../../../components/inputField/Phone";
+import {
+  authService,
+  type ValidationError,
+  type RegisterResponse,
+} from "../../../services/authService";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [formData, setformData] = useState({
+    username: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+  });
+  const [userRole, setUserRole] = useState<"patient" | "provider" | "">("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToHIPAA, setAgreedToHIPAA] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<ValidationError[]>([]);
+  const [generalError, setGeneralError] = useState<string>("");
+  const [successData, setSuccessData] = useState<RegisterResponse | null>(null);
+  const [passwordStrength, setPasswordStrength] = useState<{
+    strength: "weak" | "medium" | "strong";
+    percentage: number;
+  }>({ strength: "weak", percentage: 0 });
+
+  const handleInputChange = (field: keyof typeof formData, value: string) => {
+    setformData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+    setErrors((prev) => prev.filter((err) => err.field !== field));
+    setGeneralError("");
+
+    // Update password strength indicator
+    if (field === "password") {
+      const strength = authService.getPasswordStrength(value);
+      setPasswordStrength(strength);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrors([]);
+    setGeneralError("");
+    setSuccessData(null);
+
+    // Validate agreement checkboxes
+    if (!agreedToTerms || !agreedToHIPAA) {
+      setGeneralError(
+        "Please agree to the Terms and Conditions and HIPAA Privacy Notice",
+      );
+      setIsLoading(false);
+      return;
+    }
+
+    if (!userRole) {
+      setGeneralError(
+        "Please select whether you are a Patient or Healthcare Provider",
+      );
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const result = await authService.register({
+        email: formData.email,
+        username: formData.username,
+        password: formData.password,
+        phoneNumber: formData.phoneNumber,
+      });
+
+      if (result.success && result.data) {
+        setSuccessData(result.data);
+        // Clear form
+        setformData({
+          username: "",
+          email: "",
+          phoneNumber: "",
+          password: "",
+        });
+        setAgreedToTerms(false);
+        setAgreedToHIPAA(false);
+        setUserRole("");
+        setPasswordStrength({ strength: "weak", percentage: 0 });
+
+        // Navigate to verification page with userId
+        navigate("/verification", { state: { userId: result.data.userId } });
+      } else if (result.errors) {
+        setErrors(result.errors);
+      } else if (result.message) {
+        setGeneralError(result.message);
+      }
+    } catch (error) {
+      setGeneralError(
+        error instanceof Error ? error.message : "Registration failed",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AppLayout>
       <div className="bg-background-light dark:bg-background-dark font-display text-[#101c22] dark:text-slate-200">
@@ -85,51 +181,203 @@ const SignUp = () => {
                               className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
                               placeholder="Enter your username"
                               type="text"
-                              // value=""
+                              value={formData.username}
+                              onChange={(e) =>
+                                handleInputChange("username", e.target.value)
+                              }
+                              disabled={isLoading}
                             />
                           </div>
+                          {errors.find((e) => e.field === "username") && (
+                            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                              {
+                                errors.find((e) => e.field === "username")
+                                  ?.message
+                              }
+                            </p>
+                          )}
                         </label>
-                        <Email />
+                        <label className="flex flex-col min-w-40 flex-1">
+                          <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
+                            Email
+                          </p>
+                          <div className="flex w-full flex-1 items-stretch rounded-lg">
+                            <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
+                              <span className="material-symbols-outlined text-[20px]">
+                                mail
+                              </span>
+                            </div>
+                            <input
+                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
+                              placeholder="Enter your email"
+                              type="email"
+                              value={formData.email}
+                              onChange={(e) =>
+                                handleInputChange("email", e.target.value)
+                              }
+                              disabled={isLoading}
+                            />
+                          </div>
+                          {errors.find((e) => e.field === "email") && (
+                            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                              {errors.find((e) => e.field === "email")?.message}
+                            </p>
+                          )}
+                        </label>
                         <div className="flex flex-col min-w-40 flex-1">
-                          <Password />
+                          <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
+                            Password
+                          </p>
+                          <div className="flex w-full flex-1 items-stretch rounded-lg">
+                            <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
+                              <span className="material-symbols-outlined text-[20px]">
+                                lock
+                              </span>
+                            </div>
+                            <input
+                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
+                              placeholder="Enter your password"
+                              type="password"
+                              value={formData.password}
+                              onChange={(e) =>
+                                handleInputChange("password", e.target.value)
+                              }
+                              disabled={isLoading}
+                            />
+                          </div>
+                          {errors.find((e) => e.field === "password") && (
+                            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                              {
+                                errors.find((e) => e.field === "password")
+                                  ?.message
+                              }
+                            </p>
+                          )}
                           <div className="mt-2 space-y-2 px-1">
                             <div className="flex items-center gap-2">
                               <div className="flex-1 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                                <div className="h-full bg-orange-400 w-[50%]"></div>
+                                <div
+                                  className={`h-full transition-all ${
+                                    passwordStrength.strength === "weak"
+                                      ? "bg-red-400"
+                                      : passwordStrength.strength === "medium"
+                                        ? "bg-orange-400"
+                                        : "bg-green-400"
+                                  }`}
+                                  style={{
+                                    width: `${passwordStrength.percentage}%`,
+                                  }}
+                                ></div>
                               </div>
-                              <p className="text-xs font-medium text-orange-500">
-                                Medium
+                              <p
+                                className={`text-xs font-medium ${
+                                  passwordStrength.strength === "weak"
+                                    ? "text-red-500"
+                                    : passwordStrength.strength === "medium"
+                                      ? "text-orange-500"
+                                      : "text-green-500"
+                                }`}
+                              >
+                                {passwordStrength.strength
+                                  .charAt(0)
+                                  .toUpperCase() +
+                                  passwordStrength.strength.slice(1)}
                               </p>
                             </div>
                             <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
                               <li className="flex items-center gap-1.5">
-                                <span className="material-symbols-outlined text-green-500 text-sm">
-                                  check_circle
+                                <span
+                                  className={`material-symbols-outlined text-sm ${
+                                    formData.password.length >= 8
+                                      ? "text-green-500"
+                                      : "text-slate-400"
+                                  }`}
+                                >
+                                  {formData.password.length >= 8
+                                    ? "check_circle"
+                                    : "radio_button_unchecked"}
                                 </span>{" "}
                                 8+ characters
                               </li>
                               <li className="flex items-center gap-1.5">
-                                <span className="material-symbols-outlined text-green-500 text-sm">
-                                  check_circle
+                                <span
+                                  className={`material-symbols-outlined text-sm ${
+                                    /[0-9]/.test(formData.password)
+                                      ? "text-green-500"
+                                      : "text-slate-400"
+                                  }`}
+                                >
+                                  {/[0-9]/.test(formData.password)
+                                    ? "check_circle"
+                                    : "radio_button_unchecked"}
                                 </span>{" "}
                                 1 number
                               </li>
                               <li className="flex items-center gap-1.5">
-                                <span className="material-symbols-outlined text-orange-400 text-sm">
-                                  radio_button_unchecked
+                                <span
+                                  className={`material-symbols-outlined text-sm ${
+                                    /[A-Z]/.test(formData.password)
+                                      ? "text-green-500"
+                                      : "text-slate-400"
+                                  }`}
+                                >
+                                  {/[A-Z]/.test(formData.password)
+                                    ? "check_circle"
+                                    : "radio_button_unchecked"}
                                 </span>{" "}
                                 1 uppercase
                               </li>
                               <li className="flex items-center gap-1.5">
-                                <span className="material-symbols-outlined text-orange-400 text-sm">
-                                  radio_button_unchecked
+                                <span
+                                  className={`material-symbols-outlined text-sm ${
+                                    /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                                      formData.password,
+                                    )
+                                      ? "text-green-500"
+                                      : "text-slate-400"
+                                  }`}
+                                >
+                                  {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                                    formData.password,
+                                  )
+                                    ? "check_circle"
+                                    : "radio_button_unchecked"}
                                 </span>{" "}
                                 1 special character
                               </li>
                             </ul>
                           </div>
                         </div>
-                        <Phone />
+                        <label className="flex flex-col min-w-40 flex-1">
+                          <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
+                            Phone Number
+                          </p>
+                          <div className="flex w-full flex-1 items-stretch rounded-lg">
+                            <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
+                              <span className="material-symbols-outlined text-[20px]">
+                                phone
+                              </span>
+                            </div>
+                            <input
+                              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#101c22] dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 focus:border-primary/80 dark:focus:border-primary/80 h-12 placeholder:text-slate-400 p-[15px] rounded-l-none text-base font-normal leading-normal"
+                              placeholder="Enter your phone number"
+                              type="tel"
+                              value={formData.phoneNumber}
+                              onChange={(e) =>
+                                handleInputChange("phoneNumber", e.target.value)
+                              }
+                              disabled={isLoading}
+                            />
+                          </div>
+                          {errors.find((e) => e.field === "phoneNumber") && (
+                            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                              {
+                                errors.find((e) => e.field === "phoneNumber")
+                                  ?.message
+                              }
+                            </p>
+                          )}
+                        </label>
                         <div className="flex flex-col min-w-40 flex-1">
                           <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
                             I am a...
@@ -140,6 +388,15 @@ const SignUp = () => {
                                 className="form-radio text-primary focus:ring-primary/50"
                                 name="user-role"
                                 type="radio"
+                                value="patient"
+                                checked={userRole === "patient"}
+                                onChange={(e) => {
+                                  setUserRole(
+                                    e.target.value as "patient" | "provider",
+                                  );
+                                  setGeneralError("");
+                                }}
+                                disabled={isLoading}
                               />
                               <span className="ml-3 text-sm font-medium text-slate-700 dark:text-slate-300">
                                 Patient
@@ -150,6 +407,15 @@ const SignUp = () => {
                                 className="form-radio text-primary focus:ring-primary/50"
                                 name="user-role"
                                 type="radio"
+                                value="provider"
+                                checked={userRole === "provider"}
+                                onChange={(e) => {
+                                  setUserRole(
+                                    e.target.value as "patient" | "provider",
+                                  );
+                                  setGeneralError("");
+                                }}
+                                disabled={isLoading}
                               />
                               <span className="ml-3 text-sm font-medium text-slate-700 dark:text-slate-300">
                                 Healthcare Provider
@@ -162,6 +428,12 @@ const SignUp = () => {
                             <input
                               className="form-checkbox h-4 w-4 rounded text-primary border-slate-400 focus:ring-primary/50 mt-0.5"
                               type="checkbox"
+                              checked={agreedToTerms}
+                              onChange={(e) => {
+                                setAgreedToTerms(e.target.checked);
+                                setGeneralError("");
+                              }}
+                              disabled={isLoading}
                             />
                             <span className="ml-2 text-sm text-slate-600 dark:text-slate-400">
                               I agree to the{" "}
@@ -178,6 +450,12 @@ const SignUp = () => {
                             <input
                               className="form-checkbox h-4 w-4 rounded text-primary border-slate-400 focus:ring-primary/50 mt-0.5"
                               type="checkbox"
+                              checked={agreedToHIPAA}
+                              onChange={(e) => {
+                                setAgreedToHIPAA(e.target.checked);
+                                setGeneralError("");
+                              }}
+                              disabled={isLoading}
                             />
                             <span className="ml-2 text-sm text-slate-600 dark:text-slate-400">
                               I acknowledge receipt of the{" "}
@@ -192,17 +470,39 @@ const SignUp = () => {
                           </label>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 rounded-lg bg-red-100 dark:bg-red-500/20 p-3 mx-4">
-                        <span className="material-symbols-outlined text-red-600 dark:text-red-400">
-                          error
-                        </span>
-                        <p className="text-sm text-red-800 dark:text-red-300">
-                          An account with this email already exists.
-                        </p>
-                      </div>
+                      {generalError && (
+                        <div className="flex items-center gap-2 rounded-lg bg-red-100 dark:bg-red-500/20 p-3 mx-4">
+                          <span className="material-symbols-outlined text-red-600 dark:text-red-400">
+                            error
+                          </span>
+                          <p className="text-sm text-red-800 dark:text-red-300">
+                            {generalError}
+                          </p>
+                        </div>
+                      )}
+                      {errors.length > 0 && !generalError && (
+                        <div className="flex items-center gap-2 rounded-lg bg-red-100 dark:bg-red-500/20 p-3 mx-4">
+                          <span className="material-symbols-outlined text-red-600 dark:text-red-400">
+                            error
+                          </span>
+                          <p className="text-sm text-red-800 dark:text-red-300">
+                            Please fix the errors above and try again.
+                          </p>
+                        </div>
+                      )}
+                      {successData && (
+                        <div className="flex items-center gap-2 rounded-lg bg-green-100 dark:bg-green-500/20 p-3 mx-4">
+                          <span className="material-symbols-outlined text-green-600 dark:text-green-400">
+                            check_circle
+                          </span>
+                          <p className="text-sm text-green-800 dark:text-green-300">
+                            {successData.message}
+                          </p>
+                        </div>
+                      )}
                       <div className="flex justify-center">
                         <p
-                          className="mt-2 text-sm text-slate-600 dark:text-slate-400 font-medium text-primary hover:underline"
+                          className="mt-2 text-sm text-slate-600 dark:text-slate-400 font-medium text-primary hover:underline cursor-pointer"
                           onClick={() => navigate("/login")}
                         >
                           Already have an account? Log In
@@ -210,10 +510,20 @@ const SignUp = () => {
                       </div>
                       <div className="flex flex-col gap-3 px-4 pt-2">
                         <button
-                          className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-sm transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 dark:focus:ring-offset-background-dark"
-                          onClick={() => navigate("/verification")}
+                          className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-sm transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 dark:focus:ring-offset-background-dark disabled:opacity-50 disabled:cursor-not-allowed"
+                          onClick={handleSubmit}
+                          disabled={isLoading}
                         >
-                          Create Account
+                          {isLoading ? (
+                            <>
+                              <span className="material-symbols-outlined animate-spin mr-2">
+                                hourglass_empty
+                              </span>
+                              Creating Account...
+                            </>
+                          ) : (
+                            "Create Account"
+                          )}
                         </button>
                       </div>
                       <div className="flex flex-col gap-4 px-4">
