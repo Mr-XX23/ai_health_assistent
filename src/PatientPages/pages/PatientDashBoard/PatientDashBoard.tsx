@@ -4,7 +4,7 @@ const PatientDashboard = () => {
   return (
     <PatientLayout>
       <div>
-        <main className="flex-1 flex flex-col h-screen overflow-hidden">
+        <div className="flex-1 flex flex-col h-screen overflow-hidden">
           <header className="flex items-center justify-between whitespace-nowrap border-b border-border-light dark:border-border-dark px-8 py-4 bg-card-light dark:bg-card-dark ">
             <div className="flex flex-col">
               <p className="text-2xl font-bold tracking-tight dark:text-secondary">
@@ -20,12 +20,12 @@ const PatientDashboard = () => {
                   search
                 </span>
                 <input
-                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg bg-background-light dark:bg-background-dark placeholder:text-text-light-secondary dark:placeholder:text-text-dark-secondary h-10 border-none pl-10 pr-4 text-sm"
+                  className="dark:text-secondary form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg bg-background-light dark:bg-background-dark placeholder:text-text-light-secondary dark:placeholder:text-text-dark-secondary h-10 border-none pl-10 pr-4 text-sm"
                   placeholder="Search..."
                   type="search"
                 />
               </label>
-              <button className="relative flex items-center justify-center rounded-full h-10 w-10 bg-background-light dark:bg-background-dark hover:bg-primary/10 transition-colors">
+              <button className="dark:text-yellow-300 relative flex items-center justify-center rounded-full h-10 w-10 bg-background-light dark:bg-background-dark hover:bg-primary/10 transition-colors">
                 <span className="material-symbols-outlined">notifications</span>
                 <span className="absolute top-1 right-1.5 flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
@@ -208,7 +208,7 @@ const PatientDashboard = () => {
                         <span className="material-symbols-outlined text-sm">
                           location_on
                         </span>
-                        Main Hospital
+                        Patan Hospital
                       </div>
                     </div>
                   </div>
@@ -297,7 +297,7 @@ const PatientDashboard = () => {
               </div>
             </div>
           </div>
-        </main>
+        </div>
         <button className="fixed bottom-8 right-8 flex items-center justify-center gap-2 h-14 w-14 md:w-auto md:px-6 bg-accent text-white rounded-full shadow-lg hover:bg-accent/90 transition-all duration-300 group">
           <span className="material-symbols-outlined text-3xl">sos</span>
           <span className="hidden md:inline font-bold text-sm">

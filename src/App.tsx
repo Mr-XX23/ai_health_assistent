@@ -31,7 +31,8 @@ import MedicationManagement from "./PatientPages/pages/MedicationManagement/Medi
 import MedicationInteraction from "./PatientPages/pages/MedicationInteraction/MedicationInteraction";
 import ScheduleAppointment from "./PatientPages/pages/ScheduleAppointment/ScheduleAppointment";
 import Messages from "./PatientPages/pages/Messages/Messages";
-import PatientDashboard from "./PatientPages/pages/PatientDashboard/PatientDashBoard";
+import PatientDashboard from "./PatientPages/pages/PatientDashBoard/PatientDashBoard";
+import FindSpecailist from "./PatientPages/pages/FindSpecailist/FindSpecailist";
 
 const App = () => {
   return (
@@ -90,6 +91,7 @@ const App = () => {
             path="/patient-medication-interaction"
             element={<MedicationInteraction />}
           />
+          <Route path="/patient-symptom-checker" element={<FindSpecailist />} />
           <Route
             path="patient-appointments"
             element={<ScheduleAppointment />}
