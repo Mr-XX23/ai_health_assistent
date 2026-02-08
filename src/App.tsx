@@ -26,6 +26,7 @@ import DocterReport from "./DocterComponents/pages/DocterReport/DocterReport";
 import AdminPatientProfile from "./AdminComponents/pages/AdminPatientProfile/SystemPatientProfile";
 import DocterSettiing from "./DocterComponents/pages/DocterSetting/DocterSettiing";
 import DocterPatientProfile from "./DocterComponents/pages/DocterPatientProfile/DocterPatientProfile";
+import PatientDashBoard from "./PatientPages/pages/PatientDashBoard/PatientDashBoard";
 
 const App = () => {
   return (
@@ -70,6 +71,8 @@ const App = () => {
           <Route path="/docter-consultation" element={<DocterConsultation />} />
           <Route path="/docter-report" element={<DocterReport />} />
           <Route path="/docter-settings" element={<DocterSettiing />} />
+
+          <Route path="/patient-dashboard" element={<PatientDashBoard />} />
         </Routes>
       </BrowserRouter>
     </div>
