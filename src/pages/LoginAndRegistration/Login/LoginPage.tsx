@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import AppLayout from "../../../layout/AppLayout/AppLayout";
 import { useNavigate } from "react-router";
-import Password from "../../../components/inputField/Password";
-import Email from "../../../components/inputField/Email";
 import Slider from "../components/Slider";
+import EmailPassword from "../../../components/inputField/EmailPassword";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -51,12 +50,8 @@ const LoginPage = () => {
                           <Slider />
                           {/* <!-- Form Content --> */}
                           <div className="flex flex-col gap-4 px-4">
-                            {/* <!-- Email Address Field --> */}
-                            <Email />
-
-                            {/* <!-- Password Field --> */}
-
-                            <Password />
+                            {/* <!-- Email Address and Password Field  --> */}
+                            <EmailPassword />
 
                             {/* <!-- Forgot Password Link --> */}
                             <span onClick={() => navigate("/forgot-password")}>

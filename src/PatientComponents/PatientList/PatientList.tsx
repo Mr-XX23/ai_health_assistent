@@ -78,11 +78,7 @@ const PatientList = () => {
               {patients.map((item) => (
                 <tr>
                   <td className="whitespace-nowrap px-6 py-4 ">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={` bg-no-repeat bg-cover rounded-full size-8 bg-[url(${item.profile})]`}
-                        data-alt="Patient avatar"
-                      ></div>
+                    <div className="flex justify-center gap-3">
                       <span className="font-medium">{item.name}</span>
                     </div>
                   </td>
