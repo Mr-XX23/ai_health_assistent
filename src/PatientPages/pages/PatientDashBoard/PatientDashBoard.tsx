@@ -1,21 +1,22 @@
 import PatientLayout from "../../../layout/PatientLayout/PatientLayout";
-import Sidebar from "../../components/Sidebar/Sidebar";
 
-const PatientDashBoard = () => {
+const PatientDashboard = () => {
   return (
     <PatientLayout>
       <div>
         <main className="flex-1 flex flex-col h-screen overflow-hidden">
-          <header className="flex items-center justify-between whitespace-nowrap border-b border-border-light dark:border-border-dark px-8 py-4 bg-card-light dark:bg-card-dark flex-shrink-0">
+          <header className="flex items-center justify-between whitespace-nowrap border-b border-border-light dark:border-border-dark px-8 py-4 bg-card-light dark:bg-card-dark ">
             <div className="flex flex-col">
-              <p className="text-2xl font-bold tracking-tight">Hello, Maria</p>
-              <p className="text-base font-normal text-text-light-secondary dark:text-text-dark-secondary">
+              <p className="text-2xl font-bold tracking-tight dark:text-secondary">
+                Hello, Maria
+              </p>
+              <p className="text-base font-normal text-text-light-secondary dark:text-secondary">
                 Welcome back to your health dashboard.
               </p>
             </div>
             <div className="flex flex-1 justify-end items-center gap-4">
               <label className="relative hidden md:block">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-light-secondary dark:text-text-dark-secondary">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-light-secondary dark:text-secondary">
                   search
                 </span>
                 <input
@@ -49,11 +50,11 @@ const PatientDashBoard = () => {
                             medical_services
                           </span>
                         </div>
-                        <h3 className="text-lg font-bold">
+                        <h3 className="text-lg font-bold dark:text-secondary">
                           AI Symptom Checker
                         </h3>
                       </div>
-                      <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary leading-relaxed max-w-3xl">
+                      <p className="text-sm text-text-light-secondary dark:text-secondary leading-relaxed max-w-3xl">
                         Analyze your symptoms with our AI to get instant health
                         insights and guidance. Start a session now to understand
                         your health better and receive personalized
@@ -70,8 +71,10 @@ const PatientDashBoard = () => {
                 <div className="flex flex-col gap-6 p-6 rounded-xl bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="text-lg font-semibold">Health Overview</h3>
-                      <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                      <h3 className="text-lg font-semibold dark:text-secondary">
+                        Health Overview
+                      </h3>
+                      <p className="text-sm text-text-light-secondary dark:text-secondary">
                         Your wellness at a glance.
                       </p>
                     </div>
@@ -79,7 +82,7 @@ const PatientDashBoard = () => {
                       <span className="material-symbols-outlined text-green-500 text-sm">
                         verified
                       </span>
-                      <span className="text-sm font-medium">
+                      <span className="text-sm font-medium dark:text-secondary">
                         Last check-up: 08/15/2023
                       </span>
                     </div>
@@ -113,8 +116,10 @@ const PatientDashBoard = () => {
                         ></circle>
                       </svg>
                       <div className="absolute flex flex-col">
-                        <span className="text-3xl font-bold">85</span>
-                        <span className="text-xs text-text-light-secondary dark:text-text-dark-secondary">
+                        <span className="text-3xl font-bold dark:text-secondary">
+                          85
+                        </span>
+                        <span className="text-xs text-text-light-secondary dark:text-secondary">
                           Health Score
                         </span>
                       </div>
@@ -122,13 +127,15 @@ const PatientDashBoard = () => {
                     <div className="flex flex-col gap-4 text-left">
                       <div className="flex items-center gap-3">
                         <div className="flex items-center justify-center size-10 rounded-full bg-primary/10">
-                          <span className="material-symbols-outlined text-primary">
+                          <span className="material-symbols-outlined text-primary dark:text-secondary">
                             blood_pressure
                           </span>
                         </div>
                         <div>
-                          <p className="font-semibold">Blood Pressure</p>
-                          <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                          <p className="font-semibold dark:text-secondary">
+                            Blood Pressure
+                          </p>
+                          <p className="text-sm text-text-light-secondary dark:text-secondary">
                             120/80 mmHg
                           </p>
                         </div>
@@ -140,8 +147,10 @@ const PatientDashBoard = () => {
                           </span>
                         </div>
                         <div>
-                          <p className="font-semibold">Heart Rate</p>
-                          <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                          <p className="font-semibold dark:text-secondary">
+                            Heart Rate
+                          </p>
+                          <p className="text-sm text-text-light-secondary dark:text-secondary">
                             72 bpm
                           </p>
                         </div>
@@ -151,7 +160,9 @@ const PatientDashBoard = () => {
                 </div>
                 <div className="flex flex-col gap-4 p-6 rounded-xl bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark">
                   <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-semibold">Next Appointment</h3>
+                    <h3 className="text-lg font-semibold dark:text-secondary">
+                      Next Appointment
+                    </h3>
                     <a
                       className="text-sm font-medium text-primary hover:underline"
                       href="#"
@@ -166,8 +177,10 @@ const PatientDashBoard = () => {
                         <span className="text-2xl font-black">28</span>
                       </div>
                       <div className="flex-1">
-                        <p className="font-semibold">Telemedicine Follow-up</p>
-                        <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                        <p className="font-semibold dark:text-secondary">
+                          Telemedicine Follow-up
+                        </p>
+                        <p className="text-sm text-text-light-secondary dark:text-secondary">
                           Dr. Evelyn Reed - 09:30 AM
                         </p>
                       </div>
@@ -184,12 +197,14 @@ const PatientDashBoard = () => {
                         <span className="text-2xl font-black">12</span>
                       </div>
                       <div className="flex-1">
-                        <p className="font-semibold">Routine Physical Exam</p>
-                        <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                        <p className="font-semibold dark:text-secondary">
+                          Routine Physical Exam
+                        </p>
+                        <p className="text-sm text-text-light-secondary dark:text-secondary">
                           Dr. Marcus Thorne - 10:45 AM
                         </p>
                       </div>
-                      <div className="text-sm font-medium text-text-light-secondary dark:text-text-dark-secondary flex items-center gap-1">
+                      <div className="text-sm font-medium text-text-light-secondary dark:text-secondary flex items-center gap-1">
                         <span className="material-symbols-outlined text-sm">
                           location_on
                         </span>
@@ -200,7 +215,7 @@ const PatientDashBoard = () => {
                 </div>
                 <div className="flex flex-col gap-4 p-6 rounded-xl bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark">
                   <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-semibold">
+                    <h3 className=" text-lg font-semibold dark:text-secondary">
                       Recent Diagnoses / AI Analysis
                     </h3>
                     <a
@@ -218,8 +233,10 @@ const PatientDashBoard = () => {
                         </span>
                       </div>
                       <div>
-                        <p className="font-medium">Blood Panel Results</p>
-                        <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                        <p className="font-medium dark:text-secondary">
+                          Blood Panel Results
+                        </p>
+                        <p className="text-sm text-text-light-secondary dark:text-secondary">
                           AI analysis: All markers within normal range.
                         </p>
                       </div>
@@ -231,8 +248,10 @@ const PatientDashBoard = () => {
                         </span>
                       </div>
                       <div>
-                        <p className="font-medium">Skin Lesion Analysis</p>
-                        <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                        <p className="font-medium dark:text-secondary">
+                          Skin Lesion Analysis
+                        </p>
+                        <p className="text-sm text-text-light-secondary dark:text-secondary">
                           AI analysis: Low probability of malignancy. Follow-up
                           recommended.
                         </p>
@@ -243,7 +262,7 @@ const PatientDashBoard = () => {
               </div>
               <div className="col-span-12 lg:col-span-4 flex flex-col gap-6">
                 <div className="flex flex-col gap-4 p-6 rounded-xl bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark">
-                  <h3 className="text-lg font-semibold">
+                  <h3 className="text-lg font-semibold dark:text-secondary">
                     Health Tips / AI Recommendations
                   </h3>
                   <ul className="flex flex-col gap-3">
@@ -254,7 +273,7 @@ const PatientDashBoard = () => {
                         </span>
                       </div>
                       <div>
-                        <p className="font-medium text-sm">
+                        <p className="font-medium text-sm dark:text-secondary">
                           Consider reducing sodium intake to better manage blood
                           pressure.
                         </p>
@@ -267,7 +286,7 @@ const PatientDashBoard = () => {
                         </span>
                       </div>
                       <div>
-                        <p className="font-medium text-sm">
+                        <p className="font-medium text-sm dark:text-secondary">
                           Your activity levels were low yesterday. Try a
                           20-minute walk today.
                         </p>
@@ -290,4 +309,4 @@ const PatientDashBoard = () => {
   );
 };
 
-export default PatientDashBoard;
+export default PatientDashboard;

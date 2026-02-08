@@ -26,7 +26,12 @@ import DocterReport from "./DocterComponents/pages/DocterReport/DocterReport";
 import AdminPatientProfile from "./AdminComponents/pages/AdminPatientProfile/SystemPatientProfile";
 import DocterSettiing from "./DocterComponents/pages/DocterSetting/DocterSettiing";
 import DocterPatientProfile from "./DocterComponents/pages/DocterPatientProfile/DocterPatientProfile";
-import PatientDashBoard from "./PatientPages/pages/PatientDashBoard/PatientDashBoard";
+import PatientMedicalHistory from "./PatientPages/pages/PatientMedicalHistory/PatientMedicalHistory";
+import MedicationManagement from "./PatientPages/pages/MedicationManagement/MedicationManagement";
+import MedicationInteraction from "./PatientPages/pages/MedicationInteraction/MedicationInteraction";
+import ScheduleAppointment from "./PatientPages/pages/ScheduleAppointment/ScheduleAppointment";
+import Messages from "./PatientPages/pages/Messages/Messages";
+import PatientDashboard from "./PatientPages/pages/PatientDashboard/PatientDashBoard";
 
 const App = () => {
   return (
@@ -72,7 +77,24 @@ const App = () => {
           <Route path="/docter-report" element={<DocterReport />} />
           <Route path="/docter-settings" element={<DocterSettiing />} />
 
-          <Route path="/patient-dashboard" element={<PatientDashBoard />} />
+          <Route path="/patient-dashboard" element={<PatientDashboard />} />
+          <Route
+            path="/patient-medical-history"
+            element={<PatientMedicalHistory />}
+          />
+          <Route
+            path="/patient-medications"
+            element={<MedicationManagement />}
+          />
+          <Route
+            path="/patient-medication-interaction"
+            element={<MedicationInteraction />}
+          />
+          <Route
+            path="patient-appointments"
+            element={<ScheduleAppointment />}
+          />
+          <Route path="patient-messages" element={<Messages />} />
         </Routes>
       </BrowserRouter>
     </div>

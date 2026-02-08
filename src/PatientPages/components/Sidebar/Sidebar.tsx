@@ -4,11 +4,23 @@ import { NavLink } from "react-router";
 const Sidebar = ({ onClick }: { onClick?: () => void }) => {
   const navItes = [
     { lable: "Dashboard", path: "/patient-dashboard", icon: "dashboard" },
-    { lable: "Medical History", path: "", icon: "folder_managed" },
-    { lable: "Medications", path: "", icon: "medication" },
-    { lable: "Symptom Checker", path: "", icon: "stethoscope" },
-    { lable: "Appointments", path: "", icon: "calendar_month" },
-    { lable: "Messages", path: "", icon: "chat" },
+    {
+      lable: "Medical History",
+      path: "/patient-medical-history",
+      icon: "folder_managed",
+    },
+    { lable: "Medications", path: "/patient-medications", icon: "medication" },
+    {
+      lable: "Symptom Checker",
+      path: "/patient-symptom-checker",
+      icon: "stethoscope",
+    },
+    {
+      lable: "Appointments",
+      path: "/patient-appointments",
+      icon: "calendar_month",
+    },
+    { lable: "Messages", path: "/patient-messages", icon: "chat" },
     { lable: "Settings", path: "", icon: "settings" },
     { lable: "Logout", path: "", icon: "logout" },
   ];
