@@ -1,6 +1,18 @@
 import React from "react";
+import { NavLink } from "react-router";
 
-const Sidebar = () => {
+const Sidebar = ({ onClick }: { onClick?: () => void }) => {
+  const navItes = [
+    { lable: "Dashboard", path: "/patient-dashboard", icon: "dashboard" },
+    { lable: "Medical History", path: "", icon: "folder_managed" },
+    { lable: "Medications", path: "", icon: "medication" },
+    { lable: "Symptom Checker", path: "", icon: "stethoscope" },
+    { lable: "Appointments", path: "", icon: "calendar_month" },
+    { lable: "Messages", path: "", icon: "chat" },
+    { lable: "Settings", path: "", icon: "settings" },
+    { lable: "Logout", path: "", icon: "logout" },
+  ];
+
   return (
     <div>
       <div className="flex flex-col w-[240px] p-4 bg-card-light dark:bg-card-dark border-r border-border-light dark:border-border-dark flex-shrink-0">
@@ -24,48 +36,29 @@ const Sidebar = () => {
             </div>
           </div>
           <div className="flex flex-col gap-2 mt-4">
-            <a
-              className="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary"
-              href="#"
-            >
-              <span className="material-symbols-outlined fill">dashboard</span>
-              <p className="text-sm font-medium">Dashboard</p>
-            </a>
-            <a
-              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors duration-200 text-text-light-primary dark:text-text-dark-primary"
-              href="#"
-            >
-              <span className="material-symbols-outlined">folder_managed</span>
-              <p className="text-sm font-medium">Medical History</p>
-            </a>
-            <a
-              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors duration-200 text-text-light-primary dark:text-text-dark-primary"
-              href="#"
-            >
-              <span className="material-symbols-outlined">medication</span>
-              <p className="text-sm font-medium">Medications</p>
-            </a>
-            <a
-              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors duration-200 text-text-light-primary dark:text-text-dark-primary"
-              href="#"
-            >
-              <span className="material-symbols-outlined">stethoscope</span>
-              <p className="text-sm font-medium">Symptom Checker</p>
-            </a>
-            <a
-              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors duration-200 text-text-light-primary dark:text-text-dark-primary"
-              href="#"
-            >
-              <span className="material-symbols-outlined">calendar_month</span>
-              <p className="text-sm font-medium">Appointments</p>
-            </a>
-            <a
-              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors duration-200 text-text-light-primary dark:text-text-dark-primary"
-              href="#"
-            >
-              <span className="material-symbols-outlined">chat</span>
-              <p className="text-sm font-medium">Messages</p>
-            </a>
+            <div className="flex flex-col gap-2 mt-4">
+              {navItes.map((item) => (
+                <NavLink
+                  key={item.lable}
+                  to={item.path}
+                  onClick={onClick}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2 rounded-lg
+                  ${
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "hover:bg-primary/10 hover:text-primary transition-colors duration-200 text-text-light-primary "
+                  }
+                  `
+                  }
+                >
+                  <span className="material-symbols-outlined fill">
+                    {item.icon}
+                  </span>
+                  <p className="text-sm font-medium">{item.lable}</p>
+                </NavLink>
+              ))}
+            </div>
           </div>
         </div>
         <div className="mt-auto">
