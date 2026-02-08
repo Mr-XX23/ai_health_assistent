@@ -75,7 +75,7 @@ const Content = () => {
               / provider / month
             </span>
           </div>
-          <button className="mt-6 w-full flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white dark:bg-secondary text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors">
+          <button className="text-white mt-6 w-full flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary dark:bg-secondary font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors">
             <span className="truncate">Choose Premium</span>
           </button>
           <ul className="mt-8 space-y-4 grow">
