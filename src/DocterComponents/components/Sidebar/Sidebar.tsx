@@ -23,8 +23,8 @@ const Sidebar = () => {
     ` flex items-center gap-3 px-3 py-2 rounded-lg transition-colours
   ${
     isActive
-      ? " bg-blue-100  dark:bg-blue-900/30 dark:text-blue-100"
-      : "dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
+      ? " text-primary bg-primary/20 dark:bg-blue-100  dark:bg-blue-900/30 dark:text-blue-100"
+      : "text-white/50 dark:text-slate-1000 hover:bg-slate-300 dark:hover:bg-slate-800"
   }`;
   return (
     <div>
@@ -40,7 +40,7 @@ const Sidebar = () => {
                 <h1 className="text-[#0d171b] dark:text-slate-100 text-base font-medium leading-normal">
                   Dr. Emily Carter
                 </h1>
-                <p className="text-[#4c809a] dark:text-slate-400 text-sm font-normal leading-normal">
+                <p className="text-primary dark:text-secondary  text-sm font-normal leading-normal">
                   Cardiologist
                 </p>
               </div>
@@ -48,33 +48,35 @@ const Sidebar = () => {
             <nav className="flex flex-col gap-2 mt-4">
               {navItems.map((item) => (
                 <NavLink to={item.path} className={navItemClass}>
-                  <span className="material-symbols-outlined text-xl">
+                  <span className="material-symbols-outlined text-xl text-current">
                     {item.icon}
                   </span>
-                  <p className="text-sm font-medium"> {item.lable}</p>
+                  <p className="text-sm text-current font-medium">
+                    {item.lable}
+                  </p>
                 </NavLink>
               ))}
             </nav>
           </div>
           <div className="flex flex-col gap-1">
-            <a
+            <NavLink
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-[#0d171b] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
-              href="#"
+              to="/docter-settings"
             >
               <span className="material-symbols-outlined text-xl!">
                 settings
               </span>
               <p className="text-sm font-medium leading-normal">Settings</p>
-            </a>
-            <a
+            </NavLink>
+            <NavLink
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-[#0d171b] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
-              href="#"
+              to={""}
             >
               <span className="material-symbols-outlined text-xl!">
                 help_outline
               </span>
               <p className="text-sm font-medium leading-normal">Help</p>
-            </a>
+            </NavLink>
           </div>
         </div>
       </div>
