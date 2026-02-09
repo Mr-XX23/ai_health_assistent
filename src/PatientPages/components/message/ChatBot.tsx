@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router";
 
-const MessageSection = () => {
+const ChatBot = () => {
   const navigate = useNavigate();
   const handleGoBack = () => {
     navigate(-1);
@@ -31,11 +31,8 @@ const MessageSection = () => {
                   </span>
                 </NavLink>
 
-                <div className="text-lg font-bold text-primary dark:text-secondary flex gap-2">
+                <div className="text-lg font-bold text-primary dark:text-secondary ">
                   Symptom Checker
-                  <div className="font-semibold text-black dark:text-white">
-                    (demo)
-                  </div>
                 </div>
               </div>
               <p className="text-sm text-black dark:text-white">
@@ -218,4 +215,4 @@ const MessageSection = () => {
   );
 };
 
-export default MessageSection;
+export default ChatBot;

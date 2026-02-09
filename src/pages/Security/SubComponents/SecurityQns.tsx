@@ -1,3 +1,5 @@
+import { NavLink } from "react-router";
+
 const SecurityQns = () => {
   return (
     <section className="bg-primary/10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
@@ -10,9 +12,12 @@ const SecurityQns = () => {
           our security practices or to report a vulnerability.
         </p>
         <div className="mt-8">
-          <button className="flex mx-auto min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-accent text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors">
+          <NavLink
+            to={"/contact"}
+            className="flex mx-auto min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-accent text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors"
+          >
             <span className="truncate">Contact Security Team</span>
-          </button>
+          </NavLink>
         </div>
       </div>
     </section>
