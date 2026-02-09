@@ -9,7 +9,7 @@ const MedicationReminder = () => {
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-ce   nter p-3 rounded-lg bg-background-light dark:bg-background-dark">
           <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-primary dark:text-secondary fill">
+            <span className="material-symbols-outlined text-primary dark:text-green-400c fill">
               check_circle
             </span>
             <div>

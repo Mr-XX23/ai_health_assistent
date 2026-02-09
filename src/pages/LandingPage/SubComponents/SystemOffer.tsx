@@ -1,6 +1,8 @@
+import { NavLink, useNavigate } from "react-router";
 import Testimonial from "./Testimonial";
 
 const SystemOffer = () => {
+  const navigate = useNavigate();
   return (
     <>
       <section
@@ -19,9 +21,12 @@ const SystemOffer = () => {
               records for a more efficient and effective virtual consultation.
             </p>
             <div className="flex min-w-[84px] max-w-[480px] w-fit">
-              <button className="flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-secondary text-white text-base font-bold tracking-[0.015em] hover:bg-opacity-90 transition-colors">
+              <NavLink
+                to={"/analysis"}
+                className="flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-secondary text-white text-base font-bold tracking-[0.015em] hover:bg-opacity-90 transition-colors"
+              >
                 <span className="truncate">Learn About Telemedicine</span>
-              </button>
+              </NavLink>
             </div>
           </div>
           <div

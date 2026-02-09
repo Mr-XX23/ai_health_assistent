@@ -32,7 +32,8 @@ import MedicationInteraction from "./PatientPages/pages/MedicationInteraction/Me
 import ScheduleAppointment from "./PatientPages/pages/ScheduleAppointment/ScheduleAppointment";
 import Messages from "./PatientPages/pages/Messages/Messages";
 import FindSpecailist from "./PatientPages/pages/FindSpecailist/FindSpecailist";
-import PatientDashboard from "./PatientPages/pages/PatientDashboard/PatientDashBoard";
+import PatientDashboard from "./PatientPages/pages/PatientDashBoard/PatientDashBoard";
+import Message from "./pages/MessageSection/Message";
 
 const App = () => {
   return (
@@ -47,8 +48,9 @@ const App = () => {
           <Route path="/security" element={<SecurityPage />} />
           <Route path="/pricing" element={<Pricingpage />} />
           <Route path="/contact" element={<ConctactUs />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/message" element={<Message />} />
 
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgetPassword />} />
           <Route path="/set-password" element={<SetNewPassword />} />
           <Route path="/update-password" element={<PasswordUpdated />} />
