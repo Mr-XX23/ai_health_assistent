@@ -1,9 +1,12 @@
 import PatientLayout from "../../../layout/PatientLayout/PatientLayout";
+import ChatBot from "../../components/message/ChatBot";
 
 const Messages = () => {
   return (
     <div>
-      <PatientLayout>hehe</PatientLayout>
+      <PatientLayout>
+        <ChatBot />
+      </PatientLayout>
     </div>
   );
 };

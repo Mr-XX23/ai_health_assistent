@@ -82,7 +82,10 @@ const Navbar = () => {
             </div>
 
             <div className="hidden xl:flex gap-2">
-              <button className="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-opacity-90">
+              <button
+                onClick={() => handleNavigate("/message")}
+                className="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-opacity-90"
+              >
                 Request a Demo
               </button>
               <button

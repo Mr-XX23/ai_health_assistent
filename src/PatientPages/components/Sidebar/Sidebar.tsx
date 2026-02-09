@@ -41,7 +41,7 @@ const Sidebar = ({ onClick }: { onClick?: () => void }) => {
               data-alt="User profile picture of Maria Garcia"
             ></div>
             <div className="flex flex-col overflow-hidden">
-              <h1 className="text-base font-medium truncate dark:text-secondary">
+              <h1 className="text-base font-medium truncate dark:text-white">
                 Maria Garcia
               </h1>
               <p className="text-xs font-normal text-text-light-secondary dark:text-secondary truncate">
