@@ -1,5 +1,11 @@
+import PatientLayout from "../../../layout/PatientLayout/PatientLayout";
+
 const Messages = () => {
-  return <div>Messages</div>;
+  return (
+    <div>
+      <PatientLayout>hehe</PatientLayout>
+    </div>
+  );
 };
 
 export default Messages;

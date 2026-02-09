@@ -1,7 +1,6 @@
-import React from "react";
 import PatientLayout from "../../../layout/PatientLayout/PatientLayout";
 
-const MedicationInteraction = () => {
+const FindSpecailist = () => {
   return (
     <div>
       <PatientLayout>hehe</PatientLayout>
@@ -9,4 +8,4 @@ const MedicationInteraction = () => {
   );
 };
 
-export default MedicationInteraction;
+export default FindSpecailist;

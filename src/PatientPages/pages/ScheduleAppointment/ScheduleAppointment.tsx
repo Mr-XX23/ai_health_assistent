@@ -1,5 +1,11 @@
+import PatientLayout from "../../../layout/PatientLayout/PatientLayout";
+
 const ScheduleAppointment = () => {
-  return <div>ScheduleAppointment</div>;
+  return (
+    <div>
+      <PatientLayout>hehe</PatientLayout>
+    </div>
+  );
 };
 
 export default ScheduleAppointment;

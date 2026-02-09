@@ -43,20 +43,22 @@ const Siderbar = () => {
 
           <div className="flex flex-col gap-2">
             {navItems.map((item) => (
-              <Link
+              <NavLink
                 key={item.lable}
                 to={item.path}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-primary/10
+                className={({ isActive }) =>
+                  `flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-primary/10
                  ${
-                   location.pathname === item.path
+                   isActive
                      ? "text-black dark:text-white "
                      : "text-secondary hover:text-primary dark:hover:text-primary dark:hover:text-secondary"
                  }
-                  `}
+                  `
+                }
               >
                 <span className="material-symbols-outlined">{item.icon}</span>
                 <p className="text-sm font-medium">{item.lable}</p>
-              </Link>
+              </NavLink>
             ))}
           </div>
         </div>
