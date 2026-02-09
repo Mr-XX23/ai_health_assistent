@@ -26,7 +26,7 @@ import DocterReport from "./DocterComponents/pages/DocterReport/DocterReport";
 import AdminPatientProfile from "./AdminComponents/pages/AdminPatientProfile/SystemPatientProfile";
 import DocterSettiing from "./DocterComponents/pages/DocterSetting/DocterSettiing";
 import DocterPatientProfile from "./DocterComponents/pages/DocterPatientProfile/DocterPatientProfile";
-import PatientDashBoard from "./PatientPages/pages/PatientDashBoard/PatientDashBoard";
+import PatientDashBoard from "./PatientPages/pages/PatientDashboard/PatientDashBoard";
 
 const App = () => {
   return (
