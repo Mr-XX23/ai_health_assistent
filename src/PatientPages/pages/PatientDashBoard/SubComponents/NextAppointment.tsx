@@ -7,12 +7,12 @@ const NextAppointment = () => {
         <h3 className="text-lg font-semibold dark:text-secondary">
           Next Appointment
         </h3>
-        <a
+        {/* <a
           className="text-sm font-medium text-primary hover:underline"
           href="#"
         >
           View all
-        </a>
+        </a> */}
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4 p-4 rounded-lg bg-background-light dark:bg-background-dark">

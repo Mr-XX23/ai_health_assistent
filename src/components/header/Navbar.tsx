@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const location = useLocation();
 
   const navItems = [
     { label: "Home", path: "/" },
@@ -25,7 +23,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 ">
+      <div className="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 ">
             <div className="flex items-center gap-4 ">
@@ -114,26 +112,29 @@ const Navbar = () => {
           <div className="xl:hidden border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark">
             <div className="px-4 py-4 space-y-4">
               {navItems.map((item) => (
-                <button
+                <NavLink
                   key={item.label}
-                  onClick={() => handleNavigate(item.path)}
-                  className={`
+                  to={item.path}
+                  className={({ isActive }) => `
                     block w-full text-left text-sm font-medium
                     ${
-                      location.pathname === item.path
+                      isActive
                         ? "text-primary font-semibold"
                         : "hover:text-primary"
                     }
                     `}
                 >
                   {item.label}
-                </button>
+                </NavLink>
               ))}
 
               <div className="pt-4 flex flex-col gap-2">
-                <button className="h-10 rounded-lg bg-primary text-white text-sm font-bold">
+                <NavLink
+                  to="/message"
+                  className="h-10 rounded-lg bg-primary text-white text-sm font-bold"
+                >
                   Request a Demo
-                </button>
+                </NavLink>
                 <button
                   onClick={() => handleNavigate("/login")}
                   className="h-10 rounded-lg bg-slate-200 dark:bg-slate-700 text-sm font-bold"
@@ -144,7 +145,7 @@ const Navbar = () => {
             </div>
           </div>
         )}
-      </header>
+      </div>
     </>
   );
 };

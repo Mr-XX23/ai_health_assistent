@@ -1,3 +1,5 @@
+import { NavLink } from "react-router";
+
 const SystemBenefits = () => {
   return (
     <>
@@ -22,9 +24,12 @@ const SystemBenefits = () => {
               schedules.
             </p>
             <div className="flex min-w-[84px] max-w-[480px] w-fit">
-              <button className="flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-secondary text-white text-base font-bold tracking-[0.015em] hover:bg-opacity-90 transition-colors">
+              <NavLink
+                to={"/solutions"}
+                className="flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-secondary text-white text-base font-bold tracking-[0.015em] hover:bg-opacity-90 transition-colors"
+              >
                 <span className="truncate">Discover Management Tools</span>
-              </button>
+              </NavLink>
             </div>
           </div>
         </div>

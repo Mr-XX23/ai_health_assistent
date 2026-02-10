@@ -8,7 +8,7 @@ const HealthOverview = () => {
           <h3 className="text-lg font-semibold dark:text-secondary">
             Health Overview
           </h3>
-          <p className="text-sm text-text-light-secondary dark:text-secondary">
+          <p className="text-sm text-text-light-secondary dark:text-white">
             Your wellness at a glance.
           </p>
         </div>
@@ -67,7 +67,7 @@ const HealthOverview = () => {
               <p className="font-semibold dark:text-secondary">
                 Blood Pressure
               </p>
-              <p className="text-sm text-text-light-secondary dark:text-secondary">
+              <p className="text-sm text-text-light-secondary dark:text-white">
                 120/80 mmHg
               </p>
             </div>
@@ -80,7 +80,7 @@ const HealthOverview = () => {
             </div>
             <div>
               <p className="font-semibold dark:text-secondary">Heart Rate</p>
-              <p className="text-sm text-text-light-secondary dark:text-secondary">
+              <p className="text-sm text-text-light-secondary dark:text-white">
                 72 bpm
               </p>
             </div>

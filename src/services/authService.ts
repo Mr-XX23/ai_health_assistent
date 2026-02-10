@@ -91,6 +91,7 @@ export interface RegisterRequest {
   username: string;
   password: string;
   phoneNumber: string;
+  userRole: "patient" | "provider";
 }
 
 export interface RegisterResponse {
@@ -156,6 +157,15 @@ class AuthService {
       });
     }
 
+    // Validate user role
+    if (!data.userRole || !["patient", "provider"].includes(data.userRole)) {
+      errors.push({
+        field: "userRole",
+        message:
+          "Please select whether you are a Patient or Healthcare Provider",
+      });
+    }
+
     return {
       isValid: errors.length === 0,
       errors,
@@ -178,6 +188,7 @@ class AuthService {
         username: InputSanitizer.sanitizeUsername(data.username),
         password: data.password, // Never sanitize passwords - they should be used as-is
         phoneNumber: InputSanitizer.sanitizePhoneNumber(data.phoneNumber),
+        userRole: data.userRole, // No sanitization needed for user role - it's a safe enum
       };
 
       // Validate inputs

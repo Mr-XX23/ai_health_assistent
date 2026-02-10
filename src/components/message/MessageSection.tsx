@@ -56,7 +56,7 @@ const MessageSection = () => {
                   <p className="text-primary dark:text-secondary text-[13px] font-medium">
                     AI Assistant
                   </p>
-                  <p className="text-black dark:text-white font-normal leading-normal flex max-w-md rounded-lg px-4 py-3 bg-background-light dark:bg-background-dark ">
+                  <p className="text-black dark:text-white bg-primary/30 font-normal leading-normal flex max-w-md rounded-lg px-4 py-3 ">
                     Hello! I'm here to help you understand your symptoms. To
                     start, could you please tell me who this consultation is
                     for?
@@ -69,7 +69,7 @@ const MessageSection = () => {
                   <p className="text-primary dark:text-secondary text-[13px] font-medium">
                     You
                   </p>
-                  <p className="text-black dark:text-white font-normal leading-normal flex max-w-md rounded-lg px-4 py-3 bg-primary dark:bg-secondary text-white">
+                  <p className=" dark:text-white font-normal leading-normal flex max-w-md rounded-lg px-4 py-3 bg-primary text-white">
                     It's for me. I'm a 32-year-old male.
                   </p>
                 </div>
@@ -85,7 +85,7 @@ const MessageSection = () => {
                   <p className="text-primary dark:text-secondary text-[13px] font-medium">
                     AI Assistant
                   </p>
-                  <p className="text-black dark:text-white font-normal leading-normal flex max-w-md rounded-lg px-4 py-3 bg-background-light dark:bg-background-dark">
+                  <p className="text-black dark:text-white font-normal leading-normal flex max-w-md rounded-lg px-4 py-3 bg-primary/30">
                     Thank you. What are your primary symptoms? You can describe
                     them or select from the options below.
                   </p>
