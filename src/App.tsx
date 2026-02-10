@@ -32,8 +32,8 @@ import MedicationInteraction from "./PatientPages/pages/MedicationInteraction/Me
 import ScheduleAppointment from "./PatientPages/pages/ScheduleAppointment/ScheduleAppointment";
 import Messages from "./PatientPages/pages/Messages/Messages";
 import FindSpecailist from "./PatientPages/pages/FindSpecailist/FindSpecailist";
-import PatientDashboard from "./PatientPages/pages/PatientDashBoard/PatientDashBoard";
 import Message from "./pages/MessageSection/Message";
+import PatientDashboard from "./PatientPages/pages/PatientDashboard/PatientDashBoard";
 
 const App = () => {
   return (

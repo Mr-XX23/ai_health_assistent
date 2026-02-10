@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
     { lable: "Dashboard", path: "/docter-dashboard", icon: "dashboard" },
@@ -19,16 +22,14 @@ const Sidebar = () => {
     { lable: "Reports", path: "/docter-report", icon: "bar_chart" },
   ];
 
-  const navItemClass = ({ isActive }: { isActive: boolean }) =>
-    ` flex items-center gap-3 px-3 py-2 rounded-lg transition-colours
-  ${
-    isActive
-      ? " text-primary bg-primary/20 dark:bg-blue-100  dark:bg-blue-900/30 dark:text-blue-100"
-      : "text-white/50 dark:text-slate-1000 hover:bg-slate-300 dark:hover:bg-slate-800"
-  }`;
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    setIsOpen(false);
+  };
+
   return (
     <div>
-      <div className="flex h-full w-[260px] flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50">
+      <div className="flex h-full w-[260px] flex-col border-r border-slate-200 dark:border-slate-800 dark:bg-slate-900/50">
         <div className="flex h-full flex-col justify-between p-4">
           <div className="flex flex-col gap-4">
             <div className="flex gap-3 items-center">
@@ -45,9 +46,20 @@ const Sidebar = () => {
                 </p>
               </div>
             </div>
-            <nav className="flex flex-col gap-2 mt-4">
+
+            <div className="hidden xl:flex flex-col gap-2 mt-4">
               {navItems.map((item) => (
-                <NavLink to={item.path} className={navItemClass}>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    ` flex items-center gap-3 px-3 py-2 rounded-lg transition-colours
+  ${
+    isActive
+      ? " text-black bg-primary/20  dark:bg-blue-900/30 dark:text-blue-100"
+      : "text-black/40    dark:text-white/50 dark:text-slate-1000 hover:bg-slate-300 dark:hover:bg-slate-800"
+  }`
+                  }
+                >
                   <span className="material-symbols-outlined text-xl text-current">
                     {item.icon}
                   </span>
@@ -56,9 +68,9 @@ const Sidebar = () => {
                   </p>
                 </NavLink>
               ))}
-            </nav>
+            </div>
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="hidden xl:flex flex-col gap-1">
             <NavLink
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-[#0d171b] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
               to="/docter-settings"
@@ -78,8 +90,44 @@ const Sidebar = () => {
               <p className="text-sm font-medium leading-normal">Help</p>
             </NavLink>
           </div>
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="xl:hidden p-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-700"
+            aria-label="Toggle menu"
+          >
+            <span className="material-symbols-outlined">
+              {isOpen ? "close" : "menu"}
+            </span>
+          </button>
         </div>
       </div>
+
+      {isOpen && (
+        <div className="xl:hidden border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark">
+          <div className="px-4 py-4 space-y-4">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.lable}
+                to={item.path}
+                className={({ isActive }) =>
+                  ` flex items-center gap-3 px-3 py-2 rounded-lg transition-colours
+  ${
+    isActive
+      ? " text-black bg-primary/20  dark:bg-blue-900/30 dark:text-blue-100"
+      : "text-black/40    dark:text-white/50 dark:text-slate-1000 hover:bg-slate-300 dark:hover:bg-slate-800"
+  }`
+                }
+              >
+                <span className="material-symbols-outlined text-xl text-current">
+                  {item.icon}
+                </span>
+                <p className="text-sm text-current font-medium">{item.lable}</p>
+              </NavLink>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

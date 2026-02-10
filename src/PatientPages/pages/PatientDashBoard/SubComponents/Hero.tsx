@@ -16,7 +16,7 @@ const Hero = () => {
                 AI Symptom Checker
               </h3>
             </div>
-            <p className="text-sm text-text-light-secondary dark:text-secondary leading-relaxed max-w-3xl">
+            <p className="text-sm text-text-light-secondary dark:text-white leading-relaxed max-w-3xl">
               Analyze your symptoms with our AI to get instant health insights
               and guidance. Start a session now to understand your health better
               and receive personalized recommendations based on your input.

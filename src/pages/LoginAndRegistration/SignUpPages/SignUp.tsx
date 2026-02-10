@@ -72,6 +72,7 @@ const SignUp = () => {
         username: formData.username,
         password: formData.password,
         phoneNumber: formData.phoneNumber,
+        userRole: userRole as "patient" | "provider",
       });
 
       if (result.success && result.data) {
@@ -88,8 +89,10 @@ const SignUp = () => {
         setUserRole("");
         setPasswordStrength({ strength: "weak", percentage: 0 });
 
-        // Navigate to verification page with userId
-        navigate("/verification", { state: { userId: result.data.userId } });
+        // Navigate to verification page with userId and email
+        navigate("/verification", {
+          state: { userId: result.data.userId, email: result.data.email },
+        });
       } else if (result.errors) {
         setErrors(result.errors);
       } else if (result.message) {
