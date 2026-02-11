@@ -1,4 +1,8 @@
-const Content = () => {
+type Props = {
+  isAnnual: boolean;
+};
+
+const Content = ({ isAnnual }: Props) => {
   return (
     <section className="pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -10,9 +14,11 @@ const Content = () => {
             For individual practitioners and small clinics getting started.
           </p>
           <div className="mt-6">
-            <span className="text-5xl font-black">Rs.999</span>
+            <span className="text-5xl font-black">
+              {isAnnual ? "Rs.799" : "Rs.999"}
+            </span>
             <span className="text-lg font-medium text-subtext-light dark:text-subtext-dark">
-              / provider / month
+              {isAnnual ? "/ provider / year" : "/ provider / month"}
             </span>
           </div>
           <button className="mt-6 w-full flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-secondary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors">
@@ -70,9 +76,11 @@ const Content = () => {
             For growing practices that need advanced AI capabilities.
           </p>
           <div className="mt-6">
-            <span className="text-5xl font-black">Rs.1999</span>
+            <span className="text-5xl font-black">
+              {isAnnual ? "Rs.1599" : "Rs.1999"}
+            </span>
             <span className="text-lg font-medium text-subtext-light dark:text-subtext-dark">
-              / provider / month
+              {isAnnual ? "/ provider / year" : "/ provider / month"}
             </span>
           </div>
           <button className="text-white mt-6 w-full flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary dark:bg-secondary font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors">

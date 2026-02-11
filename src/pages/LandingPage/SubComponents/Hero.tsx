@@ -4,7 +4,7 @@ import { NavLink } from "react-router";
 const Hero = () => {
   return (
     <div>
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+      <div className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tighter">
             The Future of Healthcare, Delivered Today.
@@ -23,7 +23,7 @@ const Hero = () => {
             </NavLink>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
