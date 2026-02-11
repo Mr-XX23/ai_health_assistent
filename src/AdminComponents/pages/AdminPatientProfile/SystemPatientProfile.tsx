@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PatientSidebar from "../../../PatientComponents/components/sidebar/PatientSidebar";
 import BloodPressure from "../../../PatientComponents/components/statistics/BloodPressure";
+import YourMedication from "../../../PatientPages/pages/MedicationManagement/SubComponents/YourMedication";
 
 const SystemPatientProfile = () => {
   const [activeRange, setActiveRange] = useState<"6m" | "1y" | "all">("6m");
@@ -47,7 +48,10 @@ const SystemPatientProfile = () => {
               </div>
             </div>
             {/* <!-- SectionHeader: At a Glance --> */}
-            <h2 className="text-charcoal dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-8">
+            <h2
+              id="medical-history"
+              className="text-charcoal dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-8"
+            >
               At a Glance
             </h2>
             {/* <!-- Stats Cards --> */}
@@ -143,6 +147,9 @@ const SystemPatientProfile = () => {
                 {/* <!-- Data Table --> */}
                 <BloodPressure />
               </div>
+            </div>
+            <div id="medication">
+              <YourMedication />
             </div>
           </div>
         </main>
