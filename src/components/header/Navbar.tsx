@@ -129,12 +129,12 @@ const Navbar = () => {
               ))}
 
               <div className="pt-4 flex flex-col gap-2">
-                <NavLink
-                  to="/message"
-                  className="h-10 rounded-lg bg-primary text-white text-sm font-bold"
+                <button
+                  onClick={() => handleNavigate("/message")}
+                  className="h-10 rounded-lg bg-primary text-white text-sm font-bold "
                 >
                   Request a Demo
-                </NavLink>
+                </button>
                 <button
                   onClick={() => handleNavigate("/login")}
                   className="h-10 rounded-lg bg-slate-200 dark:bg-slate-700 text-sm font-bold"
