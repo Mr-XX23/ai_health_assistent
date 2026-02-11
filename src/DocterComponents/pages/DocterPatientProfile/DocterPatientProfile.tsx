@@ -14,6 +14,16 @@ const DocterPatientProfile = () => {
 
   const activeBtn = "bg-primary text-white border-primary";
 
+  const patientData = [
+    {
+      id: 1,
+      name: "Isabella Rossi",
+      age: 34,
+      bloodType: "O+",
+      dob: "05/12/1990",
+    },
+  ];
+
   return (
     <DocterLayout>
       <div className="w-full bg-background-light dark:bg-background-dark font-display text-charcoal dark:text-gray-200">
@@ -24,30 +34,34 @@ const DocterPatientProfile = () => {
           <main className="flex-1 p-8">
             <div className="w-full max-w-6xl mx-auto">
               {/* <!-- ProfileHeader --> */}
-              <div className="flex p-4 @container bg-white dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
-                <div className="flex w-full flex-col gap-4 @[520px]:flex-row @[520px]:justify-between @[520px]:items-center">
-                  <div className="flex gap-6 items-center">
-                    <div
-                      className="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-24 w-24 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuBwzt0xqo2PKlVlC6dxMohXgrxcKu2JzVIGf8lwSIpvRuFwu0yifO6KjWpulEodrYubgUtCSg-PAl3meLvGIU43jyS42g6Hzos7cNV5dJ1DzF3wYlqrflV1lcVbb7R-xrOqqX3AojjBdBallTp2oHztZAF_slAPrnMTVsgHE9yP2xLAjKld8wohzKKWFbV4b9_JvcTiuXBhnTmU9Tb-DLVD3pGyxMYy1nrFGeqBvBgb6lVTRgZi6g5xsRMRdugdUdyPcC2lf_INgX4b)]"
-                      data-alt="Profile picture of Isabella Rossi"
-                    ></div>
-                    <div className="flex flex-col justify-center">
-                      <p className="text-charcoal dark:text-white text-[28px] font-bold leading-tight tracking-[-0.015em]">
-                        Isabella Rossi
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-300 text-base font-normal leading-normal">
-                        Age: 34 | Blood Type: O+ | DOB: 05/12/1990
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-300 text-base font-normal leading-normal">
-                        Primary Physician: Dr. Anya Sharma
-                      </p>
+
+              {patientData.map((patient) => (
+                <div className="flex p-4 @container bg-white dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="flex w-full flex-col gap-4 @[520px]:flex-row @[520px]:justify-between @[520px]:items-center">
+                    <div className="flex gap-6 items-center">
+                      <div
+                        className="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-24 w-24 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuBwzt0xqo2PKlVlC6dxMohXgrxcKu2JzVIGf8lwSIpvRuFwu0yifO6KjWpulEodrYubgUtCSg-PAl3meLvGIU43jyS42g6Hzos7cNV5dJ1DzF3wYlqrflV1lcVbb7R-xrOqqX3AojjBdBallTp2oHztZAF_slAPrnMTVsgHE9yP2xLAjKld8wohzKKWFbV4b9_JvcTiuXBhnTmU9Tb-DLVD3pGyxMYy1nrFGeqBvBgb6lVTRgZi6g5xsRMRdugdUdyPcC2lf_INgX4b)]"
+                        data-alt="Profile picture of Isabella Rossi"
+                      ></div>
+                      <div className="flex flex-col justify-center">
+                        <p className="text-charcoal dark:text-white text-[28px] font-bold leading-tight tracking-[-0.015em]">
+                          {patient.name}
+                        </p>
+                        <p className="text-gray-600 dark:text-gray-300 text-base font-normal leading-normal">
+                          Age: {patient.age} | Blood Type: {patient.bloodType} |
+                          DOB: {patient.dob}
+                        </p>
+                        <p className="text-gray-600 dark:text-gray-300 text-base font-normal leading-normal">
+                          Primary Physician: Dr. Anya Sharma
+                        </p>
+                      </div>
                     </div>
+                    <button className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gray-100 dark:bg-gray-800 text-charcoal dark:text-white text-sm font-bold leading-normal tracking-[0.015em] w-full max-w-[480px] @[480px]:w-auto border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700">
+                      <span className="truncate">Edit Profile</span>
+                    </button>
                   </div>
-                  <button className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gray-100 dark:bg-gray-800 text-charcoal dark:text-white text-sm font-bold leading-normal tracking-[0.015em] w-full max-w-[480px] @[480px]:w-auto border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700">
-                    <span className="truncate">Edit Profile</span>
-                  </button>
                 </div>
-              </div>
+              ))}
               {/* <!-- SectionHeader: At a Glance --> */}
               <h2 className="text-charcoal dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-8">
                 At a Glance
