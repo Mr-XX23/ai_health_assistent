@@ -44,7 +44,7 @@ const LowerContent = () => {
             </p>
           </div>
           <div className="dark:bg-slate-700 p-8 rounded-xl text-center flex flex-col items-center shadow-lg">
-            <span className="material-symbols-outlined !text-5xl text-primary dark:text-secondary">
+            <span className="material-symbols-outlined text-primary dark:text-secondary">
               person_alert
             </span>
             <p className="mt-4 text-5xl font-extrabold text-primary dark:text-secondary">

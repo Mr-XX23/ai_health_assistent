@@ -1,3 +1,5 @@
+import { NavLink } from "react-router";
+
 const Qns = () => {
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
@@ -10,9 +12,12 @@ const Qns = () => {
           our Premium plan. No credit card required.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
-          <button className="flex min-w-[84px] w-full sm:w-auto max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-accent text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors">
+          <NavLink
+            to={"/message"}
+            className="flex min-w-[84px] w-full sm:w-auto max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors"
+          >
             <span className="truncate">Request a Demo</span>
-          </button>
+          </NavLink>
           <button className="flex min-w-[84px] w-full sm:w-auto max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-background-light dark:bg-slate-700 text-base font-bold leading-normal tracking-[0.015em] hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
             <span className="truncate">Start Free Trial</span>
           </button>
