@@ -14,7 +14,7 @@ const SecurityQns = () => {
         <div className="mt-8">
           <NavLink
             to={"/contact"}
-            className="flex mx-auto min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-accent text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors"
+            className="flex mx-auto min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors"
           >
             <span className="truncate">Contact Security Team</span>
           </NavLink>
