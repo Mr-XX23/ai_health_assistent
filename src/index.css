@@ -20,6 +20,17 @@
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-full: 9999px;
+}
 
+.section-highlight {
+  animation: flashHighlight 1s ease-in-out;
+}
 
+@keyframes flashHighlight {
+  0% {
+    background-color: rgba(59, 130, 246, 0.3); /* blue */
+  }
+  100% {
+    background-color: transparent;
+  }
 }

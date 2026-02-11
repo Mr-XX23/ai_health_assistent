@@ -35,6 +35,7 @@ import Message from "./pages/MessageSection/Message";
 import PatientDashboard from "./PatientPages/pages/PatientDashBoard/PatientDashBoard";
 import Appointments from "./PatientPages/pages/Appointments/Appointments";
 import FindSpecialist from "./PatientPages/pages/Findspecialist/FindSpecialist";
+import DoctorPatientMedication from "./DocterComponents/components/Medicattion/DoctorPatientMedication";
 
 const App = () => {
   return (
@@ -58,7 +59,7 @@ const App = () => {
 
           <Route path="/signup" element={<SignUp />} />
           <Route path="/verification" element={<Verification />} />
-
+          {/* Admine side routing */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route
             path="/admin-patient-profile"
@@ -66,6 +67,7 @@ const App = () => {
           />
           <Route path="/admin-patient-page" element={<PatientPage />} />
 
+          {/* Doctor side routing */}
           <Route path="/docter-dashboard" element={<DocterDashboard />} />
           <Route path="/docter-patient" element={<DocterSidePatient />} />
           <Route
@@ -80,6 +82,12 @@ const App = () => {
           <Route path="/docter-consultation" element={<DocterConsultation />} />
           <Route path="/docter-report" element={<DocterReport />} />
           <Route path="/docter-settings" element={<DocterSettiing />} />
+          <Route
+            path="/docter-medication"
+            element={<DoctorPatientMedication />}
+          />
+
+          {/* Patient Side Routing */}
 
           <Route path="/patient-dashboard" element={<PatientDashboard />} />
           <Route

@@ -11,11 +11,17 @@ const PatientSidebar = () => {
     const element = document.getElementById(id);
 
     if (element) {
-      const yOffset = -20; // adjust if needed
+      const yOffset = -50; // adjust if needed
       const y =
         element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
       window.scrollTo({ top: y, behavior: "smooth" });
+
+      element.classList.add("section-highlight");
+
+      setTimeout(() => {
+        element.classList.remove("section-highlight");
+      }, 1000);
     }
   };
 
@@ -39,8 +45,9 @@ const PatientSidebar = () => {
           </div>
           <nav className="flex flex-col gap-2 mt-4">
             <NavLink
+              onClick={() => scrollToSection("overview")}
               to={"#"}
-              className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT bg-primary/10 text-primary dark:bg-primary/20"
+              className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <span className="material-symbols-outlined fill">person</span>
               <p className="text-sm font-medium leading-normal">Overview</p>
@@ -76,6 +83,7 @@ const PatientSidebar = () => {
             </NavLink>
             <NavLink
               to={""}
+              onClick={() => scrollToSection("vaccination")}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <span className="material-symbols-outlined">vaccines</span>
@@ -83,6 +91,7 @@ const PatientSidebar = () => {
             </NavLink>
             <NavLink
               to={""}
+              onClick={() => scrollToSection("lifestyle")}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <span className=" material-symbols-outlined">directions_run</span>

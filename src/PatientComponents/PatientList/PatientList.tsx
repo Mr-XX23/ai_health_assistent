@@ -103,7 +103,7 @@ const PatientList = () => {
                     className="text-center whitespace-nowrap px-6 py-4 text-sm font-medium"
                     onClick={() => navigate("/admin-patient-profile")}
                   >
-                    <a className="hover:underline">View Details</a>
+                    <span className="hover:underline">View Details</span>
                   </td>
                 </tr>
               ))}

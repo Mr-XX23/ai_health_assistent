@@ -1,7 +1,9 @@
 import { useState } from "react";
 import PatientSidebar from "../../../PatientComponents/components/sidebar/PatientSidebar";
 import BloodPressure from "../../../PatientComponents/components/statistics/BloodPressure";
-import YourMedication from "../../../PatientPages/pages/MedicationManagement/SubComponents/YourMedication";
+import DoctorPatientMedication from "../../../DocterComponents/components/Medicattion/DoctorPatientMedication";
+import Vaccination from "../../../DocterComponents/components/Vaccination/Vaccination";
+import Lifestyle from "../../../DocterComponents/components/Lifestyle/Lifestyle";
 
 const SystemPatientProfile = () => {
   const [activeRange, setActiveRange] = useState<"6m" | "1y" | "all">("6m");
@@ -24,7 +26,10 @@ const SystemPatientProfile = () => {
           <div className="w-full max-w-6xl mx-auto">
             {/* <!-- ProfileHeader --> */}
             <div className="flex p-4 @container bg-white dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
-              <div className="flex w-full flex-col gap-4 @[520px]:flex-row @[520px]:justify-between @[520px]:items-center">
+              <div
+                id="overview"
+                className="flex w-full flex-col gap-4 @[520px]:flex-row @[520px]:justify-between @[520px]:items-center"
+              >
                 <div className="flex gap-6 items-center">
                   <div
                     className="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-24 w-24 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuBwzt0xqo2PKlVlC6dxMohXgrxcKu2JzVIGf8lwSIpvRuFwu0yifO6KjWpulEodrYubgUtCSg-PAl3meLvGIU43jyS42g6Hzos7cNV5dJ1DzF3wYlqrflV1lcVbb7R-xrOqqX3AojjBdBallTp2oHztZAF_slAPrnMTVsgHE9yP2xLAjKld8wohzKKWFbV4b9_JvcTiuXBhnTmU9Tb-DLVD3pGyxMYy1nrFGeqBvBgb6lVTRgZi6g5xsRMRdugdUdyPcC2lf_INgX4b)]"
@@ -48,41 +53,43 @@ const SystemPatientProfile = () => {
               </div>
             </div>
             {/* <!-- SectionHeader: At a Glance --> */}
-            <h2
-              id="medical-history"
-              className="text-charcoal dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-8"
-            >
-              At a Glance
-            </h2>
-            {/* <!-- Stats Cards --> */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-              <div className="flex flex-col gap-2 rounded-lg p-6 bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
-                <p className="text-charcoal dark:text-gray-200 text-base font-medium leading-normal">
-                  Allergies
-                </p>
-                <p className="text-danger tracking-light text-2xl font-bold leading-tight">
-                  Penicillin
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 rounded-lg p-6 bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
-                <p className="text-charcoal dark:text-gray-200 text-base font-medium leading-normal">
-                  Critical Conditions
-                </p>
-                <p className="text-warning tracking-light text-2xl font-bold leading-tight">
-                  Asthma
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 rounded-lg p-6 bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
-                <p className="text-charcoal dark:text-gray-200 text-base font-medium leading-normal">
-                  Last Vitals Check
-                </p>
-                <p className="text-success tracking-light text-2xl font-bold leading-tight">
-                  Yesterday
-                </p>
+            <div id="medical-history">
+              <h2 className="text-charcoal dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-8">
+                At a Glance
+              </h2>
+              {/* <!-- Stats Cards --> */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-4">
+                <div className="flex flex-col gap-2 rounded-lg p-6 bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
+                  <p className="text-charcoal dark:text-gray-200 text-base font-medium leading-normal">
+                    Allergies
+                  </p>
+                  <p className="text-danger tracking-light text-2xl font-bold leading-tight">
+                    Penicillin
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 rounded-lg p-6 bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
+                  <p className="text-charcoal dark:text-gray-200 text-base font-medium leading-normal">
+                    Critical Conditions
+                  </p>
+                  <p className="text-warning tracking-light text-2xl font-bold leading-tight">
+                    Asthma
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 rounded-lg p-6 bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
+                  <p className="text-charcoal dark:text-gray-200 text-base font-medium leading-normal">
+                    Last Vitals Check
+                  </p>
+                  <p className="text-success tracking-light text-2xl font-bold leading-tight">
+                    Yesterday
+                  </p>
+                </div>
               </div>
             </div>
             {/* <!-- Health Metrics Section --> */}
-            <div className="bg-white dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 mt-8">
+            <div
+              id="health-metrics"
+              className="bg-white dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 mt-8"
+            >
               <div className="flex justify-between items-center px-6 pt-5 pb-3 border-b border-gray-200 dark:border-gray-700">
                 <h2 className="text-charcoal dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">
                   Health Metrics
@@ -120,7 +127,7 @@ const SystemPatientProfile = () => {
               </div>
               <div className="px-6 py-4">
                 <div className="flex border-b border-gray-200 dark:border-gray-700">
-                  <button className="px-4 py-2 text-sm font-semibold text-primary border-b-2 border-primary">
+                  <button className="px-4 py-2 text-sm font-semibold text-primary dark:text-secondary border-b-2 border-primary">
                     Vitals
                   </button>
                   <button className="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-charcoal dark:hover:text-white">
@@ -148,8 +155,14 @@ const SystemPatientProfile = () => {
                 <BloodPressure />
               </div>
             </div>
-            <div id="medication">
-              <YourMedication />
+            <div id="medication" className="py-6 pt-8">
+              <DoctorPatientMedication />
+            </div>
+            <div id="vaccination">
+              <Vaccination />
+            </div>
+            <div id="lifestyle">
+              <Lifestyle />
             </div>
           </div>
         </main>

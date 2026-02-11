@@ -121,12 +121,12 @@ const MessageSection = () => {
               </div>
               <p className="text-xs text-center text-primary dark:text-secondary">
                 Your personal data is encrypted and secure.{" "}
-                <a
+                <NavLink
                   className="text-primary dark:text-secondary underline"
-                  href="#"
+                  to="/analysis"
                 >
                   Learn more
-                </a>
+                </NavLink>
                 .
               </p>
             </div>
