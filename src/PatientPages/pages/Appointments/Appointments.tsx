@@ -2,7 +2,6 @@ import PatientLayout from "../../../layout/PatientLayout/PatientLayout";
 
 const Appointments = () => {
   return (
-    <div>
       <PatientLayout>
         <body className="font-display bg-background-light dark:bg-background-dark text-text-light-primary dark:text-text-dark-primary">
           <div className="relative flex min-h-screen w-full">
@@ -71,7 +70,7 @@ const Appointments = () => {
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
                     </span>
                   </button>
-                  <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDwKLN-DIyGLSsHJVAT6wcoiINFinPdz7BjtIxSlSoatnO-Gfeu0FQgjR8_QNm01ipL6izejmiRO6_-qHMq2-3INDcOzrekGh5oSuMxhEgNLeRK8RwIoVA0Qj9oBafv_zNAx2CItZ6Az6ZAAV4yK70LWrYDyIRGsh4WBu8XFwKSvrBMCHCcK9h85u6WbiHlDSoINFuipHkoBd9Ih2n-Ez6N6ZuexvyzAx8pRnsmu5RONGjVWWUdSUUbfpYeF8b1ABKeCZc3ufCAZ4fB");'></div>
+                  <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuDwKLN-DIyGLSsHJVAT6wcoiINFinPdz7BjtIxSlSoatnO-Gfeu0FQgjR8_QNm01ipL6izejmiRO6_-qHMq2-3INDcOzrekGh5oSuMxhEgNLeRK8RwIoVA0Qj9oBafv_zNAx2CItZ6Az6ZAAV4yK70LWrYDyIRGsh4WBu8XFwKSvrBMCHCcK9h85u6WbiHlDSoINFuipHkoBd9Ih2n-Ez6N6ZuexvyzAx8pRnsmu5RONGjVWWUdSUUbfpYeF8b1ABKeCZc3ufCAZ4fB)]" ></div>
                 </div>
               </header>
               <div className="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark custom-scrollbar">
@@ -172,7 +171,7 @@ const Appointments = () => {
                           <div className="flex items-start justify-between mb-6">
                             <div className="flex items-center gap-4">
                               <div className="relative">
-                                <div className="w-16 h-16 rounded-xl bg-center bg-cover border-2 border-white dark:border-border-dark" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDwKLN-DIyGLSsHJVAT6wcoiINFinPdz7BjtIxSlSoatnO-Gfeu0FQgjR8_QNm01ipL6izejmiRO6_-qHMq2-3INDcOzrekGh5oSuMxhEgNLeRK8RwIoVA0Qj9oBafv_zNAx2CItZ6Az6ZAAV4yK70LWrYDyIRGsh4WBu8XFwKSvrBMCHCcK9h85u6WbiHlDSoINFuipHkoBd9Ih2n-Ez6N6ZuexvyzAx8pRnsmu5RONGjVWWUdSUUbfpYeF8b1ABKeCZc3ufCAZ4fB");'></div>
+                                <div className="w-16 h-16 rounded-xl bg-center bg-cover border-2 border-white dark:border-border-dark bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuBXgdR9fgxacnA8bv-FOXrmQl3rngBtUSt3sVHP-7x1lh9acKjucsLtemUYApawkGcdjSJ_HQT3zu68yWpnlP2XhD53h007Q7mRs_voOLnjONn5L8nfg5r3SF1fxBeKrKbRKGMPL3WEOWPE72AxijFI-kbihju6BFbanVtdVYp-KQOLhd6c6GB9kR3rkK8cFxWCOngi_vh2HdDZWj2NGShV5u9pAOHxhzHlCxGHCew54tH4-Pz11_NHxTyUz3imp-2nxc24VsIZ4ZS0)]"></div>
                                 <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center border-2 border-white dark:border-border-dark">
                                   <span className="material-symbols-outlined text-[14px] text-white">person</span>
                                 </div>
@@ -284,7 +283,6 @@ const Appointments = () => {
 
         </body>
       </PatientLayout>
-    </div>
   );
 };
 
