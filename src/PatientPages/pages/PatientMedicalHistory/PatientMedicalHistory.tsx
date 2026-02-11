@@ -4,7 +4,7 @@ import PastMedicalConditions from "./SubComponents/PastMedicalConditions";
 import SurgicalHistory from "./SubComponents/SurgicalHistory";
 
 const PatientMedicalHistory = () => {
-  return ( 
+  return (
     <div>
       <PatientLayout>
         <main className="flex-1 flex flex-col h-screen dark:text-secondary ">
@@ -18,7 +18,7 @@ const PatientMedicalHistory = () => {
                 <span className="material-symbols-outlined text-base">add_circle</span>
                 <span>Add New Entry</span>
               </button>
-              <button className="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary/10 text-primary dark:bg-primary/20 text-sm font-bold hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
+              <button className="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary/10 dark-text-secondary dark:bg-primary/20 text-sm font-bold hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
                 <span className="material-symbols-outlined text-base">print</span>
                 <span>Print / Export</span>
               </button>
@@ -61,9 +61,9 @@ const PatientMedicalHistory = () => {
             <div className="flex-1 overflow-y-auto p-8">
               <div className="max-w-7xl mx-auto flex flex-col gap-8">
                 <PastMedicalConditions />
-                <SurgicalHistory/>
+                <SurgicalHistory />
                 <AllergiesandImmunizatiions />
-                 
+
               </div>
             </div>
           </div>
