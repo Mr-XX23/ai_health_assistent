@@ -6,6 +6,19 @@ const PatientSidebar = () => {
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+
+    if (element) {
+      const yOffset = -20; // adjust if needed
+      const y =
+        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+
   return (
     <div>
       <div className="sticky top-0 flex h-screen w-64 flex-col border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-4">
@@ -26,7 +39,7 @@ const PatientSidebar = () => {
           </div>
           <nav className="flex flex-col gap-2 mt-4">
             <NavLink
-              to={""}
+              to={"#"}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT bg-primary/10 text-primary dark:bg-primary/20"
             >
               <span className="material-symbols-outlined fill">person</span>
@@ -34,7 +47,8 @@ const PatientSidebar = () => {
             </NavLink>
 
             <NavLink
-              to={""}
+              to={"#"}
+              onClick={() => scrollToSection("medical-history")}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <span className="material-symbols-outlined">history</span>
@@ -43,7 +57,8 @@ const PatientSidebar = () => {
               </p>
             </NavLink>
             <NavLink
-              to={""}
+              to={"#"}
+              onClick={() => scrollToSection("health-metrics")}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <span className="material-symbols-outlined">monitoring</span>
@@ -53,6 +68,7 @@ const PatientSidebar = () => {
             </NavLink>
             <NavLink
               to={""}
+              onClick={() => scrollToSection("medication")}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <span className="material-symbols-outlined">pill</span>

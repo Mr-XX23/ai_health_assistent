@@ -33,7 +33,7 @@ import ScheduleAppointment from "./PatientPages/pages/ScheduleAppointment/Schedu
 import Messages from "./PatientPages/pages/Messages/Messages";
 import FindSpecailist from "./PatientPages/pages/Appointments/Appointments";
 import Message from "./pages/MessageSection/Message";
-import PatientDashboard from "./PatientPages/pages/PatientDashBoard/PatientDashBoard";
+import PatientDashboard from "./PatientPages/pages/PatientDashboard/PatientDashBoard";
 
 const App = () => {
   return (
