@@ -11,7 +11,7 @@ const Sidebar = ({ onClick }: { onClick?: () => void }) => {
     },
     { lable: "Medications", path: "/patient-medications", icon: "medication" },
     {
-      lable: "Find Specailist",
+      lable: "Find Specialist",
       path: "/patient-symptom-checker",
       icon: "stethoscope",
     },
