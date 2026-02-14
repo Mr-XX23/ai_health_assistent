@@ -140,7 +140,7 @@ const SystemPatientProfile = () => {
               </div>
               {/* <!-- Chart & Table --> */}
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-charcoal dark:text-white mb-4">
+                <h3 className="text-lg font-semibold text-charcoal dark:text-white mb-4 ">
                   Blood Pressure Over Time
                 </h3>
                 {/* <!-- Placeholder for a chart --> */}
@@ -155,13 +155,13 @@ const SystemPatientProfile = () => {
                 <BloodPressure />
               </div>
             </div>
-            <div id="medication" className="py-6 pt-8">
+            <div id="medication" className="p-6">
               <DoctorPatientMedication />
             </div>
-            <div id="vaccination">
+            <div id="vaccination" className="p-6">
               <Vaccination />
             </div>
-            <div id="lifestyle">
+            <div id="lifestyle" className="p-6">
               <Lifestyle />
             </div>
           </div>

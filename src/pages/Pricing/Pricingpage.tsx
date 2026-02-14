@@ -12,11 +12,8 @@ const Pricingpage = () => {
   return (
     <AppLayout>
       <Hero isAnnual={isAnnual} setIsAnnual={setIsAnnual} />
-
       <Content isAnnual={isAnnual} />
-
       <Compare />
-
       <Qns />
       <EndQns />
     </AppLayout>

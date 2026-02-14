@@ -119,8 +119,8 @@ const Navbar = () => {
                     block w-full text-left text-sm font-medium
                     ${
                       isActive
-                        ? "text-primary font-semibold"
-                        : "hover:text-primary"
+                        ? "text-primary dark:text-secondary font-semibold"
+                        : "hover:text-primary dark:hover:text-secondary"
                     }
                     `}
                 >
