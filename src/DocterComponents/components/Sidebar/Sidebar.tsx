@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
@@ -21,17 +20,12 @@ const Sidebar = () => {
     { label: "Reports", path: "/docter-report", icon: "bar_chart" },
   ];
 
-  const handleNavigate = (path: string) => {
-    navigate(path);
-    setIsOpen(false);
-  };
-
   return (
     <>
       {/* Mobile Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="xl:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-slate-800 shadow"
+        className="xl:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-slate-800 shadow-md"
       >
         <span className="material-symbols-outlined">
           {isOpen ? "close" : "menu"}
@@ -47,83 +41,74 @@ const Sidebar = () => {
       )}
 
       {/* Sidebar */}
-      <div
+      <aside
         className={`
-          fixed xl:static
+          fixed
           top-0 left-0
-          h-full
+          h-screen
           w-[260px]
+          flex-shrink-0
           bg-white dark:bg-slate-900
           border-r border-slate-200 dark:border-slate-800
-          transform transition-transform duration-300
+          transition-transform duration-300 ease-in-out
           z-40
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           xl:translate-x-0
         `}
       >
-        <div className="flex h-full flex-col justify-between p-4">
+        <div className="flex h-full flex-col justify-between p-5">
           {/* Top Section */}
           <div>
             {/* Profile */}
-            <div className="flex gap-3 items-center mb-6">
-              <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuCu3TXkUbnmkqQM2vrTukpxkg2kcYLRa8is5yU2MnAFDq_ubtln3EejLIBDKIi7NA7H8cszbwZUFTMebOpWaIpkjgWxfgD7qmlkJHVBsActBPAr-G89mQNzRjc40LjfCUBCl6DvvvZk5fsC1ACBpVWWV9hnvqGZKRQfEZnlx2MutP3m_JXKeNDsGaOoC1i0ybyXjt6hkknFzs0UYM9ahh5K2vgulldoxq_Bnkqb2QdkCcD3n4SYyfxsBOVkhvlEsZbbuNqEywPmR2gt)]"></div>
+            <div className="flex gap-3 items-center mb-8">
+              <div className="w-12 h-12 rounded-full bg-slate-300" />
               <div>
-                <h1 className="text-base font-medium text-slate-800 dark:text-slate-100">
+                <h1 className="text-base font-semibold text-slate-800 dark:text-white">
                   Dr. Emily Carter
                 </h1>
-                <p className="text-sm text-primary dark:text-secondary">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                   Cardiologist
                 </p>
               </div>
             </div>
 
             {/* Navigation */}
-            <div className="flex flex-col gap-2">
+            <nav className="flex flex-col gap-2">
               {navItems.map((item) => (
                 <NavLink
                   key={item.label}
                   to={item.path}
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors
+                    `flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors
                     ${
                       isActive
-                        ? "bg-primary/20 text-black dark:bg-blue-900/30 dark:text-blue-100"
-                        : "text-black/60 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800"
+                        ? "bg-blue-500 text-white"
+                        : "text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800"
                     }`
                   }
                 >
                   <span className="material-symbols-outlined text-xl">
                     {item.icon}
                   </span>
-                  <span className="text-sm font-medium">{item.label}</span>
+                  {item.label}
                 </NavLink>
               ))}
-            </div>
+            </nav>
           </div>
 
           {/* Bottom Section */}
           <div className="flex flex-col gap-2">
             <NavLink
               to="/docter-settings"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-800 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-800"
+              className="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800"
             >
               <span className="material-symbols-outlined">settings</span>
-              <span className="text-sm font-medium">Settings</span>
-            </NavLink>
-
-            <NavLink
-              to="#"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-800 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-800"
-            >
-              <span className="material-symbols-outlined">help_outline</span>
-              <span className="text-sm font-medium">Help</span>
+              Settings
             </NavLink>
           </div>
         </div>
-      </div>
+      </aside>
     </>
   );
 };

@@ -28,7 +28,7 @@ const DoctorPatientMedication = () => {
     },
   ];
   return (
-    <div>
+    <div id="medication">
       <div className="bg-white dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 mt-8">
         <div className="flex justify-between items-center px-6 pt-5 pb-3 border-b border-gray-200 dark:border-gray-700">
           <h3 className="text-charcoal dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">

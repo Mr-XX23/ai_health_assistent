@@ -10,7 +10,7 @@ const DocterLayout = ({ children }: DocterLayoutChildren) => {
       <div className="flex h-screen w-full">
         <Sidebar />
 
-        {children}
+        <main className="flex-1 xl:ml-[260px] p-6">{children}</main>
       </div>
     </div>
   );

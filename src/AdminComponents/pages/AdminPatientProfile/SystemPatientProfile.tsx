@@ -25,11 +25,11 @@ const SystemPatientProfile = () => {
         <main className="flex-1 p-8">
           <div className="w-full max-w-6xl mx-auto">
             {/* <!-- ProfileHeader --> */}
-            <div className="flex p-4 @container bg-white dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
-              <div
-                id="overview"
-                className="flex w-full flex-col gap-4 @[520px]:flex-row @[520px]:justify-between @[520px]:items-center"
-              >
+            <div
+              id="overview"
+              className="flex p-4 @container bg-white dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700"
+            >
+              <div className="flex w-full flex-col gap-4 @[520px]:flex-row @[520px]:justify-between @[520px]:items-center">
                 <div className="flex gap-6 items-center">
                   <div
                     className="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-24 w-24 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuBwzt0xqo2PKlVlC6dxMohXgrxcKu2JzVIGf8lwSIpvRuFwu0yifO6KjWpulEodrYubgUtCSg-PAl3meLvGIU43jyS42g6Hzos7cNV5dJ1DzF3wYlqrflV1lcVbb7R-xrOqqX3AojjBdBallTp2oHztZAF_slAPrnMTVsgHE9yP2xLAjKld8wohzKKWFbV4b9_JvcTiuXBhnTmU9Tb-DLVD3pGyxMYy1nrFGeqBvBgb6lVTRgZi6g5xsRMRdugdUdyPcC2lf_INgX4b)]"
@@ -155,7 +155,7 @@ const SystemPatientProfile = () => {
                 <BloodPressure />
               </div>
             </div>
-            <div id="medication" className="p-6">
+            <div className="p-6">
               <DoctorPatientMedication />
             </div>
             <div id="vaccination" className="p-6">
