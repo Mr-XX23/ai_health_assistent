@@ -27,7 +27,6 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     },
     { lable: "Messages", path: "/patient-messages", icon: "chat" },
     { lable: "Settings", path: "/patient-setting", icon: "settings" },
-    { lable: "Logout", path: "/patient-logout", icon: "logout" },
   ];
 
   return (

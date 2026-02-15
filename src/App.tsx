@@ -36,6 +36,7 @@ import PatientDashboard from "./PatientPages/pages/PatientDashBoard/PatientDashB
 import Appointments from "./PatientPages/pages/Appointments/Appointments";
 import FindSpecialist from "./PatientPages/pages/Findspecialist/FindSpecialist";
 import DoctorPatientMedication from "./DocterComponents/components/Medicattion/DoctorPatientMedication";
+import Setting from "./PatientPages/pages/PatientSetting/Setting";
 
 const App = () => {
   return (
@@ -109,6 +110,8 @@ const App = () => {
             element={<ScheduleAppointment />}
           />
           <Route path="patient-messages" element={<Messages />} />
+
+          <Route path="patient-setting" element={<Setting />} />
         </Routes>
       </BrowserRouter>
     </div>
