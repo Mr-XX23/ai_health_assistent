@@ -1,15 +1,64 @@
 import React, { useState } from "react";
 import AppLayout from "../../../layout/AppLayout/AppLayout";
-import { useNavigate } from "react-router";
-import Password from "../../../components/inputField/Password";
-import Email from "../../../components/inputField/Email";
+import { useNavigate, useLocation } from "react-router";
+import { useAuth } from "../../../context/AuthContext";
+import Password from "../../../components/MarketingComponents/inputField/Password";
+import Email from "../../../components/MarketingComponents/inputField/Email";
 import Slider from "../components/Slider";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login, user } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setError("Please enter both email and password");
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const result = await login(email, password);
+
+      if (result.success) {
+        // Get the path user was trying to access
+        const from = (location.state as { from?: { pathname: string } })?.from?.pathname;
+
+        if (from) {
+          navigate(from, { replace: true });
+        } else {
+          // Role-based redirect - need to wait for user to be set
+          // Use a small timeout to ensure user state is updated
+          setTimeout(() => {
+            if (user?.role === 'ADMIN') {
+              navigate('/admin', { replace: true });
+            } else if (user?.role === 'HEALTH_PROVIDER') {
+              navigate('/docter-dashboard', { replace: true });
+            } else {
+              navigate('/', { replace: true });
+            }
+          }, 100);
+        }
+      } else {
+        setError(result.message || 'Login failed');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <>
       <AppLayout>
@@ -50,13 +99,22 @@ const LoginPage = () => {
                           {/* <!-- Segmented Buttons / Tabs --> */}
                           <Slider />
                           {/* <!-- Form Content --> */}
-                          <div className="flex flex-col gap-4 px-4">
+                          <form className="flex flex-col gap-4 px-4" onSubmit={handleLogin}>
                             {/* <!-- Email Address Field --> */}
-                            <Email />
+                            <Email value={email} onChange={setEmail} disabled={isLoading} />
 
                             {/* <!-- Password Field --> */}
+                            <Password value={password} onChange={setPassword} disabled={isLoading} />
 
-                            <Password />
+                            {/* <!-- Error Display --> */}
+                            {error && (
+                              <div className="flex items-center gap-2 rounded-lg bg-red-100 dark:bg-red-500/20 p-3">
+                                <span className="material-symbols-outlined text-red-600 dark:text-red-400">
+                                  error
+                                </span>
+                                <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
+                              </div>
+                            )}
 
                             {/* <!-- Forgot Password Link --> */}
                             <span onClick={() => navigate("/forgot-password")}>
@@ -67,11 +125,24 @@ const LoginPage = () => {
 
                             {/* <!-- Primary CTA Button --> */}
                             <div className="flex flex-col gap-3 px-1 py-3">
-                              <button className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-sm transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 dark:focus:ring-offset-background-dark">
-                                Login
+                              <button
+                                type="submit"
+                                disabled={isLoading}
+                                className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-sm transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 dark:focus:ring-offset-background-dark disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                {isLoading ? (
+                                  <>
+                                    <span className="material-symbols-outlined animate-spin mr-2">
+                                      hourglass_empty
+                                    </span>
+                                    Logging in...
+                                  </>
+                                ) : (
+                                  "Login"
+                                )}
                               </button>
                             </div>
-                          </div>
+                          </form>
                           {/* <!-- Social Sign-On --> */}
                           <div className="flex flex-col gap-4 px-4">
                             <div className="relative flex items-center justify-center">

@@ -1,5 +1,5 @@
 import type React from "react";
-import Sidebar from "../../DocterComponents/components/Sidebar/Sidebar";
+import Sidebar from "../../components/DocterComponents/components/Sidebar/Sidebar";
 
 interface DocterLayoutChildren {
   children: React.ReactNode;

@@ -1,5 +1,5 @@
-import Navbar from "../../components/header/Navbar";
-import Footer from "../../components/footer/Footer";
+import Navbar from "../../components/MarketingComponents/header/Navbar";
+import Footer from "../../components/MarketingComponents/footer/Footer";
 
 interface AppLayoutChildren {
   children: React.ReactNode;

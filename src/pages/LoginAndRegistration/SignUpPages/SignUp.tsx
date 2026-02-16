@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import AppLayout from "../../../layout/AppLayout/AppLayout";
 import { useNavigate } from "react-router";
 import {
@@ -7,6 +7,41 @@ import {
   type RegisterResponse,
 } from "../../../services/authService";
 
+// Debounce hook for performance optimization
+const useDebounce = <T,>(value: T, delay: number): T => {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+
+/**
+ * SignUp component for user registration.
+ *
+ * Handles user registration with the following features:
+ * - Form validation for username, email, password, and phone number
+ * - Password strength calculation with real-time feedback
+ * - User role selection (Patient or Healthcare Provider)
+ * - Terms and Conditions and HIPAA Privacy Notice acceptance
+ * - Error handling and success messaging
+ * - Dark mode support
+ * - Navigation to verification page on successful registration
+ *
+ * @component
+ * @returns {JSX.Element} The SignUp form component wrapped in AppLayout
+ *
+ * @example
+ * return <SignUp />
+ */
 const SignUp = () => {
   const navigate = useNavigate();
   const [formData, setformData] = useState({
@@ -27,20 +62,27 @@ const SignUp = () => {
     percentage: number;
   }>({ strength: "weak", percentage: 0 });
 
-  const handleInputChange = (field: keyof typeof formData, value: string) => {
+  const handleInputChange = useCallback((field: keyof typeof formData, value: string) => {
     setformData((prev) => ({
       ...prev,
       [field]: value,
     }));
     setErrors((prev) => prev.filter((err) => err.field !== field));
     setGeneralError("");
+  }, []);
 
-    // Update password strength indicator
-    if (field === "password") {
-      const strength = authService.getPasswordStrength(value);
+  // Debounced password for strength calculation (performance optimization)
+  const debouncedPassword = useDebounce(formData.password, 300);
+
+  // Memoized password strength calculation
+  useMemo(() => {
+    if (debouncedPassword) {
+      const strength = authService.getPasswordStrength(debouncedPassword);
       setPasswordStrength(strength);
+    } else {
+      setPasswordStrength({ strength: "weak", percentage: 0 });
     }
-  };
+  }, [debouncedPassword]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,11 +109,13 @@ const SignUp = () => {
     }
 
     try {
+      const mappedRole = userRole === "patient" ? "USER" : "HEALTHCARE_PROVIDER";
       const result = await authService.register({
         email: formData.email,
         username: formData.username,
         password: formData.password,
         phoneNumber: formData.phoneNumber,
+        userRole: mappedRole,
       });
 
       if (result.success && result.data) {
@@ -89,7 +133,15 @@ const SignUp = () => {
         setPasswordStrength({ strength: "weak", percentage: 0 });
 
         // Navigate to verification page with userId
-        navigate("/verification", { state: { userId: result.data.userId } });
+        navigate("/verification", {
+          state: {
+            userId: result.data.userId,
+            email: result.data.email,
+            phoneNumber: result.data.phoneNumber,
+            emailVerificationSent: result.data.emailVerificationSent,
+            smsVerificationSent: result.data.smsVerificationSent,
+          },
+        });
       } else if (result.errors) {
         setErrors(result.errors);
       } else if (result.message) {
@@ -199,7 +251,7 @@ const SignUp = () => {
                         </label>
                         <label className="flex flex-col min-w-40 flex-1">
                           <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
-                            Email
+                            Email <span className="text-slate-400 text-xs">(Optional - provide email or phone)</span>
                           </p>
                           <div className="flex w-full flex-1 items-stretch rounded-lg">
                             <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
@@ -330,14 +382,14 @@ const SignUp = () => {
                               <li className="flex items-center gap-1.5">
                                 <span
                                   className={`material-symbols-outlined text-sm ${
-                                    /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                                    /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(
                                       formData.password,
                                     )
                                       ? "text-green-500"
                                       : "text-slate-400"
                                   }`}
                                 >
-                                  {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                                  {/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(
                                     formData.password,
                                   )
                                     ? "check_circle"
@@ -350,7 +402,7 @@ const SignUp = () => {
                         </div>
                         <label className="flex flex-col min-w-40 flex-1">
                           <p className="text-sm font-medium leading-normal pb-2 dark:text-slate-300">
-                            Phone Number
+                            Phone Number <span className="text-slate-400 text-xs">(Optional - provide email or phone)</span>
                           </p>
                           <div className="flex w-full flex-1 items-stretch rounded-lg">
                             <div className="text-slate-400 flex border border-slate-300 bg-slate-100 dark:bg-slate-800 dark:border-slate-600 items-center justify-center px-[15px] rounded-l-lg border-r-0">
@@ -470,6 +522,17 @@ const SignUp = () => {
                           </label>
                         </div>
                       </div>
+                      {/* Contact error - neither email nor phone */}
+                      {errors.find((e) => e.field === "contact") && (
+                        <div className="flex items-center gap-2 rounded-lg bg-amber-100 dark:bg-amber-500/20 p-3 mx-4">
+                          <span className="material-symbols-outlined text-amber-600 dark:text-amber-400">
+                            warning
+                          </span>
+                          <p className="text-sm text-amber-800 dark:text-amber-300">
+                            {errors.find((e) => e.field === "contact")?.message}
+                          </p>
+                        </div>
+                      )}
                       {generalError && (
                         <div className="flex items-center gap-2 rounded-lg bg-red-100 dark:bg-red-500/20 p-3 mx-4">
                           <span className="material-symbols-outlined text-red-600 dark:text-red-400">
@@ -534,7 +597,11 @@ const SignUp = () => {
                           </span>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
-                          <button className="flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 shadow-sm transition-colors hover:bg-slate-50 dark:hover:bg-slate-700">
+                          <button
+                            className="flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 shadow-sm transition-colors hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={true}
+                            title="OAuth authentication coming soon"
+                          >
                             <svg
                               className="h-5 w-5"
                               fill="none"
@@ -558,13 +625,17 @@ const SignUp = () => {
                                 fill="#EA4335"
                               ></path>
                             </svg>
-                            <span>Google</span>
+                            <span>Google (Coming Soon)</span>
                           </button>
-                          <button className="flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 shadow-sm transition-colors hover:bg-slate-50 dark:hover:bg-slate-700">
+                          <button
+                            className="flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white dark:bg-slate-800 dark:border-slate-600 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 shadow-sm transition-colors hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={true}
+                            title="SSO authentication coming soon"
+                          >
                             <span className="material-symbols-outlined text-base">
                               key
                             </span>
-                            <span>SSO</span>
+                            <span>SSO (Coming Soon)</span>
                           </button>
                         </div>
                       </div>
