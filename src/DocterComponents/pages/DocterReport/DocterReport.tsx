@@ -1,4 +1,3 @@
-import React from "react";
 import DocterLayout from "../../../layout/DocterLayout/DocterLayout";
 
 const DocterReport = () => {
