@@ -1,13 +1,16 @@
-
 // import Calender from "../../../MarketingComponents/calender/Calender";
 // import Sidebar from "../../components/Sidebar/Sidebar";
 // import Appointment from "../../components/Appointments/Appointment";
 // import VideoCall from "../../components/VideoCall/VideoCall";
+import React from "react";
 import DocterLayout from "../../../../layout/DocterLayout/DocterLayout";
 import PatientList from "../../../PatientComponents/PatientList/PatientList";
 import { useNavigate } from "react-router";
 
-const DocterDashboard = () => {
+/**
+ * PERFORMANCE: Memoized doctor dashboard to prevent unnecessary re-renders
+ */
+const DocterDashboard = React.memo(() => {
   const navigate = useNavigate();
   return (
     <DocterLayout>
@@ -73,6 +76,8 @@ const DocterDashboard = () => {
       </main>
     </DocterLayout>
   );
-};
+});
+
+DocterDashboard.displayName = 'DocterDashboard';
 
 export default DocterDashboard;

@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { authService, User } from '../services/authService';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import type { ReactNode } from 'react';
+import { authService } from '../services/authService';
+import type { User } from '../services/authService';
 import { localStorageService } from '../utils/storage/localStorage.util';
 import { sessionStorageService } from '../utils/storage/sessionStorage.util';
 import { indexedDBService } from '../utils/storage/indexedDB.util';
@@ -11,6 +13,7 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<{
     success: boolean;
     message?: string;
+    user?: User;
   }>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
@@ -38,37 +41,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   /**
    * Check authentication on mount
-   * Only validates if there's stored user data to avoid unnecessary refresh calls
+   * SECURITY: Only validates if session flag exists, fetches user from API (not sessionStorage)
+   * User data is never stored client-side to prevent XSS attacks
    */
   const checkAuth = useCallback(async () => {
     setIsLoading(true);
     try {
-      // First check if there's a stored user in sessionStorage
-      const storedUser = sessionStorage.getItem('healthai_user');
+      // SECURITY FIX: Check only for session flag, not user data
+      // Never store user data in sessionStorage (XSS vulnerability)
+      const hasSession = sessionStorage.getItem('healthai_session');
 
-      if (!storedUser) {
-        // No stored user - skip validation, user is not logged in
+      if (!hasSession) {
+        // No session flag - user is not logged in
         setUser(null);
         setIsLoading(false);
         return;
       }
 
-      // We have stored user data - validate session
-      const { isValid } = await authService.validateSession();
+      // Validate session and fetch user from API
+      const { isValid, user: apiUser } = await authService.validateSession();
 
-      if (isValid) {
-        // Restore user from sessionStorage
-        const parsedUser = JSON.parse(storedUser) as User;
-        setUser(parsedUser);
+      if (isValid && apiUser) {
+        // Set user from API response (NOT from sessionStorage)
+        setUser(apiUser);
       } else {
-        // Session invalid - clear storage
+        // Session invalid - clear session flag
         setUser(null);
-        sessionStorage.removeItem('healthai_user');
+        sessionStorage.removeItem('healthai_session');
       }
     } catch (error) {
       console.error('Auth check failed:', error);
       setUser(null);
-      sessionStorage.removeItem('healthai_user');
+      sessionStorage.removeItem('healthai_session');
     } finally {
       setIsLoading(false);
     }
@@ -76,6 +80,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   /**
    * Login handler
+   * SECURITY: Only stores session flag, not user data
+   * RETURNS: User object for immediate use (prevents race conditions in navigation)
    */
   const handleLogin = useCallback(async (username: string, password: string) => {
     setIsLoading(true);
@@ -84,15 +90,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (result.success && result.user) {
         setUser(result.user);
-        // Store user in sessionStorage for persistence across page reloads
-        sessionStorage.setItem('healthai_user', JSON.stringify(result.user));
+        // SECURITY FIX: Store only session flag, NOT user data
+        // User data will be fetched from API on reload via validateSession()
+        sessionStorage.setItem('healthai_session', 'true');
 
         // Update last visited page to current location
         localStorageService.updatePreferences({
           lastVisitedPage: window.location.pathname,
         });
 
-        return { success: true };
+        // RACE CONDITION FIX: Return user object for immediate navigation
+        return { success: true, user: result.user };
       }
 
       return {
@@ -124,7 +132,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } finally {
       // Clear all storage regardless of API result
       setUser(null);
-      sessionStorage.removeItem('healthai_user');
+      sessionStorage.removeItem('healthai_session');
       sessionStorageService.clearAll();
 
       if (user?.userId) {
@@ -132,6 +140,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
 
       setIsLoading(false);
+      window.location.href = '/login';
     }
   }, [user?.userId]);
 

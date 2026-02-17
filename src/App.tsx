@@ -1,32 +1,61 @@
 import { BrowserRouter, Route, Routes } from "react-router";
+import { Suspense, lazy } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { RoleBasedRoute } from "./components/routing/RoleBasedRoute";
-
-// local imports
-import SolutionsPage from "./pages/MarketingPages/Solutions/SoluitonsPage";
-import LandingPage from "./pages/MarketingPages/LandingPage/LandingPage";
-import System_Analysis from "./pages/MarketingPages/System_Analysis/System_Analysis";
-import FeaturesPage from "./pages/MarketingPages/Features/FeaturesPage";
-import SecurityPage from "./pages/MarketingPages/Security/SecurityPage";
-import Pricingpage from "./pages/MarketingPages/Pricing/Pricingpage";
-import ContactUs from "./pages/MarketingPages/Contact/ConctactUs";
-import LoginPage from "./pages/LoginAndRegistration/Login/LoginPage";
-import ForgetPassword from "./pages/LoginAndRegistration/ForgetPassword/ForgetPassword";
-import SignUp from "./pages/LoginAndRegistration/SignUpPages/SignUp";
-import Verification from "./pages/LoginAndRegistration/SignUpPages/Verification";
-import SetNewPassword from "./pages/LoginAndRegistration/ForgetPassword/SetNewPassword";
-import PasswordUpdated from "./pages/LoginAndRegistration/ForgetPassword/PasswordUpdated";
-import AdminDashboard from "./components/AdminComponents/pages/AdminDashboard/AdminDashboard";
-import PatientPage from "./components/AdminComponents/pages/PatientPage/PatientPage";
-import DocterDashboard from "./components/DocterComponents/pages/DocterDashboard/DocterDashboard";
-import DocterSidePatient from "./components/DocterComponents/pages/DocterSidePatient/DocterSidePatient";
-import DocterSideAppointment from "./components/DocterComponents/pages/DocterSideAppointment/DocterSideAppointment";
-import DocterMessage from "./components/DocterComponents/pages/DocterSideMessage/DocterMessage";
 import ScrollToTop from "./functions/ScrollToTop/ScrollToTop";
-import DocterConsultation from "./components/DocterComponents/pages/DocterConsultation/DocterConsultation";
-import DocterReport from "./components/DocterComponents/pages/DocterReport/DocterReport";
-import AdminPatientProfile from "./components/AdminComponents/pages/AdminPatientProfile/SystemPatientProfile";
-import Unauthorized from "./pages/Unauthorized/Unauthorized";
+import ErrorBoundary from "./components/common/ErrorBoundary";
+
+/**
+ * PERFORMANCE: Code splitting with React.lazy
+ * Routes are loaded on-demand to reduce initial bundle size
+ * Marketing pages load immediately, admin/doctor routes load when needed
+ */
+
+// Eagerly loaded (critical for initial render)
+import LandingPage from "./pages/MarketingPages/LandingPage/LandingPage";
+import LoginPage from "./pages/LoginAndRegistration/Login/LoginPage";
+
+// Lazy-loaded Marketing Pages
+const SolutionsPage = lazy(() => import("./pages/MarketingPages/Solutions/SoluitonsPage"));
+const System_Analysis = lazy(() => import("./pages/MarketingPages/System_Analysis/System_Analysis"));
+const FeaturesPage = lazy(() => import("./pages/MarketingPages/Features/FeaturesPage"));
+const SecurityPage = lazy(() => import("./pages/MarketingPages/Security/SecurityPage"));
+const Pricingpage = lazy(() => import("./pages/MarketingPages/Pricing/Pricingpage"));
+const ContactUs = lazy(() => import("./pages/MarketingPages/Contact/ConctactUs"));
+
+// Lazy-loaded Auth Pages
+const ForgetPassword = lazy(() => import("./pages/LoginAndRegistration/ForgetPassword/ForgetPassword"));
+const SignUp = lazy(() => import("./pages/LoginAndRegistration/SignUpPages/SignUp"));
+const Verification = lazy(() => import("./pages/LoginAndRegistration/SignUpPages/Verification"));
+const SetNewPassword = lazy(() => import("./pages/LoginAndRegistration/ForgetPassword/SetNewPassword"));
+const PasswordUpdated = lazy(() => import("./pages/LoginAndRegistration/ForgetPassword/PasswordUpdated"));
+const Unauthorized = lazy(() => import("./pages/Unauthorized/Unauthorized"));
+
+// Lazy-loaded Admin Pages
+const AdminDashboard = lazy(() => import("./components/AdminComponents/pages/AdminDashboard/AdminDashboard"));
+const PatientPage = lazy(() => import("./components/AdminComponents/pages/PatientPage/PatientPage"));
+const AdminPatientProfile = lazy(() => import("./components/AdminComponents/pages/AdminPatientProfile/SystemPatientProfile"));
+
+// Lazy-loaded Doctor Pages
+const DocterDashboard = lazy(() => import("./components/DocterComponents/pages/DocterDashboard/DocterDashboard"));
+const DocterSidePatient = lazy(() => import("./components/DocterComponents/pages/DocterSidePatient/DocterSidePatient"));
+const DocterSideAppointment = lazy(() => import("./components/DocterComponents/pages/DocterSideAppointment/DocterSideAppointment"));
+const DocterMessage = lazy(() => import("./components/DocterComponents/pages/DocterSideMessage/DocterMessage"));
+const DocterConsultation = lazy(() => import("./components/DocterComponents/pages/DocterConsultation/DocterConsultation"));
+const DocterReport = lazy(() => import("./components/DocterComponents/pages/DocterReport/DocterReport"));
+
+/**
+ * Loading fallback component
+ * Shows while lazy components are being loaded
+ */
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen bg-background-light dark:bg-background-dark">
+    <div className="flex flex-col items-center gap-4">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">Loading...</p>
+    </div>
+  </div>
+);
 
 const App = () => {
   return (
@@ -34,23 +63,25 @@ const App = () => {
       <BrowserRouter>
         <AuthProvider>
           <ScrollToTop />
-          <Routes>
+          <ErrorBoundary>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
 
-            {/* Marketing Pages Routes */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/solutions" element={<SolutionsPage />} />
-            <Route path="/analysis" element={<System_Analysis />} />
-            <Route path="/features" element={<FeaturesPage />} />
-            <Route path="/security" element={<SecurityPage />} />
-            <Route path="/pricing" element={<Pricingpage />} />
-            <Route path="/contact" element={<ContactUs />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/forgot-password" element={<ForgetPassword />} />
-            <Route path="/set-password" element={<SetNewPassword />} />
-            <Route path="/update-password" element={<PasswordUpdated />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/verification" element={<Verification />} />
-            <Route path="/unauthorized" element={<Unauthorized />} />
+              {/* Marketing Pages Routes */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/solutions" element={<SolutionsPage />} />
+              <Route path="/analysis" element={<System_Analysis />} />
+              <Route path="/features" element={<FeaturesPage />} />
+              <Route path="/security" element={<SecurityPage />} />
+              <Route path="/pricing" element={<Pricingpage />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/forgot-password" element={<ForgetPassword />} />
+              <Route path="/set-password" element={<SetNewPassword />} />
+              <Route path="/update-password" element={<PasswordUpdated />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/verification" element={<Verification />} />
+              <Route path="/unauthorized" element={<Unauthorized />} />
 
             {/* Protected Admin Routes */}
             <Route
@@ -127,7 +158,9 @@ const App = () => {
                 </RoleBasedRoute>
               }
             />
-          </Routes>
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>
     </div>

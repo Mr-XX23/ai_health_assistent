@@ -2,11 +2,12 @@ import axios, { AxiosError } from 'axios';
 import type { InternalAxiosRequestConfig } from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:8080/api/v1';
+const API_TIMEOUT = Number(import.meta.env.VITE_API_TIMEOUT) || 10000; // Default 10 seconds
 
 // Create axios instance with default configuration
 export const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000, // 10 seconds
+  timeout: API_TIMEOUT,
   withCredentials: true, // Critical for HTTP-only cookies
   headers: {
     'Content-Type': 'application/json',
@@ -56,6 +57,8 @@ const PUBLIC_ENDPOINTS = [
   '/auth/refresh', // CRITICAL: Must be public to prevent infinite refresh loops
   '/auth/verify-email',
   '/auth/reset-password',
+  '/auth/confirm-reset', // Password reset confirmation (token-based)
+  '/auth/confirm-reset-otp', // Password reset confirmation (OTP-based)
   '/auth/verify-phone',
   '/auth/send-email-verification',
   '/auth/send-phone-verification',

@@ -148,6 +148,7 @@ interface RateLimitEntry {
 }
 
 class AuthService {
+  
   private readonly maxAttempts = 3; // Max attempts before blocking
   private readonly blockDuration = 15 * 60 * 1000; // 15 minutes
   private readonly attemptWindow = 60 * 1000; // 1 minute
@@ -368,9 +369,9 @@ class AuthService {
               errors: [
                 {
                   field: "email",
-                  message:
-                    errorData?.message ||
-                    "An account with this email already exists",
+                  message: this.sanitizeErrorMessage(
+                    errorData?.message || "An account with this email already exists"
+                  ),
                 },
               ],
             };
@@ -382,7 +383,7 @@ class AuthService {
               errors: [
                 {
                   field: "general",
-                  message: errorData?.message || "Invalid registration data",
+                  message: this.sanitizeErrorMessage(errorData?.message || "Invalid registration data"),
                 },
               ],
             };
@@ -397,8 +398,9 @@ class AuthService {
 
           return {
             success: false,
-            message:
-              errorData?.message || "Registration failed. Please try again.",
+            message: this.sanitizeErrorMessage(
+              errorData?.message || "Registration failed. Please try again."
+            ),
           };
         }
 
@@ -479,7 +481,7 @@ class AuthService {
         if (status === 401) {
           return {
             success: false,
-            message: message || "Invalid username or password",
+            message: this.sanitizeErrorMessage(message || "Invalid username or password"),
           };
         }
 
@@ -492,7 +494,7 @@ class AuthService {
 
         return {
           success: false,
-          message: message || "Login failed. Please try again.",
+          message: this.sanitizeErrorMessage(message || "Login failed. Please try again."),
         };
       }
 
@@ -520,7 +522,6 @@ class AuthService {
       // Backend clears HTTP-only cookies via Set-Cookie headers
       // Clear any non-HTTP-only cookies
       this.clearAllCookies();
-
       return {
         success: response.data.success,
         message: response.data.message || "Logged out successfully",
@@ -605,6 +606,66 @@ class AuthService {
   }
 
   /**
+   * Sanitize error messages to prevent user enumeration and information leakage
+   * Security: Removes specific implementation details from error messages
+   */
+  private sanitizeErrorMessage(message: string): string {
+    if (!message) return "An error occurred";
+
+    const lowercaseMsg = message.toLowerCase();
+
+    // User enumeration prevention
+    if (
+      lowercaseMsg.includes("user") &&
+      (lowercaseMsg.includes("not found") || lowercaseMsg.includes("does not exist"))
+    ) {
+      return "Invalid credentials or request";
+    }
+
+    // Token/OTP expiry normalization
+    if (
+      lowercaseMsg.includes("token") &&
+      (lowercaseMsg.includes("expired") || lowercaseMsg.includes("invalid"))
+    ) {
+      return "Reset request expired or invalid";
+    }
+
+    if (
+      lowercaseMsg.includes("otp") &&
+      (lowercaseMsg.includes("expired") || lowercaseMsg.includes("invalid"))
+    ) {
+      return "Verification code expired or invalid";
+    }
+
+    // Email/account existence leaks
+    if (
+      lowercaseMsg.includes("email") &&
+      (lowercaseMsg.includes("exists") || lowercaseMsg.includes("already") || lowercaseMsg.includes("registered"))
+    ) {
+      return "Unable to process request";
+    }
+
+    if (
+      lowercaseMsg.includes("phone") &&
+      (lowercaseMsg.includes("exists") || lowercaseMsg.includes("already") || lowercaseMsg.includes("registered"))
+    ) {
+      return "Unable to process request";
+    }
+
+    // Generic implementation detail leaks
+    if (lowercaseMsg.includes("database") || lowercaseMsg.includes("sql")) {
+      return "A system error occurred";
+    }
+
+    if (lowercaseMsg.includes("null pointer") || lowercaseMsg.includes("exception")) {
+      return "A system error occurred";
+    }
+
+    // Return original message if no sensitive information detected
+    return message;
+  }
+
+  /**
    * Get password strength indicator
    */
   getPasswordStrength(password: string): {
@@ -658,7 +719,7 @@ class AuthService {
         const message = error.response?.data?.message;
         return {
           success: false,
-          message: message || "Invalid or expired OTP",
+          message: this.sanitizeErrorMessage(message || "Invalid or expired OTP"),
         };
       }
       return {
@@ -747,6 +808,238 @@ class AuthService {
         message: "Failed to check verification status",
       };
     }
+  }
+
+  /**
+   * Request password reset - sends reset link via email or OTP via phone
+   */
+  async requestPasswordReset(userContact: string): Promise<{
+    success: boolean;
+    message?: string;
+    resetMethod?: 'email' | 'phone';
+  }> {
+    try {
+      // Sanitize input
+      const sanitizedContact = userContact.trim();
+
+      // Validate input format
+      const isEmail = InputSanitizer.isValidEmail(sanitizedContact);
+      const isPhone = InputSanitizer.isValidPhoneNumber(sanitizedContact);
+
+      if (!isEmail && !isPhone) {
+        return {
+          success: false,
+          message: "Please enter a valid email address or phone number",
+        };
+      }
+
+      // Check rate limiting
+      const rateCheck = this.checkRateLimit(sanitizedContact);
+      if (!rateCheck.allowed) {
+        return {
+          success: false,
+          message: rateCheck.message,
+        };
+      }
+
+      const response = await axiosInstance.post('/auth/reset-password', {
+        userContact: sanitizedContact,
+      });
+
+      this.recordAttempt(sanitizedContact);
+
+      return {
+        success: true,
+        message: response.data.message || "Password reset instructions sent",
+        resetMethod: isEmail ? 'email' : 'phone',
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
+
+        if (status === 429) {
+          return {
+            success: false,
+            message: "Too many password reset attempts. Please try again later.",
+          };
+        }
+
+        return {
+          success: false,
+          message: this.sanitizeErrorMessage(message || "Failed to process password reset request"),
+        };
+      }
+
+      return {
+        success: false,
+        message: "An unexpected error occurred",
+      };
+    }
+  }
+
+  /**
+   * Confirm password reset using token (for email-based reset)
+   */
+  async confirmPasswordResetWithToken(
+    token: string,
+    newPassword: string
+  ): Promise<{
+    success: boolean;
+    message?: string;
+  }> {
+    try {
+      // Validate token
+      if (!token || token.trim().length === 0) {
+        return {
+          success: false,
+          message: "Reset token is required",
+        };
+      }
+
+      // Validate password
+      const passwordValidation = InputSanitizer.isValidPassword(newPassword);
+      if (!passwordValidation.isValid) {
+        return {
+          success: false,
+          message: passwordValidation.errors.join("; "),
+        };
+      }
+
+      // Send token in body for security (not in URL)
+      const response = await axiosInstance.post('/auth/confirm-reset', {
+        token,
+        newPassword,
+      });
+
+      return {
+        success: true,
+        message: response.data.message || "Password reset successfully",
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
+
+        if (status === 400) {
+          return {
+            success: false,
+            message: this.sanitizeErrorMessage(message || "Invalid or expired reset token"),
+          };
+        }
+
+        if (status === 429) {
+          return {
+            success: false,
+            message: "Too many attempts. Please request a new password reset.",
+          };
+        }
+
+        return {
+          success: false,
+          message: this.sanitizeErrorMessage(message || "Failed to reset password"),
+        };
+      }
+
+      return {
+        success: false,
+        message: "An unexpected error occurred",
+      };
+    }
+  }
+
+  /**
+   * Confirm password reset using OTP (for phone-based reset)
+   */
+  async confirmPasswordResetWithOtp(
+    userContact: string,
+    otp: string,
+    newPassword: string
+  ): Promise<{
+    success: boolean;
+    message?: string;
+  }> {
+    try {
+      // Sanitize and validate user contact
+      const sanitizedContact = userContact.trim();
+      const isEmail = InputSanitizer.isValidEmail(sanitizedContact);
+      const isPhone = InputSanitizer.isValidPhoneNumber(sanitizedContact);
+
+      if (!isEmail && !isPhone) {
+        return {
+          success: false,
+          message: "Please enter a valid email address or phone number",
+        };
+      }
+
+      // Validate OTP format
+      if (!otp || !otp.match(/^\d{6}$/)) {
+        return {
+          success: false,
+          message: "OTP must be 6 digits",
+        };
+      }
+
+      // Validate password
+      const passwordValidation = InputSanitizer.isValidPassword(newPassword);
+      if (!passwordValidation.isValid) {
+        return {
+          success: false,
+          message: passwordValidation.errors.join("; "),
+        };
+      }
+
+      const response = await axiosInstance.post('/auth/confirm-reset-otp', {
+        userContact: sanitizedContact,
+        otp,
+        newPassword,
+      });
+
+      return {
+        success: true,
+        message: response.data.message || "Password reset successfully",
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
+
+        if (status === 400) {
+          return {
+            success: false,
+            message: this.sanitizeErrorMessage(message || "Invalid or expired OTP"),
+          };
+        }
+
+        if (status === 429) {
+          return {
+            success: false,
+            message: "Too many attempts. Please request a new password reset.",
+          };
+        }
+
+        return {
+          success: false,
+          message: this.sanitizeErrorMessage(message || "Failed to reset password"),
+        };
+      }
+
+      return {
+        success: false,
+        message: "An unexpected error occurred",
+      };
+    }
+  }
+
+  /**
+   * Resend password reset (works for both email and phone)
+   */
+  async resendPasswordReset(userContact: string): Promise<{
+    success: boolean;
+    message?: string;
+  }> {
+    // Reuse the requestPasswordReset method
+    return this.requestPasswordReset(userContact);
   }
 }
 

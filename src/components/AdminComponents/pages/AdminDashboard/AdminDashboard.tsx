@@ -4,7 +4,11 @@ import { useNavigate } from "react-router";
 import PatientList from "../../../PatientComponents/PatientList/PatientList";
 import TopBar from "../../components/TopBar/TopBar";
 
-const AdminDashboard = () => {
+/**
+ * PERFORMANCE: Memoized admin dashboard to prevent unnecessary re-renders
+ * Re-renders only when props change (currently no props, so rarely re-renders)
+ */
+const AdminDashboard = React.memo(() => {
   const navigate = useNavigate();
 
   return (
@@ -74,6 +78,8 @@ const AdminDashboard = () => {
       </AdminLayout>
     </div>
   );
-};
+});
+
+AdminDashboard.displayName = 'AdminDashboard';
 
 export default AdminDashboard;

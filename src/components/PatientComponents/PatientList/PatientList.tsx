@@ -1,7 +1,11 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router";
 
-const PatientList = () => {
+/**
+ * PERFORMANCE: Memoized patient list to prevent unnecessary re-renders
+ * Consider adding useCallback for event handlers when connecting to real data
+ */
+const PatientList = React.memo(() => {
   const navigate = useNavigate();
   return (
     <div>
@@ -61,7 +65,7 @@ const PatientList = () => {
                     Active
                   </span>
                 </td>
-                <td className="text-center whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                   <a
                     className="hover:underline"
                     onClick={() => navigate("/admin-patient-profile")}
@@ -92,7 +96,7 @@ const PatientList = () => {
                   </span>
                 </td>
                 <td
-                  className="text-center whitespace-nowrap px-6 py-4 text-right text-sm font-medium"
+                  className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium"
                   onClick={() => navigate("/admin-patient-profile")}
                 >
                   <a className="hover:underline">View Details</a>
@@ -119,7 +123,7 @@ const PatientList = () => {
                     Active
                   </span>
                 </td>
-                <td className="text-center whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                   <a
                     className="hover:underline"
                     onClick={() => navigate("/admin-patient-profile")}
@@ -149,7 +153,7 @@ const PatientList = () => {
                     Inactive
                   </span>
                 </td>
-                <td className="text-center whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                   <NavLink
                     to={"/admin-patient-profile"}
                     className="
@@ -165,6 +169,8 @@ const PatientList = () => {
       </div>
     </div>
   );
-};
+});
+
+PatientList.displayName = 'PatientList';
 
 export default PatientList;
