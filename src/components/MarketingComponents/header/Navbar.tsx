@@ -8,8 +8,6 @@ const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const location = useLocation();
-
   const navItems = [
     { label: "Home", path: "/" },
     { label: "Solution", path: "/solutions" },
@@ -33,7 +31,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 ">
+      <div className="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 ">
             <div className="flex items-center gap-4 ">
@@ -79,7 +77,7 @@ const Navbar = () => {
                       {item.label}
                       <span
                         className={`
-    absolute -bottom-1 left-0 h-0.5 w-full bg-primary transform transition-transform duration-500 origin-left
+    absolute -bottom-1 left-0 h-0.5 w-full bg-primary dark:bg-secondary transform transition-transform duration-500 origin-left
     ${isActive ? "scale-x-100  " : "scale-x-0 group-hover:scale-x-100 "}
   `}
                       />
@@ -89,8 +87,11 @@ const Navbar = () => {
               ))}
             </div>
 
-            <div className="hidden xl:flex gap-2 items-center">
-              <button className="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-opacity-90">
+            <div className="hidden xl:flex gap-2">
+              <button
+                onClick={() => handleNavigate("/message")}
+                className="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-opacity-90"
+              >
                 Request a Demo
               </button>
               {isAuthenticated ? (
@@ -139,24 +140,27 @@ const Navbar = () => {
           <div className="xl:hidden border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark">
             <div className="px-4 py-4 space-y-4">
               {navItems.map((item) => (
-                <button
+                <NavLink
                   key={item.label}
-                  onClick={() => handleNavigate(item.path)}
-                  className={`
+                  to={item.path}
+                  className={({ isActive }) => `
                     block w-full text-left text-sm font-medium
                     ${
-                      location.pathname === item.path
-                        ? "text-primary font-semibold"
-                        : "hover:text-primary"
+                      isActive
+                        ? "text-primary dark:text-secondary font-semibold"
+                        : "hover:text-primary dark:hover:text-secondary"
                     }
                     `}
                 >
                   {item.label}
-                </button>
+                </NavLink>
               ))}
 
               <div className="pt-4 flex flex-col gap-2">
-                <button className="h-10 rounded-lg bg-primary text-white text-sm font-bold">
+                <button
+                  onClick={() => handleNavigate("/message")}
+                  className="h-10 rounded-lg bg-primary text-white text-sm font-bold "
+                >
                   Request a Demo
                 </button>
                 {isAuthenticated ? (
@@ -189,7 +193,7 @@ const Navbar = () => {
             </div>
           </div>
         )}
-      </header>
+      </div>
     </>
   );
 };

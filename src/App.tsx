@@ -5,12 +5,6 @@ import { RoleBasedRoute } from "./components/routing/RoleBasedRoute";
 import ScrollToTop from "./functions/ScrollToTop/ScrollToTop";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 
-/**
- * PERFORMANCE: Code splitting with React.lazy
- * Routes are loaded on-demand to reduce initial bundle size
- * Marketing pages load immediately, admin/doctor routes load when needed
- */
-
 // Eagerly loaded (critical for initial render)
 import LandingPage from "./pages/MarketingPages/LandingPage/LandingPage";
 import LoginPage from "./pages/LoginAndRegistration/Login/LoginPage";
@@ -113,7 +107,7 @@ const App = () => {
             <Route
               path="/docter-dashboard"
               element={
-                <RoleBasedRoute allowedRoles={['HEALTH_PROVIDER']}>
+                <RoleBasedRoute allowedRoles={['HEALTHCARE_PROVIDER']}>
                   <DocterDashboard />
                 </RoleBasedRoute>
               }
@@ -121,7 +115,7 @@ const App = () => {
             <Route
               path="/docter-patient"
               element={
-                <RoleBasedRoute allowedRoles={['HEALTH_PROVIDER']}>
+                <RoleBasedRoute allowedRoles={['HEALTHCARE_PROVIDER']}>
                   <DocterSidePatient />
                 </RoleBasedRoute>
               }
@@ -129,7 +123,7 @@ const App = () => {
             <Route
               path="/docter-appointment"
               element={
-                <RoleBasedRoute allowedRoles={['HEALTH_PROVIDER']}>
+                <RoleBasedRoute allowedRoles={['HEALTHCARE_PROVIDER']}>
                   <DocterSideAppointment />
                 </RoleBasedRoute>
               }
@@ -137,7 +131,7 @@ const App = () => {
             <Route
               path="/docter-message"
               element={
-                <RoleBasedRoute allowedRoles={['HEALTH_PROVIDER']}>
+                <RoleBasedRoute allowedRoles={['HEALTHCARE_PROVIDER']}>
                   <DocterMessage />
                 </RoleBasedRoute>
               }
@@ -145,7 +139,7 @@ const App = () => {
             <Route
               path="/docter-consultation"
               element={
-                <RoleBasedRoute allowedRoles={['HEALTH_PROVIDER']}>
+                <RoleBasedRoute allowedRoles={['HEALTHCARE_PROVIDER']}>
                   <DocterConsultation />
                 </RoleBasedRoute>
               }
@@ -153,7 +147,7 @@ const App = () => {
             <Route
               path="/docter-report"
               element={
-                <RoleBasedRoute allowedRoles={['HEALTH_PROVIDER']}>
+                <RoleBasedRoute allowedRoles={['HEALTHCARE_PROVIDER']}>
                   <DocterReport />
                 </RoleBasedRoute>
               }

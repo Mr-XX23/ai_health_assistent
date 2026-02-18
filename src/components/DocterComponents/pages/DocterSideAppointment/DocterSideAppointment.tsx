@@ -1,10 +1,12 @@
-import React from "react";
+
 import DocterLayout from "../../../../layout/DocterLayout/DocterLayout";
 import Calender from "../../../MarketingComponents/calender/Calender";
+import { useState } from "react";
 import Appointment from "../../components/Appointments/Appointment";
 import VideoCall from "../../components/VideoCall/VideoCall";
 
 const DocterSideAppointment = () => {
+  const [searchBar, setSearchBar] = useState("");
   return (
     <DocterLayout>
       <main className="flex-1 grid grid-cols-12 overflow-hidden">
@@ -24,7 +26,7 @@ const DocterSideAppointment = () => {
                 <input
                   className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-[#0d171b] dark:text-slate-200 focus:outline-0 focus:ring-0 border-none bg-[#e7eff3] dark:bg-slate-800 h-full placeholder:text-[#4c809a] dark:placeholder:text-slate-500 px-2 text-sm font-normal leading-normal"
                   placeholder="Search patient or date..."
-                  value=""
+                  onChange={(e) => setSearchBar(e.target.value)}
                 />
               </div>
             </label>

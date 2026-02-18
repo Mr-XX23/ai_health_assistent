@@ -4,7 +4,7 @@ import DocterLayout from "../../../../layout/DocterLayout/DocterLayout";
 const DocterConsultation = () => {
   return (
     <DocterLayout>
-      <div>hehe</div>
+      <div>Consultation page</div>
     </DocterLayout>
   );
 };

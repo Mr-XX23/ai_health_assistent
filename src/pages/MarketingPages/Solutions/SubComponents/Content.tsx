@@ -1,4 +1,3 @@
-
 const Content = () => {
   return (
     <>
@@ -16,7 +15,7 @@ const Content = () => {
           <div className="flex flex-col rounded-xl dark:bg-[#314158] shadow-sm overflow-hidden ">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-primary/10 rounded-full text-primary-light">
+                <div className="p-3 bg-primary/10 dark:bg-secondary/50 rounded-full text-primary-light  dark:text-secondary-light">
                   <span className="material-symbols-outlined">
                     hourglass_empty
                   </span>
@@ -34,7 +33,7 @@ const Content = () => {
           <div className="flex flex-col rounded-xl dark:bg-[#314158] shadow-sm overflow-hidden">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-primary/10 rounded-full text-primary-light">
+                <div className="p-3 bg-primary/10 dark:bg-secondary/50 rounded-full text-primary-light">
                   <span className="material-symbols-outlined">
                     precision_manufacturing
                   </span>
@@ -51,7 +50,7 @@ const Content = () => {
             </div>
           </div>
           <div className="md:col-span-2 flex flex-col sm:flex-row items-start gap-6 rounded-xl dark:bg-[#314158] shadow-sm overflow-hidden p-6">
-            <div className="p-3 bg-primary/10 rounded-full text-primary-light">
+            <div className="p-3 bg-primary/10 dark:bg-secondary/50 rounded-full text-primary-light">
               <span className="material-symbols-outlined">trending_up</span>
             </div>
             <div className="flex-grow">

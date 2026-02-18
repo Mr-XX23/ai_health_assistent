@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 
 const EndingContent = () => {
   return (
@@ -11,9 +12,12 @@ const EndingContent = () => {
           needs. Schedule a personalized demo with our team today.
         </p>
         <div className="mt-10">
-          <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] mx-auto hover:opacity-90 transition-opacity">
+          <NavLink
+            to={"/message"}
+            className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-primary dark:bg-secondary/80 text-white text-base font-bold leading-normal tracking-[0.015em] mx-auto hover:opacity-90 transition-opacity"
+          >
             <span className="truncate">Request a Demo</span>
-          </button>
+          </NavLink>
         </div>
       </section>
     </div>

@@ -1,10 +1,10 @@
 import AppLayout from "../../../layout/AppLayout/AppLayout";
 import FAQ from "../FAQ/FAQ";
-import Description from "./SubComponents/Description";
-import Hero from "./SubComponents/Hero";
-import SystemBenefits from "./SubComponents/SystemBenefit";
-import SystemOffer from "./SubComponents/SystemOffer";
-import SystemProcess from "./SubComponents/SystemProcess";
+import Description from "./Subcomponents/Description";
+import Hero from "./Subcomponents/Hero";
+import SystemBenefits from "./Subcomponents/SystemBenefit";
+import SystemOffer from "./Subcomponents/SystemOffer";
+import SystemProcess from "./Subcomponents/SystemProcess";
 
 const LandingPage = () => {
   return (

@@ -1,14 +1,33 @@
 import React from "react";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 const PatientSidebar = () => {
   const navigate = useNavigate();
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+
+    if (element) {
+      const yOffset = -50; // adjust if needed
+      const y =
+        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({ top: y, behavior: "smooth" });
+
+      element.classList.add("section-highlight");
+
+      setTimeout(() => {
+        element.classList.remove("section-highlight");
+      }, 1000);
+    }
+  };
+
   return (
     <div>
-      <aside className="sticky top-0 flex h-screen w-64 flex-col border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-4">
+      <div className="sticky top-0 flex h-screen w-64 flex-col border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-4">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-3">
             <div
@@ -25,50 +44,61 @@ const PatientSidebar = () => {
             </div>
           </div>
           <nav className="flex flex-col gap-2 mt-4">
-            <a className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT bg-primary/10 text-primary dark:bg-primary/20">
+            <NavLink
+              onClick={() => scrollToSection("overview")}
+              to={"#"}
+              className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
               <span className="material-symbols-outlined fill">person</span>
               <p className="text-sm font-medium leading-normal">Overview</p>
-            </a>
-            <a
+            </NavLink>
+
+            <NavLink
+              to={"#"}
+              onClick={() => scrollToSection("medical-history")}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
-              href="#"
             >
               <span className="material-symbols-outlined">history</span>
               <p className="text-sm font-medium leading-normal">
                 Medical History
               </p>
-            </a>
-            <a
+            </NavLink>
+            <NavLink
+              to={"#"}
+              onClick={() => scrollToSection("health-metrics")}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
-              href="#"
             >
               <span className="material-symbols-outlined">monitoring</span>
               <p className="text-sm font-medium leading-normal">
                 Health Metrics
               </p>
-            </a>
-            <a
+            </NavLink>
+            <NavLink
+              to={""}
+              onClick={() => scrollToSection("medication")}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
-              href="#"
             >
               <span className="material-symbols-outlined">pill</span>
               <p className="text-sm font-medium leading-normal">Medications</p>
-            </a>
-            <a
+            </NavLink>
+            <NavLink
+              to={""}
+              onClick={() => scrollToSection("vaccination")}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
-              href="#"
             >
               <span className="material-symbols-outlined">vaccines</span>
               <p className="text-sm font-medium leading-normal">Vaccinations</p>
-            </a>
-            <a
+            </NavLink>
+            <NavLink
+              to={""}
+              onClick={() => scrollToSection("lifestyle")}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
-              href="#"
             >
               <span className=" material-symbols-outlined">directions_run</span>
               <p className="text-sm font-medium leading-normal">Lifestyle</p>
-            </a>
-            <a
+            </NavLink>
+            <NavLink
+              to={""}
               className="flex items-center gap-3 px-3 py-2 rounded-DEFAULT hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={handleGoBack}
             >
@@ -84,7 +114,7 @@ const PatientSidebar = () => {
                 </svg>
               </span>
               <p className="text-sm font-medium leading-normal">Return</p>
-            </a>
+            </NavLink>
           </nav>
         </div>
         <div className="mt-auto flex flex-col gap-4">
@@ -92,7 +122,7 @@ const PatientSidebar = () => {
             <span className="truncate">Download Report</span>
           </button>
         </div>
-      </aside>
+      </div>
     </div>
   );
 };

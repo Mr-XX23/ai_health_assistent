@@ -9,7 +9,8 @@ const DocterLayout = ({ children }: DocterLayoutChildren) => {
     <div className="bg-background-light dark:bg-background-dark font-display text-[#334155] dark:text-slate-300">
       <div className="flex h-screen w-full">
         <Sidebar />
-        {children}
+
+        <main className="flex-1 xl:ml-[260px] p-6">{children}</main>
       </div>
     </div>
   );
