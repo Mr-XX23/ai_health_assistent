@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 import Profile from "../Profile/Profile";
 import Logo from "../Logo/Logo";
 

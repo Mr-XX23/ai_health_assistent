@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { RoleBasedRoute } from "./components/routing/RoleBasedRoute";
@@ -37,6 +37,9 @@ const DocterSideAppointment = lazy(() => import("./components/DocterComponents/p
 const DocterMessage = lazy(() => import("./components/DocterComponents/pages/DocterSideMessage/DocterMessage"));
 const DocterConsultation = lazy(() => import("./components/DocterComponents/pages/DocterConsultation/DocterConsultation"));
 const DocterReport = lazy(() => import("./components/DocterComponents/pages/DocterReport/DocterReport"));
+
+// Lazy-loaded Patient Pages
+const AIPhysician = lazy(() => import("./PatientPages/pages/AIPhysician/AIPhysician"));
 
 /**
  * Loading fallback component
@@ -149,6 +152,16 @@ const App = () => {
               element={
                 <RoleBasedRoute allowedRoles={['HEALTHCARE_PROVIDER']}>
                   <DocterReport />
+                </RoleBasedRoute>
+              }
+            />
+
+            {/* Protected Patient Routes */}
+            <Route
+              path="/ai-physician"
+              element={
+                <RoleBasedRoute allowedRoles={['USER']}>
+                  <AIPhysician />
                 </RoleBasedRoute>
               }
             />

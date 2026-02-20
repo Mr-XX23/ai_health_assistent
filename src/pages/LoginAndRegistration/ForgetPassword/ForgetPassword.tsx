@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AppLayout from "../../../layout/AppLayout/AppLayout";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { authService, InputSanitizer } from "../../../services/authService";
 
 const ForgetPassword = () => {

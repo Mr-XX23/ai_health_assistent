@@ -38,34 +38,26 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const isLoggingOut = React.useRef(false);
 
   /**
    * Check authentication on mount
-   * SECURITY: Only validates if session flag exists, fetches user from API (not sessionStorage)
-   * User data is never stored client-side to prevent XSS attacks
+   * Always validates session with the backend via HTTP-only cookies.
+   * HTTP-only cookies persist across tabs and browser restarts, so we must
+   * always call the API — never short-circuit on a sessionStorage flag alone.
    */
   const checkAuth = useCallback(async () => {
     setIsLoading(true);
     try {
-      // SECURITY FIX: Check only for session flag, not user data
-      // Never store user data in sessionStorage (XSS vulnerability)
-      const hasSession = sessionStorage.getItem('healthai_session');
-
-      if (!hasSession) {
-        // No session flag - user is not logged in
-        setUser(null);
-        setIsLoading(false);
-        return;
-      }
-
-      // Validate session and fetch user from API
+      // Always validate with the backend; cookies are the source of truth.
+      // sessionStorage is cleared on new tabs / browser restarts, but cookies are not.
       const { isValid, user: apiUser } = await authService.validateSession();
 
       if (isValid && apiUser) {
-        // Set user from API response (NOT from sessionStorage)
+        // Restore user from API response and keep sessionStorage flag in sync
         setUser(apiUser);
+        sessionStorage.setItem('healthai_session', 'true');
       } else {
-        // Session invalid - clear session flag
         setUser(null);
         sessionStorage.removeItem('healthai_session');
       }
@@ -122,6 +114,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    * Clears all user data and calls backend logout endpoint
    */
   const handleLogout = useCallback(async () => {
+    // Guard against recursive logout (e.g. auth:logout event firing during logout)
+    if (isLoggingOut.current) return;
+    isLoggingOut.current = true;
+
     setIsLoading(true);
     try {
       // Call backend logout endpoint (best effort - don't fail if it errors)
@@ -139,6 +135,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         await indexedDBService.clearUserData(user.userId);
       }
 
+      isLoggingOut.current = false;
       setIsLoading(false);
       window.location.href = '/login';
     }

@@ -5,7 +5,7 @@
 import React from "react";
 import DocterLayout from "../../../../layout/DocterLayout/DocterLayout";
 import PatientList from "../../../PatientComponents/PatientList/PatientList";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 /**
  * PERFORMANCE: Memoized doctor dashboard to prevent unnecessary re-renders

@@ -572,10 +572,10 @@ class AuthService {
       // Verify the token is valid without refreshing it
       const response = await axiosInstance.get('/auth/verify-token');
 
-      // Response includes user details and "Token is valid" message
-      const userData = response.data?.user;
+      // Support both nested { user: {...} } and flat { userId, username, ... } responses
+      const userData = response.data?.user ?? response.data;
 
-      if (userData) {
+      if (userData?.userId && userData?.username && userData?.role) {
         // Transform backend response to User object
         const user: User = {
           userId: userData.userId,
@@ -583,7 +583,7 @@ class AuthService {
           email: userData.email,
           phoneNumber: userData.phoneNumber,
           role: userData.role,
-          lastLoginTime: userData.lastLoginTime,
+          lastLoginTime: userData.lastLoginTime ?? userData.LastLoginTime,
         };
 
         return {
@@ -592,13 +592,17 @@ class AuthService {
         };
       }
 
+      // Token is valid but no user data returned — treat as invalid to avoid
+      // showing an authenticated-but-empty state
       return {
-        isValid: true,
+        isValid: false,
       };
     } catch (error) {
-      // If token is expired (401), axios interceptor will automatically attempt refresh
-      // If refresh also fails, the 'auth:logout' event will be triggered
-      console.error("Session validation error:", error);
+      // If token is expired (401), axios interceptor will automatically attempt refresh.
+      // If refresh also fails, the 'auth:logout' event will be triggered.
+      if (import.meta.env.DEV) {
+        console.error("Session validation error:", error);
+      }
       return {
         isValid: false,
       };

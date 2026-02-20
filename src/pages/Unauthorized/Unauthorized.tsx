@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const Unauthorized: React.FC = () => {
@@ -10,7 +10,7 @@ const Unauthorized: React.FC = () => {
     // Navigate to role-specific dashboard
     if (user?.role === 'ADMIN') {
       navigate('/admin');
-    } else if (user?.role === 'HEALTH_PROVIDER') {
+    } else if (user?.role === 'HEALTHCARE_PROVIDER') {
       navigate('/docter-dashboard');
     } else {
       navigate('/');
@@ -29,6 +29,11 @@ const Unauthorized: React.FC = () => {
         <p className="text-slate-600 dark:text-slate-400 max-w-md">
           You do not have permission to access this page. Please contact your administrator if you believe this is an error.
         </p>
+        {user && (
+          <p className="text-sm text-slate-500 dark:text-slate-500 mt-2">
+            Current role: <span className="font-semibold">{user.role}</span>
+          </p>
+        )}
         <button
           onClick={handleGoBack}
           className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50"

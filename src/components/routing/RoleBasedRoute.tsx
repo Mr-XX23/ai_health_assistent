@@ -1,11 +1,12 @@
 import React from 'react';
-import { Navigate } from 'react-router';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { User } from '../../services/authService';
+
+type UserRole = 'USER' | 'HEALTHCARE_PROVIDER' | 'ADMIN';
 
 interface RoleBasedRouteProps {
   children: React.ReactNode;
-  allowedRoles: User['role'][];
+  allowedRoles: UserRole[];
   fallbackPath?: string;
 }
 

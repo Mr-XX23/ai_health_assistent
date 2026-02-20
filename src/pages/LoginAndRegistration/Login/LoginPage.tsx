@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AppLayout from "../../../layout/AppLayout/AppLayout";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import Password from "../../../components/MarketingComponents/inputField/Password";
 import Email from "../../../components/MarketingComponents/inputField/Email";
@@ -43,7 +43,7 @@ const LoginPage = () => {
           // Immediate navigation based on role without setTimeout
           if (result.user.role === 'ADMIN') {
             navigate('/admin', { replace: true });
-          } else if (result.user.role === 'HEALTH_PROVIDER') {
+          } else if (result.user.role === 'HEALTHCARE_PROVIDER') {
             navigate('/docter-dashboard', { replace: true });
           } else {
             navigate('/', { replace: true });

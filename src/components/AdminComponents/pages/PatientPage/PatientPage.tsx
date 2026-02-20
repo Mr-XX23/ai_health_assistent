@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AdminLayout from "../../../../layout/AdminLayout/AdminLayout";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import PatientList from "../../../PatientComponents/PatientList/PatientList";
 
 const PatientPage = () => {

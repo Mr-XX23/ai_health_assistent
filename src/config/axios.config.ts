@@ -54,21 +54,21 @@ const processQueue = (error: Error | null, token: string | null = null) => {
 const PUBLIC_ENDPOINTS = [
   '/auth/login',
   '/auth/register',
-  '/auth/refresh', // CRITICAL: Must be public to prevent infinite refresh loops
+  '/auth/refresh',      // CRITICAL: Must be public to prevent infinite refresh loops
+  '/auth/verify-token', // CRITICAL: Session probe — a 401 here means "not logged in", never refresh
+  '/auth/logout',       // CRITICAL: Must be public to prevent logout→refresh→logout loop
   '/auth/verify-email',
   '/auth/reset-password',
-  '/auth/confirm-reset', // Password reset confirmation (token-based)
-  '/auth/confirm-reset-otp', // Password reset confirmation (OTP-based)
+  '/auth/confirm-reset',
+  '/auth/confirm-reset-otp',
   '/auth/verify-phone',
   '/auth/send-email-verification',
   '/auth/send-phone-verification',
   '/auth/users/verify/',
 ];
 
-// NOTE: /auth/logout is NOT in this list because:
-// - Backend needs valid access token to extract userId and revoke tokens
-// - If access token expires, interceptor will auto-refresh, then retry logout
-// - This ensures logout always works even with expired access token
+// NOTE: /auth/logout and /auth/verify-token are included above so that a
+// 401 on those endpoints never triggers a token-refresh loop.
 
 const isPublicEndpoint = (url?: string): boolean => {
   if (!url) return false;
