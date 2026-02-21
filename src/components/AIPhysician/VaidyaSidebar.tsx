@@ -278,12 +278,12 @@ const VaidyaSidebar: React.FC<VaidyaSidebarProps> = ({
               ))
             ) : sessions.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 gap-3">
-                <div className="w-12 h-12 rounded-full bg-slate-800/60 border border-slate-700/40 flex items-center justify-center text-slate-600">
+                <div className="w-16 h-16 rounded-full bg-slate-800/60 border border-slate-700/40 flex items-center justify-center text-slate-600">
                   <IconHistory />
                 </div>
                 <div className="text-center">
-                  <p className="text-xs text-slate-500 font-medium">No chats yet</p>
-                  <p className="text-[10px] text-slate-700 mt-1">Start a conversation to see it here</p>
+                  <p className="text-lg text-slate-500 font-medium">No chats yet</p>
+                  <p className="text-sm text-slate-700 mt-1">Start a conversation to see it here</p>
                 </div>
               </div>
             ) : (

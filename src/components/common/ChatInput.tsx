@@ -1,15 +1,13 @@
 
 import React, { useState, useRef, type KeyboardEvent } from 'react';
 import {
-  Plus, SlidersHorizontal, Sparkles,
-  Smile, Mic, ArrowRight, Loader2,
+  Plus, SlidersHorizontal, Sparkles, Mic, ArrowRight, Loader2,
 } from 'lucide-react';
 
 interface ChatInputProps {
   onSend: (message: string) => void;
   disabled?: boolean;
   placeholder?: string;
-  /** 'bottom' (default) renders a border-top divider bar; 'hero' renders a floating card */
   variant?: 'bottom' | 'hero';
 }
 
@@ -78,7 +76,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
             placeholder={placeholder}
             rows={2}
             className="w-full bg-transparent resize-none outline-none leading-relaxed
-                       text-white text-[15px]
+                       text-white text-lg
                        placeholder-[rgba(255,255,255,0.3)]
                        disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ maxHeight: '200px' }}
@@ -90,23 +88,23 @@ const ChatInput: React.FC<ChatInputProps> = ({
           {/* Left: + · sliders · sparkle */}
           <div className="flex items-center gap-0.5">
             <button type="button" className={iconBtn} title="Add">
-              <Plus size={16} />
+              <Plus size={19} />
             </button>
             <button type="button" className={iconBtn} title="Tools">
-              <SlidersHorizontal size={15} />
+              <SlidersHorizontal size={18} />
             </button>
             <button type="button" className={iconBtn} title="AI Agent">
-              <Sparkles size={15} />
+              <Sparkles size={18} />
             </button>
           </div>
 
           {/* Right: emoji · mic · send */}
           <div className="flex items-center gap-1.5">
-            <button type="button" className={iconBtn} title="Emoji">
-              <Smile size={16} />
-            </button>
+            {/* <button type="button" className={iconBtn} title="Emoji">
+              <Smile size={18} />
+            </button> */}
             <button type="button" className={iconBtn} title="Voice">
-              <Mic size={16} />
+              <Mic size={18} />
             </button>
             {/* Send — filled circle */}
             <button
@@ -122,8 +120,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
               }}
             >
               {disabled
-                ? <Loader2 size={14} className="text-white animate-spin" />
-                : <ArrowRight size={14} className="text-white" strokeWidth={2.5} />
+                ? <Loader2 size={18} className="text-white animate-spin" />
+                : <ArrowRight size={18} className="text-white" strokeWidth={2.5} />
               }
             </button>
           </div>
@@ -168,12 +166,19 @@ const ChatInput: React.FC<ChatInputProps> = ({
   }
 
   /* ── Bottom variant (default) ────────────────────────────────── */
+  const iconBtn =
+    'w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150 ' +
+    'text-[rgba(255,255,255,0.35)] hover:text-[rgba(255,255,255,0.75)] hover:bg-[rgba(255,255,255,0.07)]';
+
+  const sendActive = message.trim() && !disabled;
+
   return (
     <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark px-6 py-4">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-end gap-3">
-          {/* Input Field */}
-          <div className="flex-1 relative">
+        <div className="vaidya-input-hero w-full overflow-hidden">
+
+          {/* ── Textarea area ───────────────────────────────────── */}
+          <div className="px-5 pt-4 pb-3">
             <textarea
               ref={textareaRef}
               value={message}
@@ -181,42 +186,55 @@ const ChatInput: React.FC<ChatInputProps> = ({
               onKeyDown={handleKeyDown}
               disabled={disabled}
               placeholder={placeholder}
-              rows={1}
-              className="w-full px-4 py-3 pr-12 rounded-2xl border border-gray-300 dark:border-gray-600
-                       bg-gray-50 dark:bg-gray-800
-                       text-text-light dark:text-text-dark
-                       placeholder-gray-400 dark:placeholder-gray-500
-                       focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary
-                       disabled:opacity-50 disabled:cursor-not-allowed
-                       resize-none overflow-hidden
-                       transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-md"
-              style={{ maxHeight: '120px' }}
+              rows={2}
+              className="w-full bg-transparent resize-none outline-none leading-relaxed
+                         text-white text-lg
+                         placeholder-[rgba(255,255,255,0.3)]
+                         disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ maxHeight: '200px' }}
             />
           </div>
 
-          {/* Send Button */}
-          <button
-            onClick={handleSend}
-            disabled={disabled || !message.trim()}
-            className="shrink-0 w-12 h-12 rounded-2xl bg-primary hover:bg-primary/90
-                     text-white disabled:opacity-50 disabled:cursor-not-allowed
-                     transition-all duration-200 transform hover:scale-105 active:scale-95
-                     flex items-center justify-center shadow-md hover:shadow-lg
-                     focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2"
-            aria-label="Send message"
-          >
-            {disabled ? (
-              <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
-            )}
-          </button>
+          {/* ── Icon toolbar ─────────────────────────────────────── */}
+          <div className="flex items-center justify-between px-3 pb-2.5">
+            {/* Left: + · sliders · sparkle */}
+            <div className="flex items-center gap-0.5">
+              <button type="button" className={iconBtn} title="Add">
+                <Plus size={19} />
+              </button>
+              <button type="button" className={iconBtn} title="Tools">
+                <SlidersHorizontal size={18} />
+              </button>
+              <button type="button" className={iconBtn} title="AI Agent">
+                <Sparkles size={18} />
+              </button>
+            </div>
+
+            {/* Right: mic · send */}
+            <div className="flex items-center gap-1.5">
+              <button type="button" className={iconBtn} title="Voice">
+                <Mic size={18} />
+              </button>
+              {/* Send — filled circle */}
+              <button
+                type="button"
+                onClick={handleSend}
+                disabled={!sendActive}
+                title="Send"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
+                style={{
+                  background: sendActive ? 'linear-gradient(135deg,#005a9c,#0077cc)' : 'rgba(255,255,255,0.09)',
+                  boxShadow: sendActive ? '0 0 16px rgba(0,90,156,0.5)' : 'none',
+                  opacity: !sendActive && !disabled ? 0.55 : 1,
+                }}
+              >
+                {disabled
+                  ? <Loader2 size={18} className="text-white animate-spin" />
+                  : <ArrowRight size={18} className="text-white" strokeWidth={2.5} />
+                }
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

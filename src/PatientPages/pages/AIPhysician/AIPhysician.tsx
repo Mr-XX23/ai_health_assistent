@@ -139,7 +139,7 @@ const AIPhysician: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workflowParam]);
 
-  // â”€â”€ New chat â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â”€â”€ New chat ââ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const handleNewSession = () => {
     setChatStarted(false);
     setMessages([]);
@@ -154,7 +154,7 @@ const AIPhysician: React.FC = () => {
     // No auto-init — session is created lazily when user sends first message
   };
 
-  // â”€â”€ Load historical session â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â”€â”€ Load historical session ââ”€â”€â”€â”€â”€â”€â”€â”€
   const handleLoadSession = async (loadSessionId: string) => {
     setIsInitializing(true);
     setChatStarted(false);
@@ -179,7 +179,7 @@ const AIPhysician: React.FC = () => {
     }
   };
 
-  // â”€â”€ Send message â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â”€â”€ Send message ââ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const handleSendMessage = async (messageText: string) => {
     if (isStreaming) return;
 
@@ -254,7 +254,7 @@ const AIPhysician: React.FC = () => {
     );
   };
 
-  // â”€â”€ Render â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Render 
   return (
     <div className="flex flex-row h-screen overflow-hidden">
       {/* Sidebar */}
@@ -268,7 +268,7 @@ const AIPhysician: React.FC = () => {
       {/* Main content area */}
       <main className="flex-1 flex flex-col min-w-0 bg-[#0d1117]">
 
-        {/* â”€â”€ Initialising â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* Initialising */}
         {isInitializing && (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
@@ -280,7 +280,7 @@ const AIPhysician: React.FC = () => {
           </div>
         )}
 
-        {/* â”€â”€ Hero state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* Hero state */}
         {!isInitializing && !chatStarted && (
           <div className="flex-1 flex flex-col items-center justify-center px-6 pb-10 overflow-y-auto vaidya-scrollbar">
             <div className="w-full max-w-3xl flex flex-col items-center">
@@ -335,7 +335,7 @@ const AIPhysician: React.FC = () => {
 
               {/* ── Disclaimer ── */}
               <p
-                className="text-[12px] mt-8 text-center leading-relaxed vaidya-hero-anim vaidya-hero-anim-delay-3"
+                className="text-sm mt-8 text-center leading-relaxed vaidya-hero-anim vaidya-hero-anim-delay-3"
                 style={{ color: 'rgba(255,255,255,0.3)' }}
               >
                 ⚕ Vaidya is an AI assistant and does not replace professional medical advice.
@@ -345,7 +345,7 @@ const AIPhysician: React.FC = () => {
           </div>
         )}
 
-        {/* â”€â”€ Active chat â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* Active chat */}
         {!isInitializing && chatStarted && (
           <>
             {/* Scrollable messages */}

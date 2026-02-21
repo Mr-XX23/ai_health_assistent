@@ -38,6 +38,7 @@ const DocterMessage = lazy(() => import("./components/DocterComponents/pages/Doc
 const DocterConsultation = lazy(() => import("./components/DocterComponents/pages/DocterConsultation/DocterConsultation"));
 const DocterReport = lazy(() => import("./components/DocterComponents/pages/DocterReport/DocterReport"));
 
+
 // Lazy-loaded Patient Pages
 const AIPhysician = lazy(() => import("./PatientPages/pages/AIPhysician/AIPhysician"));
 const WorkflowsPage = lazy(() => import("./PatientPages/pages/AIPhysician/WorkflowsPage"));
