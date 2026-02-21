@@ -40,6 +40,7 @@ const DocterReport = lazy(() => import("./components/DocterComponents/pages/Doct
 
 // Lazy-loaded Patient Pages
 const AIPhysician = lazy(() => import("./PatientPages/pages/AIPhysician/AIPhysician"));
+const WorkflowsPage = lazy(() => import("./PatientPages/pages/AIPhysician/WorkflowsPage"));
 
 /**
  * Loading fallback component
@@ -162,6 +163,14 @@ const App = () => {
               element={
                 <RoleBasedRoute allowedRoles={['USER']}>
                   <AIPhysician />
+                </RoleBasedRoute>
+              }
+            />
+            <Route
+              path="/ai-physician/workflows"
+              element={
+                <RoleBasedRoute allowedRoles={['USER']}>
+                  <WorkflowsPage />
                 </RoleBasedRoute>
               }
             />

@@ -22,8 +22,33 @@
   --radius-full: 9999px;
 }
 
-.section-highlight {
-  animation: flashHighlight 1s ease-in-out;
+/* ── Vaidya Sidebar scrollbar ─────────────────────────────────────── */
+.vaidya-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #2d3748 transparent;
+}
+.vaidya-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.vaidya-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.vaidya-scrollbar::-webkit-scrollbar-thumb {
+  background: #2d3748;
+  border-radius: 9999px;
+  transition: background 0.2s;
+}
+.vaidya-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #4a5568;
+}
+
+/* ── Session item fade-in ─────────────────────────────────────────── */
+@keyframes sessionFadeSlide {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.session-item-enter {
+  animation: sessionFadeSlide 0.2s ease forwards;
 }
 
 @keyframes flashHighlight {
@@ -34,3 +59,114 @@
     background-color: transparent;
   }
 }
+
+/* ── Vaidya Hero pill chips ───────────────────────────────────────── */
+.vaidya-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 13px;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  cursor: pointer;
+}
+.vaidya-pill:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+.vaidya-pill:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Vaidya Hero cards (kept for WorkflowsPage or future use) ──── */
+.vaidya-card {
+  background: #161B22;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.vaidya-card:hover {
+  background: #1b2232;
+}
+.vaidya-card:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.vaidya-card.glow-blue:hover {
+  border-color: rgba(0, 90, 156, 0.55);
+  box-shadow: 0 0 24px rgba(0, 90, 156, 0.22);
+}
+.vaidya-card.glow-teal:hover {
+  border-color: rgba(76, 185, 166, 0.55);
+  box-shadow: 0 0 24px rgba(76, 185, 166, 0.2);
+}
+.vaidya-card.glow-amber:hover {
+  border-color: rgba(242, 143, 59, 0.55);
+  box-shadow: 0 0 24px rgba(242, 143, 59, 0.2);
+}
+.vaidya-card.glow-rose:hover {
+  border-color: rgba(224, 93, 119, 0.55);
+  box-shadow: 0 0 24px rgba(224, 93, 119, 0.2);
+}
+
+/* ── Hero input container glow ──────────────────────────────────────── */
+.vaidya-input-hero {
+  background: #161B22;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 8px 40px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.vaidya-input-hero:focus-within {
+  border-color: rgba(0, 90, 156, 0.45);
+  box-shadow: 0 0 0 1px rgba(0, 90, 156, 0.15), 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Tool badge ─────────────────────────────────────────────────────── */
+.vaidya-tool-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: default;
+  transition: all 0.15s ease;
+}
+.vaidya-tool-badge:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+/* ── Hide scrollbar on hero cards row ───────────────────────────────── */
+.vaidya-cards-row {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.vaidya-cards-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Hero heading gradient shimmer ──────────────────────────────────── */
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.vaidya-hero-anim {
+  animation: heroFadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.vaidya-hero-anim-delay-1 { animation-delay: 0.08s; opacity: 0; }
+.vaidya-hero-anim-delay-2 { animation-delay: 0.18s; opacity: 0; }
+.vaidya-hero-anim-delay-3 { animation-delay: 0.28s; opacity: 0; }
+.vaidya-hero-anim-delay-4 { animation-delay: 0.38s; opacity: 0; }

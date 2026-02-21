@@ -1,35 +1,32 @@
-/**
- * AIPhysician Page
- * Agentic chat interface for interacting with the AI Physician
- */
-
+﻿
 import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import {
+  Stethoscope, Lightbulb, FlaskConical, ShieldCheck,
+} from 'lucide-react';
 import ChatMessage from '../../../components/common/ChatMessage';
 import SystemMessage from '../../../components/common/SystemMessage';
 import StatusIndicator from '../../../components/common/StatusIndicator';
 import ThinkingIndicator from '../../../components/common/ThinkingIndicator';
 import ChatInput from '../../../components/common/ChatInput';
+import VaidyaSidebar from '../../../components/AIPhysician/VaidyaSidebar';
 import {
   startSymptomCheckSession,
   sendMessageStream,
+  loadSession,
   type Message,
 } from '../../../services/aiPhysicianService';
 
-/** Extends Message with optional reasoning captured from <think>…</think> blocks */
+
 interface ChatEntry extends Message {
   thinkContent?: string;
 }
 
-/**
- * Parse raw accumulated stream text and split into thinking vs response content.
- * Handles partial stream (think block still open) as well as complete blocks.
- */
 function parseStreamContent(raw: string): {
   thinkContent: string;
   isThinkDone: boolean;
   responseContent: string;
 } {
-  // Complete <think>…</think> block present
   const complete = /<think>([\s\S]*?)<\/think>([\s\S]*)/s.exec(raw);
   if (complete) {
     return {
@@ -38,70 +35,163 @@ function parseStreamContent(raw: string): {
       responseContent: complete[2].trimStart(),
     };
   }
-  // Think block opened but not yet closed
   const open = /^<think>([\s\S]*)/s.exec(raw);
   if (open) {
     return { thinkContent: open[1], isThinkDone: false, responseContent: '' };
   }
-  // No think tags — plain response
   return { thinkContent: '', isThinkDone: false, responseContent: raw };
 }
 
+const QUICK_ACTIONS = [
+  {
+    label: 'Check Symptoms',
+    prompt: 'I want to check my symptoms',
+    Icon: Stethoscope,
+    color: '#4d9fd6',
+    bg: 'rgba(0,90,156,0.18)',
+  },
+  {
+    label: 'Health Advice',
+    prompt: 'I need health advice',
+    Icon: Lightbulb,
+    color: '#4cb9a6',
+    bg: 'rgba(76,185,166,0.15)',
+  },
+  {
+    label: 'Medication Info',
+    prompt: 'What medications should I know about?',
+    Icon: FlaskConical,
+    color: '#f28f3b',
+    bg: 'rgba(242,143,59,0.15)',
+  },
+  {
+    label: 'Preventive Care',
+    prompt: 'Tell me about preventive health',
+    Icon: ShieldCheck,
+    color: '#e05c7e',
+    bg: 'rgba(224,93,126,0.15)',
+  },
+];
+
+// Workflow starter prompts — keyed to workflow IDs from WorkflowsPage
+const WORKFLOW_PROMPTS: Record<string, string> = {
+  'symptom-check': 'I want to check my symptoms',
+  'medication-review': 'I want to review my medications for any dangerous interactions',
+  'preventive-care': 'I want personalised preventive care recommendations',
+  'find-specialist': 'I need help finding a specialist or healthcare provider near me',
+  'medical-history': 'Can you summarise my medical history and past consultations?',
+  'mental-health': 'I want to talk about my mental health and well-being',
+};
+
 const AIPhysician: React.FC = () => {
-  const [messages, setMessages] = useState<ChatEntry[]>([]);
+  const [searchParams] = useSearchParams();
+  const workflowParam = searchParams.get('workflow');
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(false);
+  const [chatStarted, setChatStarted] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [streamingMessage, setStreamingMessage] = useState<string>('');
-  const [streamingThinking, setStreamingThinking] = useState<string>('');
+  const [streamingMessage, setStreamingMessage] = useState('');
+  const [streamingThinking, setStreamingThinking] = useState('');
   const [isInThinkPhase, setIsInThinkPhase] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [historyRefreshTrigger, setHistoryRefreshTrigger] = useState(0);
+  const [messages, setMessages] = useState<ChatEntry[]>([]);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  // Accumulates raw SSE text including <think> tags for parsing
-  const rawAccumulatedRef = useRef<string>('');
+  const rawAccumulatedRef = useRef('');
 
-  // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, streamingMessage, statusMessage]);
+    if (chatStarted) scrollToBottom();
+  }, [messages, streamingMessage, statusMessage, chatStarted]);
 
-  // Initialize session on component mount
+  // Create a new backend session and return its ID (does NOT set state itself)
+  const createSession = async (): Promise<string | null> => {
+    try {
+      setIsInitializing(true);
+      const response = await startSymptomCheckSession();
+      setSessionId(response.session_id);
+      setError(null);
+      return response.session_id;
+    } catch {
+      setError('Failed to start session. Please try again.');
+      return null;
+    } finally {
+      setIsInitializing(false);
+    }
+  };
+
+  // Auto-trigger a workflow starter prompt when navigating from WorkflowsPage
+  const workflowAutoSentRef = useRef(false);
   useEffect(() => {
-    const initSession = async () => {
-      try {
-        setIsInitializing(true);
-        const response = await startSymptomCheckSession();
-        setSessionId(response.session_id);
-        setMessages([
-          {
-            role: 'assistant',
-            content: response.message,
-            timestamp: new Date().toISOString(),
-          },
-        ]);
-        setError(null);
-      } catch (err) {
-        setError('Failed to start session. Please try again.');
-        console.error('Failed to initialize session:', err);
-      } finally {
-        setIsInitializing(false);
+    if (workflowParam && !workflowAutoSentRef.current) {
+      const prompt = WORKFLOW_PROMPTS[workflowParam];
+      if (prompt) {
+        workflowAutoSentRef.current = true;
+        handleSendMessage(prompt);
       }
-    };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workflowParam]);
 
-    initSession();
-  }, []);
+  // â”€â”€ New chat â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  const handleNewSession = () => {
+    setChatStarted(false);
+    setMessages([]);
+    setSessionId(null);
+    setError(null);
+    setStreamingMessage('');
+    setStreamingThinking('');
+    setIsInThinkPhase(false);
+    setStatusMessage(null);
+    rawAccumulatedRef.current = '';
+    setHistoryRefreshTrigger((n) => n + 1);
+    // No auto-init — session is created lazily when user sends first message
+  };
 
-  // Handle sending a message
+  // â”€â”€ Load historical session â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  const handleLoadSession = async (loadSessionId: string) => {
+    setIsInitializing(true);
+    setChatStarted(false);
+    setMessages([]);
+    setError(null);
+    rawAccumulatedRef.current = '';
+
+    try {
+      const details = await loadSession(loadSessionId);
+      setSessionId(details.session_id);
+      const chatMessages: ChatEntry[] = details.messages.map((msg) => ({
+        role: msg.role as 'user' | 'assistant',
+        content: msg.content,
+        timestamp: msg.timestamp,
+      }));
+      setMessages(chatMessages);
+      setChatStarted(true);
+    } catch {
+      setError('Failed to load session. Please try again.');
+    } finally {
+      setIsInitializing(false);
+    }
+  };
+
+  // â”€â”€ Send message â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const handleSendMessage = async (messageText: string) => {
-    if (!sessionId || isStreaming) return;
+    if (isStreaming) return;
 
-    // Add user message to chat
+    // Lazily create a session on the very first message
+    let activeSessionId = sessionId;
+    if (!activeSessionId) {
+      activeSessionId = await createSession();
+      if (!activeSessionId) return; // session creation failed
+    }
+
+    if (!chatStarted) setChatStarted(true);
+
     const userMessage: ChatEntry = {
       role: 'user',
       content: messageText,
@@ -116,37 +206,32 @@ const AIPhysician: React.FC = () => {
     setError(null);
     rawAccumulatedRef.current = '';
 
-    // Send message and handle streaming response
     await sendMessageStream(
-      sessionId,
+      activeSessionId,
       messageText,
-      // onToken — parse think vs response content on every new token
-      (token: string) => {
+      (token) => {
         rawAccumulatedRef.current += token;
         const { thinkContent, isThinkDone, responseContent } = parseStreamContent(
           rawAccumulatedRef.current
         );
-
         setStreamingThinking(thinkContent);
         setIsInThinkPhase(!isThinkDone && thinkContent.length > 0);
         setStreamingMessage(responseContent);
-
-        // Clear status message once tokens start arriving
         if (statusMessage) setStatusMessage(null);
       },
-      // onComplete
       () => {
         const { thinkContent, responseContent } = parseStreamContent(rawAccumulatedRef.current);
         const finalContent = responseContent || rawAccumulatedRef.current;
-
         if (finalContent) {
-          const assistantMessage: ChatEntry = {
-            role: 'assistant',
-            content: finalContent,
-            thinkContent: thinkContent || undefined,
-            timestamp: new Date().toISOString(),
-          };
-          setMessages((prev) => [...prev, assistantMessage]);
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: 'assistant',
+              content: finalContent,
+              thinkContent: thinkContent || undefined,
+              timestamp: new Date().toISOString(),
+            },
+          ]);
         }
         setStreamingMessage('');
         setStreamingThinking('');
@@ -154,9 +239,9 @@ const AIPhysician: React.FC = () => {
         setStatusMessage(null);
         setIsStreaming(false);
         rawAccumulatedRef.current = '';
+        setHistoryRefreshTrigger((n) => n + 1);
       },
-      // onError
-      (errorMsg: string) => {
+      (errorMsg) => {
         setError(errorMsg);
         setStreamingMessage('');
         setStreamingThinking('');
@@ -165,228 +250,112 @@ const AIPhysician: React.FC = () => {
         setIsStreaming(false);
         rawAccumulatedRef.current = '';
       },
-      // onStatus — Handle status messages from backend
-      (status: string) => {
-        setStatusMessage(status);
-      }
+      (status) => setStatusMessage(status)
     );
   };
 
-  // Handle starting a new session
-  const handleNewSession = async () => {
-    setMessages([]);
-    setSessionId(null);
-    setError(null);
-    setStreamingThinking('');
-    setIsInThinkPhase(false);
-    setIsInitializing(true);
-    rawAccumulatedRef.current = '';
-
-    try {
-      const response = await startSymptomCheckSession();
-      setSessionId(response.session_id);
-      setMessages([
-        {
-          role: 'assistant',
-          content: response.message,
-          timestamp: new Date().toISOString(),
-        },
-      ]);
-    } catch (err) {
-      setError('Failed to start new session. Please try again.');
-      console.error('Failed to start new session:', err);
-    } finally {
-      setIsInitializing(false);
-    }
-  };
-
+  // â”€â”€ Render â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   return (
-    <div className="flex flex-col h-screen bg-white dark:bg-background-dark">
-      {/* Header */}
-      <div className="shrink-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-6 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {/* Vaidya Icon */}
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-md">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                />
-              </svg>
-            </div>
+    <div className="flex flex-row h-screen overflow-hidden">
+      {/* Sidebar */}
+      <VaidyaSidebar
+        onNewChat={handleNewSession}
+        onLoadSession={handleLoadSession}
+        currentSessionId={sessionId}
+        refreshTrigger={historyRefreshTrigger}
+      />
 
-            <div>
-              <h1 className="text-lg font-semibold text-text-light dark:text-text-dark">
-                Vaidya
-              </h1>
-              <p className="text-xs text-subtext-light dark:text-subtext-dark">
-                {sessionId ? 'AI Health Assistant' : 'Initializing...'}
-              </p>
-            </div>
-          </div>
+      {/* Main content area */}
+      <main className="flex-1 flex flex-col min-w-0 bg-[#0d1117]">
 
-          {/* New Session Button */}
-          {sessionId && !isInitializing && messages.length > 1 && (
-            <button
-              onClick={handleNewSession}
-              disabled={isStreaming}
-              className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700
-                       text-text-light dark:text-text-dark transition-all duration-200 text-sm font-medium
-                       disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-              New
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Messages Container */}
-      <div
-        ref={chatContainerRef}
-        className="flex-1 overflow-y-auto px-6 py-8 bg-white dark:bg-background-dark"
-      >
-        {isInitializing ? (
-          <div className="flex items-center justify-center h-full">
+        {/* â”€â”€ Initialising â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {isInitializing && (
+          <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto mb-3"></div>
-              <p className="text-sm text-subtext-light dark:text-subtext-dark">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto mb-3" />
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.38)' }}>
                 Initializing Vaidya...
               </p>
             </div>
           </div>
-        ) : (
-          <>
-            {/* Welcome State */}
-            {messages.length === 1 && (
-              <div className="flex flex-col items-center justify-center h-full max-w-3xl mx-auto">
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-text-light dark:text-text-dark mb-3">
-                    What can I do for you?
-                  </h2>
-                  <p className="text-sm text-subtext-light dark:text-subtext-dark">
-                    I'm Vaidya, your AI health assistant. I can help you with symptom analysis, health guidance, and more.
-                  </p>
-                </div>
+        )}
 
-                {/* Quick Action Buttons */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-2xl mb-6">
-                  <button
-                    onClick={() => handleSendMessage("I want to check my symptoms")}
-                    disabled={isStreaming}
-                    className="p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary 
-                             dark:hover:border-primary transition-all duration-200 text-left group
-                             hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                        <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-text-light dark:text-text-dark mb-1">Check symptoms</h3>
-                        <p className="text-xs text-subtext-light dark:text-subtext-dark">Analyze your symptoms and get guidance</p>
-                      </div>
-                    </div>
-                  </button>
+        {/* â”€â”€ Hero state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {!isInitializing && !chatStarted && (
+          <div className="flex-1 flex flex-col items-center justify-center px-6 pb-10 overflow-y-auto vaidya-scrollbar">
+            <div className="w-full max-w-3xl flex flex-col items-center">
 
-                  <button
-                    onClick={() => handleSendMessage("I need health advice")}
-                    disabled={isStreaming}
-                    className="p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-secondary
-                             dark:hover:border-secondary transition-all duration-200 text-left group
-                             hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
-                        <svg className="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-text-light dark:text-text-dark mb-1">Health advice</h3>
-                        <p className="text-xs text-subtext-light dark:text-subtext-dark">Get personalized health recommendations</p>
-                      </div>
-                    </div>
-                  </button>
+              {/* ── Hero heading ── */}
+              <h1
+                className="font-bold text-white text-center vaidya-hero-anim"
+                style={{ fontSize: 'clamp(2.4rem, 5vw, 3.4rem)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '2rem' }}
+              >
+                What can I do for you?
+              </h1>
 
-                  <button
-                    onClick={() => handleSendMessage("What medications should I know about?")}
-                    disabled={isStreaming}
-                    className="p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-accent
-                             dark:hover:border-accent transition-all duration-200 text-left group
-                             hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
-                        <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-text-light dark:text-text-dark mb-1">Medication info</h3>
-                        <p className="text-xs text-subtext-light dark:text-subtext-dark">Learn about medications and interactions</p>
-                      </div>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => handleSendMessage("Tell me about preventive health")}
-                    disabled={isStreaming}
-                    className="p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary
-                             dark:hover:border-primary transition-all duration-200 text-left group
-                             hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                        <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-text-light dark:text-text-dark mb-1">Preventive care</h3>
-                        <p className="text-xs text-subtext-light dark:text-subtext-dark">Learn about staying healthy</p>
-                      </div>
-                    </div>
-                  </button>
-                </div>
-
-                <p className="text-xs text-subtext-light dark:text-subtext-dark text-center max-w-lg">
-                  <span className="inline-block mr-1">⚕️</span>
-                  Vaidya is an AI assistant and does not replace professional medical advice.
-                </p>
+              {/* ── Unified chat input card (textarea + toolbar + tools row) ── */}
+              <div className="w-full mb-6 vaidya-hero-anim vaidya-hero-anim-delay-1">
+                <ChatInput
+                  variant="hero"
+                  onSend={handleSendMessage}
+                  disabled={isStreaming || isInitializing}
+                  placeholder="Assign a task or ask anything..."
+                />
               </div>
-            )}
 
-            {/* Error Message */}
-            {error && <SystemMessage message={error} type="error" />}
+              {/* ── Horizontal pill workflow chips ── */}
+              <div className="flex items-center gap-2.5 flex-wrap justify-center vaidya-hero-anim vaidya-hero-anim-delay-2">
+                {QUICK_ACTIONS.map(({ label, prompt, Icon, color, bg }) => (
+                  <button
+                    key={label}
+                    onClick={() => handleSendMessage(prompt)}
+                    disabled={isStreaming || isInitializing}
+                    className="vaidya-pill group"
+                  >
+                    <span
+                      className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 transition-colors duration-150"
+                      style={{ background: bg }}
+                    >
+                      <Icon size={11} style={{ color }} strokeWidth={2.2} />
+                    </span>
+                    <span className="text-[13px] font-medium" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                      {label}
+                    </span>
+                  </button>
+                ))}
 
-            {/* Chat Messages - Only show when conversation started */}
-            {messages.length > 1 && (
-              <div className="max-w-4xl mx-auto">
-                {messages.map((msg, index) => (
+                {/* More pill */}
+                <button
+                  className="vaidya-pill"
+                  style={{ color: 'rgba(255,255,255,0.38)' }}
+                >
+                  <span className="text-[13px] font-medium">More ↗</span>
+                </button>
+              </div>
+
+              {/* ── Disclaimer ── */}
+              <p
+                className="text-[12px] mt-8 text-center leading-relaxed vaidya-hero-anim vaidya-hero-anim-delay-3"
+                style={{ color: 'rgba(255,255,255,0.3)' }}
+              >
+                ⚕ Vaidya is an AI assistant and does not replace professional medical advice.
+              </p>
+
+            </div>
+          </div>
+        )}
+
+        {/* â”€â”€ Active chat â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {!isInitializing && chatStarted && (
+          <>
+            {/* Scrollable messages */}
+            <div ref={chatContainerRef} className="flex-1 overflow-y-auto">
+              <div className="max-w-3xl mx-auto px-4 py-6">
+                {error && <SystemMessage message={error} type="error" />}
+
+                {messages.map((msg, idx) => (
                   <ChatMessage
-                    key={index}
+                    key={idx}
                     role={msg.role}
                     content={msg.content}
                     timestamp={msg.timestamp}
@@ -394,47 +363,41 @@ const AIPhysician: React.FC = () => {
                   />
                 ))}
 
-                {/* Status Indicator - Show when backend is processing before streaming starts */}
+                {/* Status while waiting for first token */}
                 {isStreaming && statusMessage && !streamingMessage && !streamingThinking && (
                   <StatusIndicator message={statusMessage} />
                 )}
 
-                {/* Thinking Indicator - live while model is in <think> phase */}
+                {/* Live thinking block */}
                 {isStreaming && (streamingThinking || isInThinkPhase) && (
                   <ThinkingIndicator content={streamingThinking} isStreaming={isInThinkPhase} />
                 )}
 
-                {/* Streaming response content (after think block) */}
+                {/* Live response tokens */}
                 {isStreaming && streamingMessage && (
                   <ChatMessage role="assistant" content={streamingMessage} />
                 )}
 
-                {/* Typing Indicator - nothing received yet and no status/think */}
+                {/* Typing dots */}
                 {isStreaming && !streamingMessage && !statusMessage && !streamingThinking && (
                   <ChatMessage role="assistant" content="" isTyping={true} />
                 )}
-              </div>
-            )}
 
-            <div ref={messagesEndRef} />
+                <div ref={messagesEndRef} />
+              </div>
+            </div>
+
+            {/* Sticky bottom input */}
+            <div className="shrink-0">
+              <ChatInput
+                onSend={handleSendMessage}
+                disabled={isStreaming || !sessionId}
+                placeholder={isStreaming ? 'Vaidya is responding' : 'Ask anything about your health'}
+              />
+            </div>
           </>
         )}
-      </div>
-
-      {/* Input Area */}
-      {!isInitializing && (
-        <div className="shrink-0">
-          <ChatInput
-            onSend={handleSendMessage}
-            disabled={isStreaming || !sessionId}
-            placeholder={
-              isStreaming
-                ? 'Vaidya is responding...'
-                : 'Ask anything about your health...'
-            }
-          />
-        </div>
-      )}
+      </main>
     </div>
   );
 };

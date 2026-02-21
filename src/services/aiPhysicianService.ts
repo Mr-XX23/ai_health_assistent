@@ -39,6 +39,22 @@ export interface SessionDetails {
   };
 }
 
+export interface SessionSummary {
+  session_id: string;
+  created_at: string;
+  updated_at: string;
+  status: string;
+  message_count: number;
+  preview?: string | null;
+}
+
+export interface UserSessionsResponse {
+  total: number;
+  limit: number;
+  offset: number;
+  sessions: SessionSummary[];
+}
+
 /**
  * Start a new Vaidya session
  */
@@ -169,6 +185,64 @@ export const getSessionDetails = async (sessionId: string): Promise<SessionDetai
     return await response.json();
   } catch (error) {
     console.error('Error getting session details:', error);
+    throw error;
+  }
+};
+
+/**
+ * Load a historical session including all messages
+ */
+export const loadSession = async (sessionId: string): Promise<SessionDetails> => {
+  return getSessionDetails(sessionId);
+};
+
+/**
+ * Delete a session by ID
+ */
+export const deleteSession = async (sessionId: string): Promise<void> => {
+  try {
+    const response = await fetch(
+      `${AI_PHYSICIAN_BASE_URL}/api/v1/vaidya/session/${sessionId}`,
+      {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete session: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error('Error deleting session:', error);
+    throw error;
+  }
+};
+
+/**
+ * Get paginated list of sessions for the current authenticated user
+ */
+export const getUserSessions = async (
+  limit = 20,
+  offset = 0
+): Promise<UserSessionsResponse> => {
+  try {
+    const response = await fetch(
+      `${AI_PHYSICIAN_BASE_URL}/api/v1/vaidya/sessions?limit=${limit}&offset=${offset}`,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to get sessions: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error getting user sessions:', error);
     throw error;
   }
 };
