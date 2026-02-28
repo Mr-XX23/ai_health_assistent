@@ -1,9 +1,12 @@
 /**
  * ChatMessage Component
- * Displays individual chat messages with appropriate styling
+ * Displays individual chat messages with appropriate styling.
+ * Emergency responses include ERHospitalCard components for actionable hospital info.
  */
 
 import React, { useState } from 'react';
+import ERHospitalCard from './ERHospitalCard';
+import type { ERHospital, EmergencyNumbers } from '../../services/aiPhysicianService';
 
 interface ChatMessageProps {
   role: 'user' | 'assistant';
@@ -12,9 +15,16 @@ interface ChatMessageProps {
   isTyping?: boolean;
   /** Reasoning text from <think>...</think> blocks — shown in a collapsible section */
   thinkContent?: string;
+  /** ER hospital cards for emergency responses */
+  erHospitals?: ERHospital[];
+  erEmergencyNumbers?: EmergencyNumbers;
+  isEmergencyResponse?: boolean;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ role, content, timestamp, isTyping, thinkContent }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({
+  role, content, timestamp, isTyping, thinkContent,
+  erHospitals, erEmergencyNumbers, isEmergencyResponse,
+}) => {
   const [reasoningOpen, setReasoningOpen] = useState(false);
   const isUser = role === 'user';
 
@@ -105,6 +115,37 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ role, content, timestamp, isT
                   {thinkContent}
                 </p>
               </div>
+            )}
+          </div>
+        )}
+
+        {/* ER Hospital Cards — rendered below the emergency response text */}
+        {!isUser && !isTyping && isEmergencyResponse && erHospitals && erHospitals.length > 0 && (
+          <div className="mt-4">
+            <p className="text-xs font-semibold text-red-400 uppercase tracking-wider mb-2">
+              Nearest Emergency Hospitals
+            </p>
+            {erHospitals.map((hospital, idx) => (
+              <ERHospitalCard
+                key={hospital.place_id || idx}
+                hospital={hospital}
+                rank={idx + 1}
+                isNearest={idx === 0}
+              />
+            ))}
+            {/* Ambulance call button at bottom */}
+            {erEmergencyNumbers?.ambulance && (
+              <a
+                href={`tel:${erEmergencyNumbers.ambulance}`}
+                className="flex items-center justify-center gap-2 w-full py-3 mt-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm transition-colors shadow-lg"
+                aria-label={`Call ambulance: ${erEmergencyNumbers.ambulance}`}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                Call Ambulance — {erEmergencyNumbers.ambulance}
+              </a>
             )}
           </div>
         )}

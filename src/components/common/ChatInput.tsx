@@ -173,7 +173,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const sendActive = message.trim() && !disabled;
 
   return (
-    <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark px-6 py-4">
+    <div className="px-6 py-4">
       <div className="max-w-4xl mx-auto">
         <div className="vaidya-input-hero w-full overflow-hidden">
 

@@ -13,6 +13,32 @@ export interface Message {
   timestamp?: string;
 }
 
+export interface ERHospital {
+  place_id: string;
+  name: string;
+  address: string;
+  distance_km: number;
+  phone?: string | null;
+  maps_link: string;
+  rating?: number | null;
+  open_now?: boolean | null;
+  is_24h: boolean;
+  warning: string;
+}
+
+export interface EmergencyNumbers {
+  ambulance: string;
+  police: string;
+  fire: string;
+  general: string;
+}
+
+export interface EmergencyEventData {
+  emergency_type?: string;
+  er_hospitals: ERHospital[];
+  er_emergency_numbers: EmergencyNumbers;
+}
+
 export interface StartSessionResponse {
   session_id: string;
   message: string;
@@ -86,9 +112,11 @@ export const sendMessageStream = async (
   sessionId: string,
   message: string,
   onToken: (token: string) => void,
-  onComplete: () => void,
+  onComplete: (emergencyData?: EmergencyEventData) => void,
   onError: (error: string) => void,
-  onStatus?: (status: string) => void
+  onStatus?: (status: string) => void,
+  onEmergency?: (message: string) => void,
+  location?: { lat: number; lng: number } | null
 ): Promise<void> => {
   try {
     const response = await fetch(`${AI_PHYSICIAN_BASE_URL}/api/v1/vaidya/message`, {
@@ -100,6 +128,7 @@ export const sendMessageStream = async (
       body: JSON.stringify({
         session_id: sessionId,
         message: message,
+        ...(location ? { user_location: location } : {}),
       }),
     });
 
@@ -144,8 +173,23 @@ export const sendMessageStream = async (
                 if (onStatus) {
                   onStatus(data.content);
                 }
+              } else if (data.type === 'emergency') {
+                // Emergency detected — trigger red alert banner + geolocation
+                if (onEmergency) {
+                  onEmergency(data.content);
+                } else if (onStatus) {
+                  onStatus(data.content); // fallback: show as status
+                }
               } else if (data.type === 'complete') {
-                onComplete();
+                const emergencyData: EmergencyEventData | undefined =
+                  data.emergency
+                    ? {
+                        emergency_type: data.emergency_type,
+                        er_hospitals: data.er_hospitals || [],
+                        er_emergency_numbers: data.er_emergency_numbers || {},
+                      }
+                    : undefined;
+                onComplete(emergencyData);
               } else if (data.type === 'error') {
                 onError(data.message);
               }

@@ -29,13 +29,13 @@ const IconChevronsLeft = () => (
   </svg>
 );
 const IconPencil = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
   </svg>
 );
 const IconWorkflows = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
       d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
   </svg>
@@ -160,12 +160,12 @@ const VaidyaSidebar: React.FC<VaidyaSidebarProps> = ({
       className={`relative flex flex-col h-screen shrink-0 bg-[#0f151d]
         border-r border-slate-700/30 shadow-xl
         transition-[width] duration-300 ease-in-out
-        ${expanded ? 'w-80' : 'w-16'}
+        ${expanded ? 'w-80' : 'w-20'}
       `}
     >
 
       {/* Header */}
-      <div className="flex items-center h-16 px-3 border-b border-slate-700/60 shrink-0 gap-2 bg-linear-to-r from-slate-800/40 to-transparent backdrop-blur-sm">
+      <div className={`flex items-center ${expanded ? 'justify-start' : 'justify-center'} h-16 px-3 border-b border-slate-700/60 shrink-0 gap-2 bg-linear-to-r from-slate-800/40 to-transparent backdrop-blur-sm `}>
         <button
           onClick={() => setExpanded((v) => !v)}
           className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 text-slate-400 hover:text-white hover:bg-slate-700/40 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/10"
@@ -203,17 +203,14 @@ const VaidyaSidebar: React.FC<VaidyaSidebarProps> = ({
         <button
           onClick={handleNewChat}
           className={`
-            group flex items-center gap-3 rounded-lg w-full text-slate-100 hover:text-white transition-all duration-200 
+            group flex items-center gap-0 rounded-lg w-full text-slate-100 hover:text-white transition-all duration-200 
             bg-linear-to-r from-transparent to-transparent hover:from-blue-500/10 hover:to-blue-500/5
-            border border-slate-700/30 hover:border-blue-500/40
-            ${expanded ? 'px-4 py-4' : 'h-11 justify-center'}
+            ${expanded ? 'px-4 py-4 gap-3 border border-slate-700/30 hover:border-blue-500/40' : 'h-11 justify-center'}
             hover:shadow-lg hover:shadow-blue-500/10
           `}
           title="New Chat"
         >
-          <span className="w-8 h-8 rounded-lg bg-linear-to-br from-blue-500/30 to-blue-600/20 group-hover:from-blue-500/50 group-hover:to-blue-600/40
-                           flex items-center justify-center shrink-0 text-blue-400 group-hover:text-blue-300
-                           transition-all duration-200 group-hover:shadow-blue-500/40">
+          <span className="w-10 h-10 rounded-lg bg-linear-to-br from-blue-500/30 to-blue-600/20 group-hover:from-blue-500/50 group-hover:to-blue-600/40 flex items-center justify-center shrink-0 text-blue-400 group-hover:text-blue-300 transition-all duration-200 group-hover:shadow-blue-500/40">
             <IconPencil />
           </span>
           <span className={`text-sm font-semibold whitespace-nowrap overflow-hidden transition-[opacity,max-width] duration-300 ${expanded ? 'opacity-100 max-w-full' : 'opacity-0 max-w-0'}`}>
@@ -225,17 +222,16 @@ const VaidyaSidebar: React.FC<VaidyaSidebarProps> = ({
         <button
           onClick={() => navigate('/ai-physician/workflows')}
           className={`
-            group flex items-center gap-3 rounded-lg w-full
-            transition-all duration-200 border-0
+            group flex items-center gap-0 rounded-lg w-full
+            transition-all duration-200
             ${isOnWorkflows
               ? 'bg-linear-to-r from-purple-500/20 to-pink-500/10 text-purple-200 border-l-2 border-purple-500'
-              : 'text-slate-400 hover:text-white hover:bg-linear-to-r hover:from-purple-500/10 hover:to-purple-500/5 border border-slate-700/30 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/10'}
-            ${expanded ? 'px-4 py-4' : 'h-11 justify-center'}
+              : 'text-slate-400 hover:text-white hover:bg-linear-to-r hover:from-purple-500/10 hover:to-purple-500/5 border hover:shadow-sm hover:shadow-purple-500/10'}
+            ${expanded ? 'px-4 py-4 gap-3 border-slate-700/30 hover:border-purple-500/40' : 'h-11 justify-center'}
           `}
           title="Workflows"
         >
-          <span className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0
-                            transition-all duration-200 shadow-lg
+          <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 shadow-lg bg-linear-to-br from-purple-500/40 to-pink-500/30 text-purple-300
                             ${isOnWorkflows
                               ? 'bg-linear-to-br from-purple-500/40 to-pink-500/30 text-purple-300'
                               : 'bg-slate-700/40 group-hover:bg-linear-to-br group-hover:from-purple-500/30 group-hover:to-pink-500/20 text-slate-400 group-hover:text-purple-300 group-hover:shadow-purple-500/20'}`}>
@@ -392,9 +388,7 @@ const VaidyaSidebar: React.FC<VaidyaSidebarProps> = ({
         <div className="px-2.5 pt-3 shrink-0">
           <button
             onClick={() => setExpanded(true)}
-            className="w-11 h-11 rounded-lg flex items-center justify-center mx-auto
-                       text-slate-500 hover:text-white hover:bg-slate-700/40
-                       transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/10"
+            className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto text-slate-500 hover:text-white bg-slate-700/40 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/10"
             title="View history"
           >
             <IconHistory />

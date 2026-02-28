@@ -10,16 +10,25 @@ import StatusIndicator from '../../../components/common/StatusIndicator';
 import ThinkingIndicator from '../../../components/common/ThinkingIndicator';
 import ChatInput from '../../../components/common/ChatInput';
 import VaidyaSidebar from '../../../components/AIPhysician/VaidyaSidebar';
+import EmergencyBanner from '../../../components/common/EmergencyBanner';
 import {
   startSymptomCheckSession,
   sendMessageStream,
   loadSession,
   type Message,
+  type ERHospital,
+  type EmergencyNumbers,
+  type EmergencyEventData,
 } from '../../../services/aiPhysicianService';
+import { requestGeolocationSilent, type UserLocation } from '../../../utils/geolocation';
 
 
 interface ChatEntry extends Message {
   thinkContent?: string;
+  /** Hospital cards attached to an emergency response */
+  erHospitals?: ERHospital[];
+  erEmergencyNumbers?: EmergencyNumbers;
+  isEmergencyResponse?: boolean;
 }
 
 function parseStreamContent(raw: string): {
@@ -97,6 +106,12 @@ const AIPhysician: React.FC = () => {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [historyRefreshTrigger, setHistoryRefreshTrigger] = useState(0);
   const [messages, setMessages] = useState<ChatEntry[]>([]);
+  // ── Emergency mode state ──────────────────────────────────────────────────
+  const [isEmergencyMode, setIsEmergencyMode] = useState(false);
+  const [isSearchingHospitals, setIsSearchingHospitals] = useState(false);
+  const [emergencyNumbers, setEmergencyNumbers] = useState<EmergencyNumbers | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<UserLocation | null>(null);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -139,7 +154,7 @@ const AIPhysician: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workflowParam]);
 
-  // â”€â”€ New chat ââ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── New chat ─────────────────────────────────────────────────────────────
   const handleNewSession = () => {
     setChatStarted(false);
     setMessages([]);
@@ -151,7 +166,12 @@ const AIPhysician: React.FC = () => {
     setStatusMessage(null);
     rawAccumulatedRef.current = '';
     setHistoryRefreshTrigger((n) => n + 1);
-    // No auto-init — session is created lazily when user sends first message
+    // Reset emergency state for new session
+    setIsEmergencyMode(false);
+    setIsSearchingHospitals(false);
+    setEmergencyNumbers(null);
+    setCurrentLocation(null);
+    setBannerDismissed(false);
   };
 
   // â”€â”€ Load historical session ââ”€â”€â”€â”€â”€â”€â”€â”€
@@ -179,7 +199,7 @@ const AIPhysician: React.FC = () => {
     }
   };
 
-  // â”€â”€ Send message ââ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Send message ──────────────────────────────────────────────────────────
   const handleSendMessage = async (messageText: string) => {
     if (isStreaming) return;
 
@@ -206,9 +226,20 @@ const AIPhysician: React.FC = () => {
     setError(null);
     rawAccumulatedRef.current = '';
 
+    // Use cached location or attempt silent geolocation for every message
+    // (backend needs location to search ER hospitals on ER_NOW trigger)
+    const locationToSend = currentLocation ?? (await requestGeolocationSilent(5000));
+    if (locationToSend && !currentLocation) {
+      setCurrentLocation(locationToSend);
+    }
+
+    // Track whether STATUS:EMERGENCY_DETECTED was seen in this response
+    let emergencyDataReceived: EmergencyEventData | undefined;
+
     await sendMessageStream(
       activeSessionId,
       messageText,
+      // onToken
       (token) => {
         rawAccumulatedRef.current += token;
         const { thinkContent, isThinkDone, responseContent } = parseStreamContent(
@@ -218,8 +249,12 @@ const AIPhysician: React.FC = () => {
         setIsInThinkPhase(!isThinkDone && thinkContent.length > 0);
         setStreamingMessage(responseContent);
         if (statusMessage) setStatusMessage(null);
+        // Once ER response starts streaming, hospital search is done
+        if (isEmergencyMode) setIsSearchingHospitals(false);
       },
-      () => {
+      // onComplete
+      (emergencyData) => {
+        emergencyDataReceived = emergencyData;
         const { thinkContent, responseContent } = parseStreamContent(rawAccumulatedRef.current);
         const finalContent = responseContent || rawAccumulatedRef.current;
         if (finalContent) {
@@ -230,17 +265,31 @@ const AIPhysician: React.FC = () => {
               content: finalContent,
               thinkContent: thinkContent || undefined,
               timestamp: new Date().toISOString(),
+              // Attach ER data to the message for card rendering
+              ...(emergencyData
+                ? {
+                    isEmergencyResponse: true,
+                    erHospitals: emergencyData.er_hospitals,
+                    erEmergencyNumbers: emergencyData.er_emergency_numbers,
+                  }
+                : {}),
             },
           ]);
+        }
+        // Update emergency numbers for the banner once we have them
+        if (emergencyData?.er_emergency_numbers) {
+          setEmergencyNumbers(emergencyData.er_emergency_numbers);
         }
         setStreamingMessage('');
         setStreamingThinking('');
         setIsInThinkPhase(false);
         setStatusMessage(null);
         setIsStreaming(false);
+        setIsSearchingHospitals(false);
         rawAccumulatedRef.current = '';
         setHistoryRefreshTrigger((n) => n + 1);
       },
+      // onError
       (errorMsg) => {
         setError(errorMsg);
         setStreamingMessage('');
@@ -248,9 +297,26 @@ const AIPhysician: React.FC = () => {
         setIsInThinkPhase(false);
         setStatusMessage(null);
         setIsStreaming(false);
+        setIsSearchingHospitals(false);
         rawAccumulatedRef.current = '';
       },
-      (status) => setStatusMessage(status)
+      // onStatus
+      (status) => setStatusMessage(status),
+      // onEmergency — STATUS:EMERGENCY_DETECTED received
+      (emergencyMessage) => {
+        setIsEmergencyMode(true);
+        setIsSearchingHospitals(true);
+        setBannerDismissed(false);
+        setStatusMessage(emergencyMessage);
+        // Silently request geolocation if we don't already have it
+        if (!locationToSend) {
+          requestGeolocationSilent(8000).then((loc) => {
+            if (loc) setCurrentLocation(loc);
+          });
+        }
+      },
+      // location
+      locationToSend
     );
   };
 
@@ -267,6 +333,15 @@ const AIPhysician: React.FC = () => {
 
       {/* Main content area */}
       <main className="flex-1 flex flex-col min-w-0 bg-[#0d1117]">
+
+        {/* ── Emergency Banner (sticky, shown when ER_NOW triggered) ── */}
+        {isEmergencyMode && !bannerDismissed && (
+          <EmergencyBanner
+            emergencyNumbers={emergencyNumbers}
+            isSearching={isSearchingHospitals}
+            onDismiss={() => setBannerDismissed(true)}
+          />
+        )}
 
         {/* Initialising */}
         {isInitializing && (
@@ -350,7 +425,7 @@ const AIPhysician: React.FC = () => {
           <>
             {/* Scrollable messages */}
             <div ref={chatContainerRef} className="flex-1 overflow-y-auto">
-              <div className="max-w-3xl mx-auto px-4 py-6">
+              <div className="max-w-4xl mx-auto px-4 py-6">
                 {error && <SystemMessage message={error} type="error" />}
 
                 {messages.map((msg, idx) => (
@@ -360,12 +435,18 @@ const AIPhysician: React.FC = () => {
                     content={msg.content}
                     timestamp={msg.timestamp}
                     thinkContent={msg.thinkContent}
+                    erHospitals={msg.erHospitals}
+                    erEmergencyNumbers={msg.erEmergencyNumbers}
+                    isEmergencyResponse={msg.isEmergencyResponse}
                   />
                 ))}
 
                 {/* Status while waiting for first token */}
                 {isStreaming && statusMessage && !streamingMessage && !streamingThinking && (
-                  <StatusIndicator message={statusMessage} />
+                  <StatusIndicator
+                    message={statusMessage}
+                    variant={isEmergencyMode ? 'emergency' : 'normal'}
+                  />
                 )}
 
                 {/* Live thinking block */}
