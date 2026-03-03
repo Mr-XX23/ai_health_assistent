@@ -1,19 +1,68 @@
 import React, { useState } from "react";
 import AppLayout from "../../../layout/AppLayout/AppLayout";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
+import Password from "../../../components/MarketingComponents/inputField/Password";
+import Email from "../../../components/MarketingComponents/inputField/Email";
 import Slider from "../components/Slider";
 import EmailPassword from "../../../components/inputField/EmailPassword";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login, user } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setError("Please enter both email and password");
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const result = await login(email, password);
+
+      if (result.success && result.user) {
+        // Get the path user was trying to access
+        const from = (location.state as { from?: { pathname: string } })?.from?.pathname;
+
+        if (from) {
+          navigate(from, { replace: true });
+        } else {
+          // RACE CONDITION FIX: Use user from login result, not state
+          // Immediate navigation based on role without setTimeout
+          if (result.user.role === 'ADMIN') {
+            navigate('/admin', { replace: true });
+          } else if (result.user.role === 'HEALTHCARE_PROVIDER') {
+            navigate('/docter-dashboard', { replace: true });
+          } else {
+            navigate('/', { replace: true });
+          }
+        }
+      } else {
+        setError(result.message || 'Login failed');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <>
       <AppLayout>
         <div>
-          <div className="bg-background-light dark:bg-background-dark font-display text-[#101c22] dark:text-slate-200">
+          <div className="bg-background-light dark:bg-background-dark font-display text-background-dark dark:text-slate-200">
             <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
               <div className="layout-container flex h-full grow flex-col">
                 <div className="flex flex-1">
@@ -25,7 +74,7 @@ const LoginPage = () => {
                           className="absolute inset-0 z-0 bg-cover bg-center opacity-10 dark:opacity-20 bg-[url(https://lh3.googleusercontent.com/aida-public/AB6AXuDootRbF6XIUCgRdN48Ul1TTegsLXDbbAffF1Oqt-1GBGoSmbz49sABZJSHK-R3gjf6_70ctUPNsTgYJ-Z_8XgDayzPpKoBHlHyMTpvhnRYCux1RjmNMQNtXlI3aDMPTpJs5KcaHbX-0CmstLK__RrsJYB6jJ0SUNyfSZCKidCTjigkzFh--9bcugor7T5R03wJOcPAS6jlBgKj7ir3tltKZHIvwvRLsdUjbIix5dxbvXx0xkCAwgmVyWueBLSrrlunZVIXOE2joCEv)]"
                           data-alt="Abstract image of healthcare technology with a stethoscope on a laptop."
                         ></div>
-                        <div className="relative z-10 flex flex-col gap-8 max-w-md text-center text-[#101c22] dark:text-slate-100">
+                        <div className="relative z-10 flex flex-col gap-8 max-w-md text-center text-background-dark dark:text-slate-100">
                           <div className="flex items-center justify-center gap-3">
                             <span className="material-symbols-outlined text-4xl text-primary">
                               health_and_safety
@@ -49,9 +98,22 @@ const LoginPage = () => {
                           {/* <!-- Segmented Buttons / Tabs --> */}
                           <Slider />
                           {/* <!-- Form Content --> */}
-                          <div className="flex flex-col gap-4 px-4">
-                            {/* <!-- Email Address and Password Field  --> */}
-                            <EmailPassword />
+                          <form className="flex flex-col gap-4 px-4" onSubmit={handleLogin}>
+                            {/* <!-- Email Address Field --> */}
+                            <Email value={email} onChange={setEmail} disabled={isLoading} />
+
+                            {/* <!-- Password Field --> */}
+                            <Password value={password} onChange={setPassword} disabled={isLoading} />
+
+                            {/* <!-- Error Display --> */}
+                            {error && (
+                              <div className="flex items-center gap-2 rounded-lg bg-red-100 dark:bg-red-500/20 p-3">
+                                <span className="material-symbols-outlined text-red-600 dark:text-red-400">
+                                  error
+                                </span>
+                                <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
+                              </div>
+                            )}
 
                             {/* <!-- Forgot Password Link --> */}
                             <span onClick={() => navigate("/forgot-password")}>
@@ -62,11 +124,24 @@ const LoginPage = () => {
 
                             {/* <!-- Primary CTA Button --> */}
                             <div className="flex flex-col gap-3 px-1 py-3">
-                              <button className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-sm transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 dark:focus:ring-offset-background-dark">
-                                Login
+                              <button
+                                type="submit"
+                                disabled={isLoading}
+                                className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-sm transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 dark:focus:ring-offset-background-dark disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                {isLoading ? (
+                                  <>
+                                    <span className="material-symbols-outlined animate-spin mr-2">
+                                      hourglass_empty
+                                    </span>
+                                    Logging in...
+                                  </>
+                                ) : (
+                                  "Login"
+                                )}
                               </button>
                             </div>
-                          </div>
+                          </form>
                           {/* <!-- Social Sign-On --> */}
                           <div className="flex flex-col gap-4 px-4">
                             <div className="relative flex items-center justify-center">

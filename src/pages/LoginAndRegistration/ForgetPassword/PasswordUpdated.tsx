@@ -1,6 +1,6 @@
 import React from "react";
 import AppLayout from "../../../layout/AppLayout/AppLayout";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const PasswordUpdated = () => {
   const navigate = useNavigate();

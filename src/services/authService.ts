@@ -1,3 +1,6 @@
+import axiosInstance from '../config/axios.config';
+import axios from 'axios';
+
 // Input sanitization and validation utilities
 class InputSanitizer {
   /**
@@ -7,7 +10,7 @@ class InputSanitizer {
     return email
       .trim()
       .toLowerCase()
-      .replace(/[<>\"'`;()]/g, "");
+      .replace(/[<>"'`;()]/g, "");
   }
 
   /**
@@ -51,7 +54,7 @@ class InputSanitizer {
     if (!/[0-9]/.test(password)) {
       errors.push("Password must contain at least one number");
     }
-    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>?]/.test(password)) {
       errors.push("Password must contain at least one special character");
     }
     if (password.length > 128) {
@@ -91,11 +94,14 @@ export interface RegisterRequest {
   username: string;
   password: string;
   phoneNumber: string;
-  userRole: "patient" | "provider";
+  userRole: "USER" | "HEALTHCARE_PROVIDER" | "ADMIN";
 }
 
 export interface RegisterResponse {
-  email: string;
+  email: string | null;
+  phoneNumber: string | null;
+  emailVerificationSent: boolean;
+  smsVerificationSent: boolean;
   message: string;
   success: boolean;
   userId: string;
@@ -107,9 +113,107 @@ export interface ValidationError {
   message: string;
 }
 
+// Login interfaces
+export interface LoginRequest {
+  username: string; // Can be email or username
+  password: string;
+}
+
+export interface LoginResponse {
+  message: string;
+  username: string;
+  userId: string;
+  email: string;
+  phoneNumber: string;
+  LastLoginTime: string;
+  status: string;
+  role: 'USER' | 'HEALTHCARE_PROVIDER' | 'ADMIN';
+  statusCode: string;
+}
+
+export interface User {
+  userId: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  role: 'USER' | 'HEALTHCARE_PROVIDER' | 'ADMIN';
+  lastLoginTime: string;
+}
+
+// Rate limiting configuration
+interface RateLimitEntry {
+  attempts: number;
+  lastAttempt: number;
+  blockedUntil?: number;
+}
+
 class AuthService {
-  private baseURL = "http://localhost:8080/api/v1";
-  private timeout = 10000; // 10 seconds timeout for security
+  
+  private readonly maxAttempts = 3; // Max attempts before blocking
+  private readonly blockDuration = 15 * 60 * 1000; // 15 minutes
+  private readonly attemptWindow = 60 * 1000; // 1 minute
+  private rateLimitStore: Map<string, RateLimitEntry> = new Map();
+  /**
+   * Check if email is rate limited
+   */
+  private checkRateLimit(email: string): {
+    allowed: boolean;
+    message?: string;
+  } {
+    const now = Date.now();
+    const entry = this.rateLimitStore.get(email);
+
+    // Clean up old entries
+    if (entry && now - entry.lastAttempt > this.attemptWindow) {
+      this.rateLimitStore.delete(email);
+      return { allowed: true };
+    }
+
+    // Check if blocked
+    if (entry?.blockedUntil && now < entry.blockedUntil) {
+      const minutesLeft = Math.ceil((entry.blockedUntil - now) / 60000);
+      return {
+        allowed: false,
+        message: `Too many attempts. Please try again in ${minutesLeft} minute${minutesLeft > 1 ? "s" : ""}.`,
+      };
+    }
+
+    // Check attempts
+    if (entry && entry.attempts >= this.maxAttempts) {
+      const blockedUntil = now + this.blockDuration;
+      this.rateLimitStore.set(email, {
+        ...entry,
+        blockedUntil,
+      });
+      return {
+        allowed: false,
+        message: "Too many attempts. Please try again in 15 minutes.",
+      };
+    }
+
+    return { allowed: true };
+  }
+
+  /**
+   * Record registration attempt
+   */
+  private recordAttempt(email: string): void {
+    const now = Date.now();
+    const entry = this.rateLimitStore.get(email);
+
+    if (!entry || now - entry.lastAttempt > this.attemptWindow) {
+      this.rateLimitStore.set(email, {
+        attempts: 1,
+        lastAttempt: now,
+      });
+    } else {
+      this.rateLimitStore.set(email, {
+        attempts: entry.attempts + 1,
+        lastAttempt: now,
+        blockedUntil: entry.blockedUntil,
+      });
+    }
+  }
 
   /**
    * Validate all input fields before sending to API
@@ -120,8 +224,19 @@ class AuthService {
   } {
     const errors: ValidationError[] = [];
 
-    // Validate email
-    if (!data.email || !InputSanitizer.isValidEmail(data.email)) {
+    // NEW: At least ONE contact method required
+    const hasEmail = data.email && data.email.trim().length > 0;
+    const hasPhone = data.phoneNumber && data.phoneNumber.trim().length > 0;
+
+    if (!hasEmail && !hasPhone) {
+      errors.push({
+        field: "contact",
+        message: "Please provide either an email address or phone number",
+      });
+    }
+
+    // Validate email ONLY if provided
+    if (hasEmail && !InputSanitizer.isValidEmail(data.email)) {
       errors.push({
         field: "email",
         message: "Please enter a valid email address",
@@ -146,23 +261,19 @@ class AuthService {
       });
     }
 
-    // Validate phone number
-    if (
-      !data.phoneNumber ||
-      !InputSanitizer.isValidPhoneNumber(data.phoneNumber)
-    ) {
+    // Validate phone ONLY if provided
+    if (hasPhone && !InputSanitizer.isValidPhoneNumber(data.phoneNumber)) {
       errors.push({
         field: "phoneNumber",
         message: "Please enter a valid phone number",
       });
     }
 
-    // Validate user role
-    if (!data.userRole || !["patient", "provider"].includes(data.userRole)) {
+    // Validate userRole
+    if (!data.userRole || !["USER", "HEALTHCARE_PROVIDER", "ADMIN"].includes(data.userRole)) {
       errors.push({
         field: "userRole",
-        message:
-          "Please select whether you are a Patient or Healthcare Provider",
+        message: "Please select whether you are a Patient or Healthcare Provider",
       });
     }
 
@@ -186,76 +297,48 @@ class AuthService {
       const sanitizedData = {
         email: InputSanitizer.sanitizeEmail(data.email),
         username: InputSanitizer.sanitizeUsername(data.username),
-        password: data.password, // Never sanitize passwords - they should be used as-is
+        password: data.password, // Never sanitize passwords!
         phoneNumber: InputSanitizer.sanitizePhoneNumber(data.phoneNumber),
-        userRole: data.userRole, // No sanitization needed for user role - it's a safe enum
+        userRole: data.userRole,
       };
+
+      // Check rate limiting
+      const rateCheck = this.checkRateLimit(sanitizedData.email);
+      if (!rateCheck.allowed) {
+        return {
+          success: false,
+          message: rateCheck.message,
+        };
+      }
 
       // Validate inputs
       const validation = this.validateInput(sanitizedData);
       if (!validation.isValid) {
+        this.recordAttempt(sanitizedData.email);
         return {
           success: false,
           errors: validation.errors,
         };
       }
 
-      // Create abort controller for timeout
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-
       try {
-        const response = await fetch(`${this.baseURL}/auth/register`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Requested-With": "XMLHttpRequest", // CSRF protection
-          },
-          body: JSON.stringify(sanitizedData),
-          signal: controller.signal,
-          credentials: "include", // Include cookies for session management
-        });
+        // Map to backend-expected payload structure
+        const payload = {
+          username: sanitizedData.username,
+          email: sanitizedData.email,
+          phoneNumber: sanitizedData.phoneNumber,
+          role: sanitizedData.userRole, // Backend expects "role" not "userRole"
+          password: sanitizedData.password,
+          acceptTerms: "true", // Required by backend
+          hipaaPrivacyNotice: "true", // Required by backend
+        };
 
-        clearTimeout(timeoutId);
+        const response = await axiosInstance.post<RegisterResponse>(
+          '/auth/register',
+          payload
+        );
 
-        // Handle different response statuses
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-
-          if (response.status === 409) {
-            return {
-              success: false,
-              errors: [
-                {
-                  field: "email",
-                  message:
-                    errorData.message ||
-                    "An account with this email already exists",
-                },
-              ],
-            };
-          }
-
-          if (response.status === 400) {
-            return {
-              success: false,
-              errors: [
-                {
-                  field: "general",
-                  message: errorData.message || "Invalid registration data",
-                },
-              ],
-            };
-          }
-
-          return {
-            success: false,
-            message:
-              errorData.message || "Registration failed. Please try again.",
-          };
-        }
-
-        const responseData: RegisterResponse = await response.json();
+        const responseData = response.data;
 
         // Validate response structure
         if (
@@ -274,19 +357,50 @@ class AuthService {
           data: responseData,
         };
       } catch (error) {
-        clearTimeout(timeoutId);
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          const errorData = error.response?.data;
 
-        if (error instanceof Error) {
-          if (error.name === "AbortError") {
+          this.recordAttempt(sanitizedData.email);
+
+          if (status === 409) {
             return {
               success: false,
-              message: "Registration request timed out. Please try again.",
+              errors: [
+                {
+                  field: "email",
+                  message: this.sanitizeErrorMessage(
+                    errorData?.message || "An account with this email already exists"
+                  ),
+                },
+              ],
             };
           }
+
+          if (status === 400) {
+            return {
+              success: false,
+              errors: [
+                {
+                  field: "general",
+                  message: this.sanitizeErrorMessage(errorData?.message || "Invalid registration data"),
+                },
+              ],
+            };
+          }
+
+          if (status === 429) {
+            return {
+              success: false,
+              message: "Too many requests. Please try again later.",
+            };
+          }
+
           return {
             success: false,
-            message:
-              error.message || "Network error occurred during registration",
+            message: this.sanitizeErrorMessage(
+              errorData?.message || "Registration failed. Please try again."
+            ),
           };
         }
 
@@ -296,11 +410,263 @@ class AuthService {
         };
       }
     } catch (error) {
+      // Log error securely (consider using a proper logging service in production)
+      if (import.meta.env.DEV) {
+        console.error("Error during registration validation:", error);
+      }
       return {
         success: false,
         message: "An unexpected error occurred during validation",
       };
     }
+  }
+
+  /**
+   * Login user with username/email and password
+   */
+  async login(credentials: LoginRequest): Promise<{
+    success: boolean;
+    user?: User;
+    message?: string;
+  }> {
+    try {
+      // Sanitize username (can be email)
+      const sanitizedUsername = InputSanitizer.sanitizeEmail(credentials.username);
+
+      // Check rate limiting
+      const rateCheck = this.checkRateLimit(sanitizedUsername);
+      if (!rateCheck.allowed) {
+        return {
+          success: false,
+          message: rateCheck.message,
+        };
+      }
+
+      const response = await axiosInstance.post<LoginResponse>('/auth/login', {
+        username: sanitizedUsername,
+        password: credentials.password,
+      });
+
+      this.recordAttempt(sanitizedUsername); // Track attempt
+
+      const { data } = response;
+
+      // Validate response structure
+      if (!data.userId || !data.username || !data.role) {
+        return {
+          success: false,
+          message: "Invalid response from server",
+        };
+      }
+
+      // Transform to User object
+      const user: User = {
+        userId: data.userId,
+        username: data.username,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        role: data.role,
+        lastLoginTime: data.LastLoginTime,
+      };
+
+      return {
+        success: true,
+        user,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
+
+        if (status === 401) {
+          return {
+            success: false,
+            message: this.sanitizeErrorMessage(message || "Invalid username or password"),
+          };
+        }
+
+        if (status === 423) {
+          return {
+            success: false,
+            message: "Account is locked. Please contact support.",
+          };
+        }
+
+        return {
+          success: false,
+          message: this.sanitizeErrorMessage(message || "Login failed. Please try again."),
+        };
+      }
+
+      return {
+        success: false,
+        message: "An unexpected error occurred",
+      };
+    }
+  }
+
+  /**
+   * Logout user and clear cookies
+   */
+  async logout(): Promise<{
+    success: boolean;
+    message?: string;
+  }> {
+    try {
+      const response = await axiosInstance.post<{
+        message: string;
+        success: boolean;
+        timestamp: string;
+      }>('/auth/logout');
+
+      // Backend clears HTTP-only cookies via Set-Cookie headers
+      // Clear any non-HTTP-only cookies
+      this.clearAllCookies();
+      return {
+        success: response.data.success,
+        message: response.data.message || "Logged out successfully",
+      };
+    } catch (error) {
+      // If logout fails even after auto-refresh (both tokens expired/invalid)
+      console.error("Logout error:", error);
+      // this.clearAllCookies();
+      return {
+        success: true,
+        message: "Logged out (session expired)",
+      };
+    }
+  }
+
+  /**
+   * Clear all cookies from the browser
+   */
+  private clearAllCookies(): void {
+    const cookies = document.cookie.split(";");
+
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i];
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+
+      // Clear cookie for all possible paths and domains
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=." + window.location.hostname;
+    }
+
+    if (import.meta.env.DEV) {
+      console.log("[Logout] Non-HTTP-only cookies cleared (HTTP-only cookies can only be cleared by backend)");
+    }
+  }
+
+  /**
+   * Validate session by verifying the access token
+   * Only checks if the token is valid without refreshing it
+   * Token refresh is handled automatically by axios interceptor on 401 responses
+   */
+  async validateSession(): Promise<{
+    isValid: boolean;
+    user?: User;
+  }> {
+    try {
+      // Verify the token is valid without refreshing it
+      const response = await axiosInstance.get('/auth/verify-token');
+
+      // Support both nested { user: {...} } and flat { userId, username, ... } responses
+      const userData = response.data?.user ?? response.data;
+
+      if (userData?.userId && userData?.username && userData?.role) {
+        // Transform backend response to User object
+        const user: User = {
+          userId: userData.userId,
+          username: userData.username,
+          email: userData.email,
+          phoneNumber: userData.phoneNumber,
+          role: userData.role,
+          lastLoginTime: userData.lastLoginTime ?? userData.LastLoginTime,
+        };
+
+        return {
+          isValid: true,
+          user,
+        };
+      }
+
+      // Token is valid but no user data returned — treat as invalid to avoid
+      // showing an authenticated-but-empty state
+      return {
+        isValid: false,
+      };
+    } catch (error) {
+      // If token is expired (401), axios interceptor will automatically attempt refresh.
+      // If refresh also fails, the 'auth:logout' event will be triggered.
+      if (import.meta.env.DEV) {
+        console.error("Session validation error:", error);
+      }
+      return {
+        isValid: false,
+      };
+    }
+  }
+
+  /**
+   * Sanitize error messages to prevent user enumeration and information leakage
+   * Security: Removes specific implementation details from error messages
+   */
+  private sanitizeErrorMessage(message: string): string {
+    if (!message) return "An error occurred";
+
+    const lowercaseMsg = message.toLowerCase();
+
+    // User enumeration prevention
+    if (
+      lowercaseMsg.includes("user") &&
+      (lowercaseMsg.includes("not found") || lowercaseMsg.includes("does not exist"))
+    ) {
+      return "Invalid credentials or request";
+    }
+
+    // Token/OTP expiry normalization
+    if (
+      lowercaseMsg.includes("token") &&
+      (lowercaseMsg.includes("expired") || lowercaseMsg.includes("invalid"))
+    ) {
+      return "Reset request expired or invalid";
+    }
+
+    if (
+      lowercaseMsg.includes("otp") &&
+      (lowercaseMsg.includes("expired") || lowercaseMsg.includes("invalid"))
+    ) {
+      return "Verification code expired or invalid";
+    }
+
+    // Email/account existence leaks
+    if (
+      lowercaseMsg.includes("email") &&
+      (lowercaseMsg.includes("exists") || lowercaseMsg.includes("already") || lowercaseMsg.includes("registered"))
+    ) {
+      return "Unable to process request";
+    }
+
+    if (
+      lowercaseMsg.includes("phone") &&
+      (lowercaseMsg.includes("exists") || lowercaseMsg.includes("already") || lowercaseMsg.includes("registered"))
+    ) {
+      return "Unable to process request";
+    }
+
+    // Generic implementation detail leaks
+    if (lowercaseMsg.includes("database") || lowercaseMsg.includes("sql")) {
+      return "A system error occurred";
+    }
+
+    if (lowercaseMsg.includes("null pointer") || lowercaseMsg.includes("exception")) {
+      return "A system error occurred";
+    }
+
+    // Return original message if no sensitive information detected
+    return message;
   }
 
   /**
@@ -316,7 +682,7 @@ class AuthService {
     if (password.length >= 12) strength++;
     if (/[A-Z]/.test(password)) strength++;
     if (/[0-9]/.test(password)) strength++;
-    if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) strength++;
+    if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>?]/.test(password)) strength++;
 
     const strengthMap = {
       0: { strength: "weak" as const, percentage: 20 },
@@ -333,6 +699,351 @@ class AuthService {
         percentage: 20,
       }
     );
+  }
+
+  /**
+   * Verify phone number with OTP
+   */
+  async verifyPhone(userId: string, otp: string): Promise<{
+    success: boolean;
+    message?: string;
+  }> {
+    try {
+      await axiosInstance.post('/auth/verify-phone', {
+        userId,
+        otp,
+      });
+
+      return {
+        success: true,
+        message: "Phone number verified successfully",
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message;
+        return {
+          success: false,
+          message: this.sanitizeErrorMessage(message || "Invalid or expired OTP"),
+        };
+      }
+      return {
+        success: false,
+        message: "Verification failed",
+      };
+    }
+  }
+
+  /**
+   * Resend email verification
+   */
+  async resendEmailVerification(userId: string): Promise<{
+    success: boolean;
+    message?: string;
+  }> {
+    try {
+      await axiosInstance.post('/auth/send-email-verification', {
+        userId,
+      });
+
+      return {
+        success: true,
+        message: "Verification email sent successfully",
+      };
+    } catch (error) {
+      console.error("Error resending email verification:", error);
+      return {
+        success: false,
+        message: "Failed to send verification email",
+      };
+    }
+  }
+
+  /**
+   * Resend phone OTP
+   */
+  async resendPhoneVerification(userId: string): Promise<{
+    success: boolean;
+    message?: string;
+  }> {
+    try {
+      await axiosInstance.post('/auth/send-phone-verification', {
+        userId,
+      });
+
+      return {
+        success: true,
+        message: "OTP sent successfully",
+      };
+    } catch (error) {
+      console.error("Error resending phone verification:", error);
+      return {
+        success: false,
+        message: "Failed to send OTP",
+      };
+    }
+  }
+
+  /**
+   * Check user verification status (email and phone)
+   * Used for polling during the verification flow
+   */
+  async checkVerificationStatus(userId: string): Promise<{
+    success: boolean;
+    emailVerified: boolean;
+    phoneVerified: boolean;
+    message?: string;
+  }> {
+    try {
+      const response = await axiosInstance.get(`/auth/users/verify/${userId}`);
+
+      const data = response.data;
+
+      return {
+        success: data.success || true,
+        emailVerified: data.emailVerified || false,
+        phoneVerified: data.phoneVerified || false,
+      };
+    } catch (error) {
+      console.error("Error checking verification status:", error);
+      return {
+        success: false,
+        emailVerified: false,
+        phoneVerified: false,
+        message: "Failed to check verification status",
+      };
+    }
+  }
+
+  /**
+   * Request password reset - sends reset link via email or OTP via phone
+   */
+  async requestPasswordReset(userContact: string): Promise<{
+    success: boolean;
+    message?: string;
+    resetMethod?: 'email' | 'phone';
+  }> {
+    try {
+      // Sanitize input
+      const sanitizedContact = userContact.trim();
+
+      // Validate input format
+      const isEmail = InputSanitizer.isValidEmail(sanitizedContact);
+      const isPhone = InputSanitizer.isValidPhoneNumber(sanitizedContact);
+
+      if (!isEmail && !isPhone) {
+        return {
+          success: false,
+          message: "Please enter a valid email address or phone number",
+        };
+      }
+
+      // Check rate limiting
+      const rateCheck = this.checkRateLimit(sanitizedContact);
+      if (!rateCheck.allowed) {
+        return {
+          success: false,
+          message: rateCheck.message,
+        };
+      }
+
+      const response = await axiosInstance.post('/auth/reset-password', {
+        userContact: sanitizedContact,
+      });
+
+      this.recordAttempt(sanitizedContact);
+
+      return {
+        success: true,
+        message: response.data.message || "Password reset instructions sent",
+        resetMethod: isEmail ? 'email' : 'phone',
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
+
+        if (status === 429) {
+          return {
+            success: false,
+            message: "Too many password reset attempts. Please try again later.",
+          };
+        }
+
+        return {
+          success: false,
+          message: this.sanitizeErrorMessage(message || "Failed to process password reset request"),
+        };
+      }
+
+      return {
+        success: false,
+        message: "An unexpected error occurred",
+      };
+    }
+  }
+
+  /**
+   * Confirm password reset using token (for email-based reset)
+   */
+  async confirmPasswordResetWithToken(
+    token: string,
+    newPassword: string
+  ): Promise<{
+    success: boolean;
+    message?: string;
+  }> {
+    try {
+      // Validate token
+      if (!token || token.trim().length === 0) {
+        return {
+          success: false,
+          message: "Reset token is required",
+        };
+      }
+
+      // Validate password
+      const passwordValidation = InputSanitizer.isValidPassword(newPassword);
+      if (!passwordValidation.isValid) {
+        return {
+          success: false,
+          message: passwordValidation.errors.join("; "),
+        };
+      }
+
+      // Send token in body for security (not in URL)
+      const response = await axiosInstance.post('/auth/confirm-reset', {
+        token,
+        newPassword,
+      });
+
+      return {
+        success: true,
+        message: response.data.message || "Password reset successfully",
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
+
+        if (status === 400) {
+          return {
+            success: false,
+            message: this.sanitizeErrorMessage(message || "Invalid or expired reset token"),
+          };
+        }
+
+        if (status === 429) {
+          return {
+            success: false,
+            message: "Too many attempts. Please request a new password reset.",
+          };
+        }
+
+        return {
+          success: false,
+          message: this.sanitizeErrorMessage(message || "Failed to reset password"),
+        };
+      }
+
+      return {
+        success: false,
+        message: "An unexpected error occurred",
+      };
+    }
+  }
+
+  /**
+   * Confirm password reset using OTP (for phone-based reset)
+   */
+  async confirmPasswordResetWithOtp(
+    userContact: string,
+    otp: string,
+    newPassword: string
+  ): Promise<{
+    success: boolean;
+    message?: string;
+  }> {
+    try {
+      // Sanitize and validate user contact
+      const sanitizedContact = userContact.trim();
+      const isEmail = InputSanitizer.isValidEmail(sanitizedContact);
+      const isPhone = InputSanitizer.isValidPhoneNumber(sanitizedContact);
+
+      if (!isEmail && !isPhone) {
+        return {
+          success: false,
+          message: "Please enter a valid email address or phone number",
+        };
+      }
+
+      // Validate OTP format
+      if (!otp || !otp.match(/^\d{6}$/)) {
+        return {
+          success: false,
+          message: "OTP must be 6 digits",
+        };
+      }
+
+      // Validate password
+      const passwordValidation = InputSanitizer.isValidPassword(newPassword);
+      if (!passwordValidation.isValid) {
+        return {
+          success: false,
+          message: passwordValidation.errors.join("; "),
+        };
+      }
+
+      const response = await axiosInstance.post('/auth/confirm-reset-otp', {
+        userContact: sanitizedContact,
+        otp,
+        newPassword,
+      });
+
+      return {
+        success: true,
+        message: response.data.message || "Password reset successfully",
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
+
+        if (status === 400) {
+          return {
+            success: false,
+            message: this.sanitizeErrorMessage(message || "Invalid or expired OTP"),
+          };
+        }
+
+        if (status === 429) {
+          return {
+            success: false,
+            message: "Too many attempts. Please request a new password reset.",
+          };
+        }
+
+        return {
+          success: false,
+          message: this.sanitizeErrorMessage(message || "Failed to reset password"),
+        };
+      }
+
+      return {
+        success: false,
+        message: "An unexpected error occurred",
+      };
+    }
+  }
+
+  /**
+   * Resend password reset (works for both email and phone)
+   */
+  async resendPasswordReset(userContact: string): Promise<{
+    success: boolean;
+    message?: string;
+  }> {
+    // Reuse the requestPasswordReset method
+    return this.requestPasswordReset(userContact);
   }
 }
 
