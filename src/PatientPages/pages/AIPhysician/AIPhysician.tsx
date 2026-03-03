@@ -18,7 +18,6 @@ import {
   type Message,
   type ERHospital,
   type EmergencyNumbers,
-  type EmergencyEventData,
 } from '../../../services/aiPhysicianService';
 import { requestGeolocationSilent, type UserLocation } from '../../../utils/geolocation';
 
@@ -126,10 +125,10 @@ const AIPhysician: React.FC = () => {
   }, [messages, streamingMessage, statusMessage, chatStarted]);
 
   // Create a new backend session and return its ID (does NOT set state itself)
-  const createSession = async (): Promise<string | null> => {
+  const createSession = async (initialMessage?: string): Promise<string | null> => {
     try {
       setIsInitializing(true);
-      const response = await startSymptomCheckSession();
+      const response = await startSymptomCheckSession(initialMessage);
       setSessionId(response.session_id);
       setError(null);
       return response.session_id;
@@ -206,7 +205,7 @@ const AIPhysician: React.FC = () => {
     // Lazily create a session on the very first message
     let activeSessionId = sessionId;
     if (!activeSessionId) {
-      activeSessionId = await createSession();
+      activeSessionId = await createSession(messageText);
       if (!activeSessionId) return; // session creation failed
     }
 
@@ -234,7 +233,7 @@ const AIPhysician: React.FC = () => {
     }
 
     // Track whether STATUS:EMERGENCY_DETECTED was seen in this response
-    let emergencyDataReceived: EmergencyEventData | undefined;
+    // (backend needs location to search ER hospitals on ER_NOW trigger)
 
     await sendMessageStream(
       activeSessionId,
@@ -254,7 +253,6 @@ const AIPhysician: React.FC = () => {
       },
       // onComplete
       (emergencyData) => {
-        emergencyDataReceived = emergencyData;
         const { thinkContent, responseContent } = parseStreamContent(rawAccumulatedRef.current);
         const finalContent = responseContent || rawAccumulatedRef.current;
         if (finalContent) {
@@ -268,10 +266,10 @@ const AIPhysician: React.FC = () => {
               // Attach ER data to the message for card rendering
               ...(emergencyData
                 ? {
-                    isEmergencyResponse: true,
-                    erHospitals: emergencyData.er_hospitals,
-                    erEmergencyNumbers: emergencyData.er_emergency_numbers,
-                  }
+                  isEmergencyResponse: true,
+                  erHospitals: emergencyData.er_hospitals,
+                  erEmergencyNumbers: emergencyData.er_emergency_numbers,
+                }
                 : {}),
             },
           ]);

@@ -84,7 +84,9 @@ export interface UserSessionsResponse {
 /**
  * Start a new Vaidya session
  */
-export const startSymptomCheckSession = async (): Promise<StartSessionResponse> => {
+export const startSymptomCheckSession = async (
+  message?: string
+): Promise<StartSessionResponse> => {
   try {
     const response = await fetch(`${AI_PHYSICIAN_BASE_URL}/api/v1/vaidya/start`, {
       method: 'POST',
@@ -92,6 +94,7 @@ export const startSymptomCheckSession = async (): Promise<StartSessionResponse> 
         'Content-Type': 'application/json',
       },
       credentials: 'include', // Include cookies for JWT auth
+      body: JSON.stringify({ message }),
     });
 
     if (!response.ok) {
@@ -151,16 +154,16 @@ export const sendMessageStream = async (
 
       // Decode chunk and add to buffer
       buffer += decoder.decode(value, { stream: true });
-      
+
       // Split by double newline to get complete SSE messages
       const messages = buffer.split('\n\n');
-      
+
       // Keep the last incomplete message in buffer
       buffer = messages.pop() || '';
 
       for (const message of messages) {
         const lines = message.split('\n');
-        
+
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             try {
@@ -184,10 +187,10 @@ export const sendMessageStream = async (
                 const emergencyData: EmergencyEventData | undefined =
                   data.emergency
                     ? {
-                        emergency_type: data.emergency_type,
-                        er_hospitals: data.er_hospitals || [],
-                        er_emergency_numbers: data.er_emergency_numbers || {},
-                      }
+                      emergency_type: data.emergency_type,
+                      er_hospitals: data.er_hospitals || [],
+                      er_emergency_numbers: data.er_emergency_numbers || {},
+                    }
                     : undefined;
                 onComplete(emergencyData);
               } else if (data.type === 'error') {
